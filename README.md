@@ -21,6 +21,8 @@
 **pnpm**
 
 ```
+    git clone https://github.com/jiyoonyee/DBase-frontend.git
+    cd DBase-frontend
     pnpm i
     pnpm run dev
 ```
