@@ -1,0 +1,71 @@
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import AcountButton from "../components/AcountButton";
+
+const Header = ({ headerState }) => {
+  console.log(headerState);
+  return (
+    <>
+      <Wrap $shrink={headerState}>
+        <HeaderWrap>
+          <LogoWrap>
+            <Link to={"/"}>
+              <img src="../src/assets/images/Logo.svg" alt="logo" />
+            </Link>
+          </LogoWrap>
+          <MenuWrap>
+            <Link to={"/jobinfor"}>채용정보</Link>
+            <Link to={"/"}>내프로필</Link>
+            <Link to={"/"}>취업현황</Link>
+            <Link to={"/"}>취업 로드맵</Link>
+          </MenuWrap>
+          <AcountButton LinkPath={"#"} Label={"구글 로그인"} />
+        </HeaderWrap>
+      </Wrap>
+    </>
+  );
+};
+
+const Wrap = styled.div`
+  color: white;
+  width: 100%;
+  height: ${(props) => (props.$shrink ? "50px" : "100px")};
+  /* padding: ${(props) => (props.$shrink ? "5px 0px" : "30px 0px")}; */
+  transition: all 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  background-color: transparent;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(7.9px);
+  z-index: 999;
+  /* height: ; */
+`;
+
+const HeaderWrap = styled.div`
+  height: 100%;
+  margin: 0px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: white; */
+  & * {
+    font-size: 18px;
+    /* font-weight: bold; */
+  }
+`;
+
+const LogoWrap = styled.div``;
+
+const MenuWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  & > a {
+    color: white;
+  }
+`;
+
+export default Header;

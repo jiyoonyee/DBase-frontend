@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import styled from "styled-components";
+import Header from "./layouts/Header";
+import MainPage from "./pages/MainPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Footer from "./layouts/footer";
+import { useState } from "react";
+import JobInforPage from "./pages/JobInforPage";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [headerState, setHeaderState] = useState(false);
 
+  const updateHeaderState = (state) => {
+    if (state) {
+      setHeaderState(true);
+      console.log("헤더 늘리기");
+    } else {
+      console.log("줄이기");
+      setHeaderState(false);
+    }
+  };
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Wrap>
+          <Header headerState={headerState} />
+          <Routes>
+            <Route
+              element={<MainPage updateHeaderState={updateHeaderState} />}
+              path="/"
+            />
+            <Route element={<JobInforPage />} path="/jobinfor" />
+          </Routes>
+          <Footer />
+        </Wrap>
+      </BrowserRouter>
     </>
-  )
-}
+  );
+};
 
-export default App
+const Wrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export default App;

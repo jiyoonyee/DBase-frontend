@@ -1,0 +1,117 @@
+import { useState } from "react";
+import styled from "styled-components";
+
+const SelectDropDown = ({
+  DropDownLabel,
+  DropDownItems,
+  // UpdateSelectValue,
+}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [selectYear, setSelectYear] = useState(null);
+
+  const UpdateDropDown = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const UpdateYear = (e) => {
+    setSelectYear(e.target.textContent);
+    UpdateDropDown();
+  };
+
+  console.log(menuOpen);
+
+  return (
+    <>
+      <Wrap>
+        <DropDownWrap $State={menuOpen} onClick={UpdateDropDown}>
+          <span>
+            {selectYear ? (
+              <p style={{ color: "black" }}>{selectYear}</p>
+            ) : (
+              DropDownLabel
+            )}
+          </span>
+          <img src="../src/assets/images/DownArrow.svg" alt="드롭다운 화살표" />
+        </DropDownWrap>
+        <DropDownItemsWrap $State={menuOpen}>
+          {DropDownItems.map((item, i) => {
+            return (
+              <DropDownItem onClick={UpdateYear} key={i}>
+                {item}
+              </DropDownItem>
+            );
+          })}
+        </DropDownItemsWrap>
+      </Wrap>
+    </>
+  );
+};
+
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+`;
+
+const DropDownWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #cccccc;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  cursor: pointer;
+
+  & > span {
+    color: #6c6c6c;
+    /* font-weight: bold; */
+    font-size: 20px;
+  }
+  & > img {
+    transform: rotate(${(props) => (props.$State ? "180deg" : "0deg")});
+    transition: transform 0.3s ease; // 부드러운 회전 추가
+  }
+`;
+
+const DropDownItemsWrap = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+
+  max-height: ${(props) => (props.$State ? "1000px" : "0px")}; // ✅ 동적 높이
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out,
+    opacity 0.7s ease-in-out;
+  z-index: 20;
+  background-color: #ffffff;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding-top: ${(props) =>
+    props.$State ? "20px" : "0px"}; // 부드러운 padding 추가
+  opacity: ${(props) => (props.$State ? "1" : "0")};
+  transform: translateY(-20px);
+`;
+
+const DropDownItem = styled.div`
+  width: 100%;
+  height: 50px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export default SelectDropDown;

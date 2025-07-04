@@ -11,10 +11,10 @@
 
 - node.js **(22.16.0)**  
   [node.js 설치(LTS)](https://nodejs.org/ko/download)  
-  `npm -v` -> `npm version number`
+  `npm -v` -> `version number`
 - pnpm **(10.12.1)**  
    `npm intall -g pnpm`  
-   `pnpm -v` -> `npm version number`
+   `pnpm -v` -> `version number`
 
 ## 실행
 
