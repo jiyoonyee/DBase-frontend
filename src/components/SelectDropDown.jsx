@@ -34,13 +34,11 @@ const SelectDropDown = ({
           <img src="../src/assets/images/DownArrow.svg" alt="드롭다운 화살표" />
         </DropDownWrap>
         <DropDownItemsWrap $State={menuOpen}>
-          {DropDownItems.map((item, i) => {
-            return (
-              <DropDownItem onClick={UpdateYear} key={i}>
-                {item}
-              </DropDownItem>
-            );
-          })}
+          {DropDownItems.map((item, i) => (
+            <DropDownItem onClick={UpdateYear} key={i}>
+              {item}
+            </DropDownItem>
+          ))}
         </DropDownItemsWrap>
       </Wrap>
     </>
@@ -77,7 +75,7 @@ const DropDownWrap = styled.div`
   }
   & > img {
     transform: rotate(${(props) => (props.$State ? "180deg" : "0deg")});
-    transition: transform 0.3s ease; // 부드러운 회전 추가
+    transition: transform 0.5s ease; // 부드러운 회전 추가
   }
 `;
 

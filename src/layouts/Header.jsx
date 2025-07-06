@@ -35,8 +35,9 @@ const Wrap = styled.div`
   position: fixed;
   top: 0;
   background-color: transparent;
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.199);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(7.9px);
   z-index: 999;

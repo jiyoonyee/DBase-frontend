@@ -1,0 +1,495 @@
+import { useState } from "react";
+
+import styled from "styled-components";
+
+const JobUploadLayout = () => {
+  const [nextPage, setNextPage] = useState(0);
+
+  const handleNextPage = () => {
+    setNextPage((prev) => (prev + 1) % 3);
+  };
+
+  return (
+    <>
+      <JobUplaodForm>
+        <FormHeader>
+          <div>
+            <img src="../src/assets/images/world.svg" alt="지구본" />
+            <div>채용의뢰서 등록</div>
+          </div>
+          <div>기업으로부터 받은 채용 의뢰서와 관련 서류를 업로드하세요.</div>
+        </FormHeader>
+        <FormWrap $index={nextPage + 1}>
+          <JobUploadFileForm>
+            <div>
+              <SectionTitle>기본정보</SectionTitle>
+              <div>
+                <div>
+                  <InputLabel htmlFor="InputJobName">회사명</InputLabel>
+                  <InputWrap>
+                    <input type="text" id="InputJobName" />
+                  </InputWrap>
+                </div>
+                <div>
+                  <InputLabel htmlFor="JobDeadLine">지원마감일</InputLabel>
+                  <InputWrap>
+                    <input type="date" id="JobDeadLine" />
+                  </InputWrap>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <img
+                  src="../src/assets/images/fileUpload.svg"
+                  alt="파일 업로드"
+                />
+                <SectionTitle>관련 서류 업로드</SectionTitle>
+              </div>
+              <div>
+                <div>
+                  <InputLabel>채용의뢰서</InputLabel>
+                  <input type="file" id="jobFile" />
+                  <label htmlFor="jobFile">
+                    <img
+                      src="../src/assets/images/fileUpload.svg"
+                      alt="파일 업로드"
+                    />
+                    <div>PDF파일을 업로드하세요</div>
+                    <div>최대 10MB</div>
+                  </label>
+                </div>
+                <div>
+                  <InputLabel>추가자료</InputLabel>
+                  <input type="file" id="jobFilePlus" />
+                  <label htmlFor="jobFilePlus">
+                    <img
+                      src="../src/assets/images/fileUpload.svg"
+                      alt="파일 업로드"
+                    />
+                    <div>PDF파일을 업로드하세요</div>
+                    <div>최대 10MB</div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <SectionTitle>AI 분석 약관</SectionTitle>
+              <div>
+                <input type="checkbox" id="check1" />
+                <label htmlFor="check1"></label>
+                <label htmlFor="check1">
+                  채용 의뢰서 PDF를 AI로 분석하여 자동으로 정보 추출
+                </label>
+              </div>
+              <div>
+                <input type="checkbox" id="check2" />
+                <label htmlFor="check2"></label>
+                <label htmlFor="check2">
+                  AI 기반 기업 분석 및 상세 설명 생성
+                </label>
+              </div>
+              <div>
+                <input type="checkbox" id="check3" />
+                <label htmlFor="check3"></label>
+                <label htmlFor="check3">
+                  AI 분석 결과는 참고용이며, 정확하지 않은 정보일 수 있습니다.
+                  중요한 정보는 반드시 직접 확인해주세요.
+                </label>
+              </div>
+            </div>
+          </JobUploadFileForm>
+          <JobUploadCompanyForm>
+            <SectionTitle>기업 기본 정보</SectionTitle>
+            <div>
+              <div>
+                <InputLabel htmlFor="CompanyNameInput2">회사명</InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyNameInput2" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel htmlFor="CompanyYearInput2">설립연도</InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyYearInput2" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel htmlFor="CompanyWorkInput2">업태</InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyWorkInput2" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel htmlFor="CompanyemployeesInput2">직원수</InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyemployeesInput2" />
+                </InputWrap>
+              </div>
+            </div>
+            <div>
+              <div>
+                <InputLabel htmlFor="CompanyWorkInput2">
+                  주요 사업 내용
+                </InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyWorkInput2" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel htmlFor="CompanyWorkInput2">홈페이지</InputLabel>
+                <InputWrap>
+                  <input type="text" id="CompanyWorkInput2" />
+                </InputWrap>
+              </div>
+            </div>
+            <div>
+              <InputLabel htmlFor="CompanyAdressInput2">소재지</InputLabel>
+              <InputWrap>
+                <input type="text" id="CompanyAdressInput2" />
+              </InputWrap>
+            </div>
+          </JobUploadCompanyForm>
+          <JobUploadCompanyDetailForm></JobUploadCompanyDetailForm>
+        </FormWrap>
+        <div>
+          <button onClick={handleNextPage}>next</button>
+          <button onClick={handleNextPage}>next</button>
+        </div>
+        <StepBar $index={nextPage + 1}>
+          <div></div>
+        </StepBar>
+      </JobUplaodForm>
+    </>
+  );
+};
+
+const JobUplaodForm = styled.div`
+  color: black;
+  /* width: 100%; */
+  margin: 0px 300px !important;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 20px;
+  @media screen and (max-width: 1000px) {
+    & {
+      margin: 0px 20px !important;
+    }
+  }
+`;
+
+const StepBar = styled.span`
+  width: 100%;
+  height: 15px;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  z-index: 100;
+  background-color: #c2c2c27e;
+  /* 게이지바 */
+  & > div {
+    transform: translateX(-5%);
+    transition: all 0.5s ease-in-out;
+    height: 100%;
+    width: ${(props) => props.$index * 36}%;
+    background-color: #6dba69;
+    border-radius: 100px;
+  }
+`;
+
+const FormHeader = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
+
+  & > div:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    gap: 10px;
+    & > div {
+      font-weight: bold;
+    }
+  }
+  & > div:nth-child(2) {
+    font-size: 16px;
+    color: #6c6c6c;
+    font-weight: bold;
+  }
+`;
+
+const InputWrap = styled.div`
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  background-color: white;
+  & > input {
+    border: none;
+    outline: none;
+    background-color: white;
+    width: 100%;
+  }
+`;
+
+const FormWrap = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 300px; /* 폼이 사라질 때 높이 유지용 */
+
+  & > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+  }
+
+  & > div:nth-child(${(props) => props.$index}) {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    position: relative;
+  }
+`;
+
+const SectionTitle = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+`;
+
+const InputLabel = styled.label`
+  font-size: 16px;
+  color: #505050;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    transform: translateX(110%) translateY(-20%);
+    content: "*";
+    color: red;
+  }
+`;
+
+const JobUploadFileForm = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  & > div:nth-child(1) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+    & > div:nth-child(2) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+
+      & > div {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+        gap: 5px;
+      }
+      & > div > input {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        font-size: 20px;
+        /* padding: 10px; */
+        outline: none;
+      }
+    }
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    & > div:nth-child(1) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    & > div:nth-child(2) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      gap: 20px;
+      & > div {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+        & > label:nth-child(3) {
+          width: 100%;
+          /* background-color: #cccccc; */
+          aspect-ratio: 16 / 6;
+          border: 3px dashed #a1a1a1;
+          border-radius: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          gap: 10px;
+          color: #a1a1a1;
+          & > img {
+            width: 25px;
+          }
+        }
+
+        input[type="file"] {
+          position: absolute;
+          width: 0;
+          height: 0;
+          padding: 0;
+          overflow: hidden;
+          border: 0;
+        }
+      }
+    }
+  }
+
+  & > div:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+
+    & > div:nth-child(n + 2) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      & > label {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      & > label:nth-child(2) {
+        width: 25px;
+        height: 25px;
+        border: 1px solid #cccccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      input[type="checkbox"] {
+        display: none;
+      }
+      input[type="checkbox"] + label {
+      }
+      input:checked + label::before {
+        content: "✓";
+        background-color: black;
+        color: white;
+        font-size: 20px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+      }
+    }
+  }
+`;
+
+const JobUploadCompanyForm = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  /* background-color: aliceblue; */
+  & label {
+    color: #242424;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  & > div:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+    }
+    & > div:nth-child(even) {
+      width: 30%;
+    }
+  }
+  & > div:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+    }
+    & > div:nth-child(1) {
+      width: 60%;
+    }
+
+    & > div:nth-child(2) {
+      width: 40%;
+    }
+  }
+
+  & > div:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+  }
+`;
+
+const JobUploadCompanyDetailForm = styled.div``;
+export default JobUploadLayout;
