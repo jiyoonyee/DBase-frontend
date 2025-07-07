@@ -19,7 +19,10 @@ const Header = ({ headerState }) => {
             <Link to={"/"}>취업현황</Link>
             <Link to={"/"}>취업 로드맵</Link>
           </MenuWrap>
-          <AcountButton LinkPath={"#"} Label={"구글 로그인"} />
+          <AcountButton
+            LinkPath={"http://localhost:4433/auth/google"}
+            Label={"구글 로그인"}
+          />
         </HeaderWrap>
       </Wrap>
     </>

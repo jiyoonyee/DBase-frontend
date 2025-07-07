@@ -117,7 +117,7 @@ const CompanyNameWrap = styled.div`
   }
   & > div:nth-child(2) {
     font-weight: 500;
-    font-size: 28px;
+    font-size: 24px;
   }
 `;
 

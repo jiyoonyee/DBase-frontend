@@ -9,6 +9,9 @@ const JobUploadLayout = () => {
     setNextPage((prev) => (prev + 1) % 3);
   };
 
+  const jobDescription =
+    "- 소프트웨어 개발 분야: 공간 자율운영 솔루션 \n- AI 개발 분야: 공간 내 온습도, 비전 데이터 등을 활용하여 AI 개발 및 고도화\n- IoT 개발 분야: 공간 자율운영 솔루션의 IoT 모듈 개발 및 고도화";
+
   return (
     <>
       <JobUplaodForm>
@@ -151,7 +154,9 @@ const JobUploadLayout = () => {
               </InputWrap>
             </div>
           </JobUploadCompanyForm>
-          <JobUploadCompanyDetailForm></JobUploadCompanyDetailForm>
+          <JobUploadCompanyDetailForm>
+            <textarea>{jobDescription}</textarea>
+          </JobUploadCompanyDetailForm>
         </FormWrap>
         <div>
           <button onClick={handleNextPage}>next</button>
@@ -491,5 +496,11 @@ const JobUploadCompanyForm = styled.div`
   }
 `;
 
-const JobUploadCompanyDetailForm = styled.div``;
+const JobUploadCompanyDetailForm = styled.div`
+  width: 100%;
+  & > textarea {
+    width: 100%;
+    height: 100px;
+  }
+`;
 export default JobUploadLayout;
