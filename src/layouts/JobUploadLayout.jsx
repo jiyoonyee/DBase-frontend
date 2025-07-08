@@ -1,16 +1,25 @@
 import { useState } from "react";
 
 import styled from "styled-components";
+import SubmitButton from "../components/SubmitButton";
 
 const JobUploadLayout = () => {
   const [nextPage, setNextPage] = useState(0);
+  const [isEtcChecked, setIsEtcChecked] = useState(false);
 
   const handleNextPage = () => {
-    setNextPage((prev) => (prev + 1) % 3);
+    if (nextPage != 2) {
+      setNextPage((prev) => (prev + 1) % 3);
+    }
   };
 
-  const jobDescription =
-    "- 소프트웨어 개발 분야: 공간 자율운영 솔루션 \n- AI 개발 분야: 공간 내 온습도, 비전 데이터 등을 활용하여 AI 개발 및 고도화\n- IoT 개발 분야: 공간 자율운영 솔루션의 IoT 모듈 개발 및 고도화";
+  const handlebeforePage = () => {
+    setNextPage(nextPage - 1);
+  };
+
+  const handleEtcCheckboxChange = (e) => {
+    setIsEtcChecked(e.target.checked);
+  };
 
   return (
     <>
@@ -155,13 +164,155 @@ const JobUploadLayout = () => {
             </div>
           </JobUploadCompanyForm>
           <JobUploadCompanyDetailForm>
-            <textarea>{jobDescription}</textarea>
+            <SectionTitle>채용 정보</SectionTitle>
+            <div>
+              <div>
+                <InputLabel>모집 직종</InputLabel>
+                <InputWrap>
+                  <input type="text" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel>모집 인원</InputLabel>
+                <InputWrap>
+                  <input type="text" />
+                </InputWrap>
+              </div>
+            </div>
+            <div>
+              <InputLabel>직무 내용(구체적)</InputLabel>
+              <TextareaWrap>
+                <textarea></textarea>
+              </TextareaWrap>
+            </div>
+            <div>
+              <div>
+                <InputLabel>자격요건(우대자격)</InputLabel>
+                <TextareaWrap>
+                  <textarea></textarea>
+                </TextareaWrap>
+              </div>
+              <div>
+                <InputLabel>근무 시간</InputLabel>
+                <TextareaWrap>
+                  <textarea></textarea>
+                </TextareaWrap>
+              </div>
+            </div>
+            <div>
+              <div>
+                <InputLabel>4대 사회보험</InputLabel>
+                <div>
+                  <CheckBoxWrap>
+                    <input type="checkbox" id="insurance1" />
+                    <label htmlFor="insurance1"></label>
+                    <label htmlFor="insurance1">국민연금</label>
+                  </CheckBoxWrap>
+                  <CheckBoxWrap>
+                    <input type="checkbox" id="insurance1" />
+                    <label htmlFor="insurance1"></label>
+                    <label htmlFor="insurance1">고용보험</label>
+                  </CheckBoxWrap>
+                  <CheckBoxWrap>
+                    <input type="checkbox" id="insurance1" />
+                    <label htmlFor="insurance1"></label>
+                    <label htmlFor="insurance1">산재보험</label>
+                  </CheckBoxWrap>
+                  <CheckBoxWrap>
+                    <input type="checkbox" id="insurance1" />
+                    <label htmlFor="insurance1"></label>
+                    <label htmlFor="insurance1">건강보험</label>
+                  </CheckBoxWrap>
+                </div>
+              </div>
+              <div>
+                <InputLabel>근무형태</InputLabel>
+                <InputWrap>
+                  <input type="text" />
+                </InputWrap>
+              </div>
+            </div>
+            <div>
+              <InputLabel>4대 사회보험</InputLabel>
+              <div>
+                <CheckBoxWrap>
+                  <input type="checkbox" id="insurance1" />
+                  <label htmlFor="insurance1"></label>
+                  <label htmlFor="insurance1">이력서</label>
+                </CheckBoxWrap>
+                <CheckBoxWrap>
+                  <input type="checkbox" id="insurance1" />
+                  <label htmlFor="insurance1"></label>
+                  <label htmlFor="insurance1">자기소개서</label>
+                </CheckBoxWrap>
+                <CheckBoxWrap>
+                  <input type="checkbox" id="insurance1" />
+                  <label htmlFor="insurance1"></label>
+                  <label htmlFor="insurance1">포트폴리오</label>
+                </CheckBoxWrap>
+                <CheckBoxWrap>
+                  <input type="checkbox" id="insurance1" />
+                  <label htmlFor="insurance1"></label>
+                  <label htmlFor="insurance1">힉교생활기록부</label>
+                </CheckBoxWrap>
+                <CheckBoxWrap>
+                  <input
+                    type="checkbox"
+                    id="insuranceEtc"
+                    onChange={handleEtcCheckboxChange}
+                    checked={isEtcChecked}
+                  />
+                  <label htmlFor="insuranceEtc"></label>
+                  <InputWrap>
+                    <input
+                      type="text"
+                      placeholder="기타"
+                      disabled={!isEtcChecked}
+                    />
+                  </InputWrap>
+                </CheckBoxWrap>
+              </div>
+            </div>
+            <div>
+              <div>
+                <InputLabel>실습 수당(현장실습)</InputLabel>
+                <InputWrap>
+                  <input type="text" />
+                </InputWrap>
+              </div>
+              <div>
+                <InputLabel>실습 수당(현장실습)</InputLabel>
+                <InputWrap>
+                  <input type="text" />
+                </InputWrap>
+              </div>
+            </div>
+            <div>
+              <InputLabel>근무형태</InputLabel>
+              <InputWrap>
+                <input type="text" />
+              </InputWrap>
+            </div>
           </JobUploadCompanyDetailForm>
         </FormWrap>
-        <div>
-          <button onClick={handleNextPage}>next</button>
-          <button onClick={handleNextPage}>next</button>
-        </div>
+        <ButtonWrap>
+          {/* <button onClick={handlebeforePage}>이전</button>
+          <button onClick={handleNextPage}>
+            {nextPage == 2 ? "등록" : "다음"}
+          </button> */}
+          <SubmitButton
+            clickEvent={handlebeforePage}
+            BackColor={"white"}
+            TextColor={"#6c6c6c"}
+            Text={"이전"}
+          />
+          <SubmitButton
+            clickEvent={handleNextPage}
+            BackColor={"#3449b4"}
+            TextColor={"white"}
+            Text={nextPage == 2 ? "등록" : "다음"}
+          />
+        </ButtonWrap>
         <StepBar $index={nextPage + 1}>
           <div></div>
         </StepBar>
@@ -169,6 +320,19 @@ const JobUploadLayout = () => {
     </>
   );
 };
+
+const ButtonWrap = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+  width: 100%;
+  margin-top: 20px;
+  & > div {
+    font-weight: 400;
+    font-size: 24px;
+    width: 15%;
+  }
+`;
 
 const JobUplaodForm = styled.div`
   color: black;
@@ -240,11 +404,81 @@ const InputWrap = styled.div`
   border-radius: 10px;
   border: 1px solid #cccccc;
   background-color: white;
+
   & > input {
     border: none;
     outline: none;
     background-color: white;
     width: 100%;
+  }
+
+  /* 자식 input이 disabled일 때 부모(InputWrap)의 배경색 변경 */
+  & > input:disabled {
+    background-color: #f0f0f0; /* input 자체 배경색 */
+  }
+
+  &:has(> input:disabled) {
+    background-color: #f0f0f0; /* InputWrap 배경색도 변경 */
+  }
+`;
+
+const TextareaWrap = styled.div`
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  background-color: white;
+  width: 100%;
+  & > textarea {
+    resize: none;
+    width: 100%;
+    outline: none;
+    border: none;
+  }
+`;
+
+const CheckBoxWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  & > input {
+    display: none;
+  }
+  & > label:nth-child(3) {
+    /* width: ; */
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  & > label:nth-child(2) {
+    width: 35px;
+    height: 35px;
+
+    /* background-color: black; */
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  & > input:nth-child(3) {
+    display: block;
+  }
+
+  input:checked + label::before {
+    content: "✓";
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    /* transform: translateY(5px); */
   }
 `;
 
@@ -417,8 +651,7 @@ const JobUploadFileForm = styled.div`
       input[type="checkbox"] {
         display: none;
       }
-      input[type="checkbox"] + label {
-      }
+
       input:checked + label::before {
         content: "✓";
         background-color: black;
@@ -498,9 +731,123 @@ const JobUploadCompanyForm = styled.div`
 
 const JobUploadCompanyDetailForm = styled.div`
   width: 100%;
-  & > textarea {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
+  & > div:nth-child(2) {
     width: 100%;
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    & > div {
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+    }
+    & > div:nth-child(1) {
+      width: 100%;
+    }
+    & > div:nth-child(2) {
+      width: 30%;
+    }
+  }
+  & > div:nth-child(3) {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+  }
+  & > div:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 50px;
+    & > div {
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+    }
+    & > div:nth-child(2) {
+      width: 40%;
+    }
+  }
+  & > div:nth-child(5) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    gap: 10px;
+    width: 100%;
+    & > div {
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+    }
+    & > div:nth-child(1) {
+      & > div:nth-child(2) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+    & > div:nth-child(2) {
+      width: 30%;
+    }
+  }
+  & > div:nth-child(6) {
+    /* background-color: aliceblue; */
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+  }
+  & > div:nth-child(7) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    & > div {
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+
+  & > div:nth-child(8) {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    gap: 5px;
   }
 `;
 export default JobUploadLayout;

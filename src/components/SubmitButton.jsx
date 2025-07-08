@@ -1,9 +1,28 @@
 import styled from "styled-components";
 
-const SubmitButton = ({ BackColor, TextColor, Text }) => {
+const SubmitButton = ({
+  imagePath,
+  BackColor,
+  TextColor,
+  TextSize,
+  Text,
+  clickEvent,
+  BorderState = true,
+}) => {
   return (
     <>
-      <Wrap style={{ backgroundColor: BackColor, color: TextColor }}>
+      <Wrap
+        $BorderState={BorderState}
+        onClick={clickEvent}
+        style={{
+          backgroundColor: BackColor,
+          color: TextColor,
+          fontSize: TextSize,
+        }}
+      >
+        {imagePath && (
+          <img src={imagePath} alt="아이콘" style={{ marginRight: "5px" }} />
+        )}
         {Text}
       </Wrap>
     </>
@@ -11,7 +30,7 @@ const SubmitButton = ({ BackColor, TextColor, Text }) => {
 };
 
 const Wrap = styled.div`
-  border: 1px solid #cccccc;
+  border: ${(props) => (props.$BorderState ? "1px" : "0px")} solid #cccccc;
   border-radius: 10px;
   display: flex;
   justify-content: center;

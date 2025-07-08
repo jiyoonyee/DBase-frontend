@@ -3,6 +3,8 @@ import SelectDropDown from "../components/SelectDropDown";
 import CompanyItem from "../components/CompanyItem";
 import JobInforLayout from "../layouts/JobInforLayout";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import SubmitButton from "../components/SubmitButton";
+import FileUploadInput from "../components/FileUploadInput";
 
 const JobInforPage = () => {
   const location = useLocation();
@@ -32,6 +34,37 @@ const JobInforPage = () => {
             </PageSubTitle>
           </PageTitleWrap>
         </JobInforWrap>
+        {isOnlyJobInforPage && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              gap: "10px",
+              marginBottom: "20px",
+            }}
+          >
+            <SubmitButton
+              imagePath={"../src/assets/images/Note.svg"}
+              BackColor={"white"}
+              TextColor={"black"}
+              TextSize={"20px"}
+              Text={"지원현황 확인"}
+              BorderState={false}
+            />
+            <SubmitButton
+              clickEvent={() => {
+                navigate("/jobinfor/jobupload");
+              }}
+              imagePath={"../src/assets/images/Note.svg"}
+              BackColor={"#3449B4"}
+              TextColor={"white"}
+              TextSize={"20px"}
+              Text={"지원의뢰서 등록"}
+              BorderState={false}
+            />
+          </div>
+        )}
+
         <Outlet />
         {/* <JobInforLayout></JobInforLayout> */}
       </Wrap>
