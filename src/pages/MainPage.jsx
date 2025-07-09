@@ -89,6 +89,7 @@ const MainPage = ({ updateHeaderState }) => {
 };
 
 const Wrap = styled.div`
+  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
   width: 100%;
   padding-bottom: 100px;
   background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);

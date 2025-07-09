@@ -1,31 +1,53 @@
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import AcountButton from "../components/AcountButton";
 
-const Header = ({ headerState }) => {
-  console.log(headerState);
+const Header = ({ updateLoginState, headerState }) => {
+  // const cookies = new Cookies();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:4433/user/profile", {
+      method: "GET",
+      credentials: "include", // ✅ 이걸 반드시 설정해야 쿠키 전송됨
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // ex: { name: "김지윤", email: "...", ... }
+
+        if (data.statusCode != 401) {
+          setUser(data);
+          updateLoginState(true);
+        }
+      });
+  }, []);
   return (
-    <>
-      <Wrap $shrink={headerState}>
-        <HeaderWrap>
-          <LogoWrap>
-            <Link to={"/"}>
-              <img src="../src/assets/images/Logo.svg" alt="logo" />
-            </Link>
-          </LogoWrap>
-          <MenuWrap>
-            <Link to={"/jobinfor"}>채용정보</Link>
-            <Link to={"/"}>내프로필</Link>
-            <Link to={"/"}>취업현황</Link>
-            <Link to={"/"}>취업 로드맵</Link>
-          </MenuWrap>
+    <Wrap $shrink={headerState}>
+      <HeaderWrap>
+        <LogoWrap>
+          <Link to={"/"}>
+            <img src="../src/assets/images/Logo.svg" alt="logo" />
+          </Link>
+        </LogoWrap>
+        <MenuWrap>
+          <Link to={"/jobinfor"}>채용정보</Link>
+          <Link to={"/"}>내프로필</Link>
+          <Link to={"/"}>취업현황</Link>
+          <Link to={"/roadmap"}>취업 로드맵</Link>
+        </MenuWrap>
+
+        {user ? (
+          <div style={{ color: "white" }}>{user.name}님</div>
+        ) : (
           <AcountButton
             LinkPath={"http://localhost:4433/auth/google"}
             Label={"구글 로그인"}
           />
-        </HeaderWrap>
-      </Wrap>
-    </>
+        )}
+      </HeaderWrap>
+    </Wrap>
   );
 };
 

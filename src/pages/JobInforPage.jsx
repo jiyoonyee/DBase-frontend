@@ -6,7 +6,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 import FileUploadInput from "../components/FileUploadInput";
 
-const JobInforPage = () => {
+const JobInforPage = ({ loginState }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
@@ -16,7 +16,7 @@ const JobInforPage = () => {
   return (
     <>
       <Wrap>
-        <JobInforWrap>
+        <PageinforWrap>
           <PageTitleWrap>
             {isJobElementPage && (
               <div
@@ -33,7 +33,7 @@ const JobInforPage = () => {
               AI 매칭으로 나에게 맞는 채용정보를 찾아보세요
             </PageSubTitle>
           </PageTitleWrap>
-        </JobInforWrap>
+        </PageinforWrap>
         {isOnlyJobInforPage && (
           <div
             style={{
@@ -51,17 +51,19 @@ const JobInforPage = () => {
               Text={"지원현황 확인"}
               BorderState={false}
             />
-            <SubmitButton
-              clickEvent={() => {
-                navigate("/jobinfor/jobupload");
-              }}
-              imagePath={"../src/assets/images/Note.svg"}
-              BackColor={"#3449B4"}
-              TextColor={"white"}
-              TextSize={"20px"}
-              Text={"지원의뢰서 등록"}
-              BorderState={false}
-            />
+            {loginState && (
+              <SubmitButton
+                clickEvent={() => {
+                  navigate("/jobinfor/jobupload");
+                }}
+                imagePath={"../src/assets/images/Note.svg"}
+                BackColor={"#3449B4"}
+                TextColor={"white"}
+                TextSize={"20px"}
+                Text={"지원의뢰서 등록"}
+                BorderState={false}
+              />
+            )}
           </div>
         )}
 
@@ -74,7 +76,7 @@ const JobInforPage = () => {
 
 const Wrap = styled.div`
   width: 100%;
-
+  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
   color: white;
   padding-bottom: 100px;
   & > div {
@@ -87,7 +89,7 @@ const Wrap = styled.div`
   }
 `;
 
-const JobInforWrap = styled.div`
+const PageinforWrap = styled.div`
   /* height: 100%; */
 
   /* background-color: #95a8b93b; */
