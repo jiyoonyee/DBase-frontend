@@ -22,7 +22,7 @@ const Header = ({ updateLoginState, headerState }) => {
           updateLoginState(true);
         }
       });
-  }, []);
+  }, [updateLoginState]);
   return (
     <Wrap $shrink={headerState}>
       <HeaderWrap>

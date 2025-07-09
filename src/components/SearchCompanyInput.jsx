@@ -14,6 +14,7 @@ const SearchCompanyInput = () => {
         <SelectDropDown
           DropDownLabel={"연도 선택"}
           DropDownItems={["전체 보기", "2025", "2024"]}
+          DropDwonItemColor={"#078bff"}
         />
       </SearchWrap>
     </>

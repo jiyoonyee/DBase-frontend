@@ -30,6 +30,8 @@ const SubmitButton = ({
 };
 
 const Wrap = styled.div`
+  /* width: 100%; */
+  height: 100%;
   border: ${(props) => (props.$BorderState ? "1px" : "0px")} solid #cccccc;
   border-radius: 10px;
   display: flex;

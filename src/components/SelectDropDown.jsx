@@ -4,6 +4,7 @@ import styled from "styled-components";
 const SelectDropDown = ({
   DropDownLabel,
   DropDownItems,
+  DropDwonItemColor,
   // UpdateSelectValue,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,7 +36,11 @@ const SelectDropDown = ({
         </DropDownWrap>
         <DropDownItemsWrap $State={menuOpen}>
           {DropDownItems.map((item, i) => (
-            <DropDownItem onClick={UpdateYear} key={i}>
+            <DropDownItem
+              onClick={UpdateYear}
+              key={i}
+              $HoverColor={DropDwonItemColor}
+            >
               {item}
             </DropDownItem>
           ))}
@@ -52,7 +57,6 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  flex-direction: column;
 `;
 
 const DropDownWrap = styled.div`
@@ -72,6 +76,7 @@ const DropDownWrap = styled.div`
     color: #6c6c6c;
     /* font-weight: bold; */
     font-size: 20px;
+    width: 100%;
   }
   & > img {
     transform: rotate(${(props) => (props.$State ? "180deg" : "0deg")});
@@ -107,8 +112,11 @@ const DropDownItem = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
+  transition: all 0.5s ease-in-out;
   &:hover {
     cursor: pointer;
+    background-color: ${(props) => props.$HoverColor};
+    /* background-color: #078bff; */
   }
 `;
 
