@@ -34,7 +34,7 @@ const Header = ({ updateLoginState, headerState }) => {
         <MenuWrap>
           <Link to={"/jobinfor"}>채용정보</Link>
           <Link to={"/"}>내프로필</Link>
-          <Link to={"/"}>취업현황</Link>
+          <Link to={"/EmploymentStatus"}>취업현황</Link>
           <Link to={"/roadmap"}>취업 로드맵</Link>
         </MenuWrap>
 

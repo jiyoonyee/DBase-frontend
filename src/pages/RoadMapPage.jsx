@@ -7,7 +7,29 @@ import ReactMarkdown from "react-markdown";
 const RoadMapPage = () => {
   const [markdown, setMarkdown] = useState("");
 
+  const [job, setJob] = useState("");
+  const [period, setPeriod] = useState("");
+
+  const handleUpdateJob = (jobItem) => {
+    setJob(jobItem);
+    console.log(job);
+  };
+
+  const handleUpdatePeriod = (periodItem) => {
+    setPeriod(periodItem);
+    console.log(period);
+  };
+
+  const test = () => {
+    console.log(job, period);
+  };
+
   useEffect(() => {
+    fetch(`http://localhost:4433/roadmap?job=${job}&period=${period}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
     fetch("../src/assets/markdowns/test.md")
       .then((response) => response.text())
       .then((text) => setMarkdown(text));
@@ -31,6 +53,7 @@ const RoadMapPage = () => {
             </SectionSubTtile>
             <div>
               <SelectDropDown
+                UpdateSelectValue={handleUpdateJob}
                 DropDownLabel={"희망 직무 선택"}
                 DropDownItems={[
                   "웹-프론트엔드",
@@ -43,11 +66,13 @@ const RoadMapPage = () => {
                 DropDwonItemColor={"#f9822d"}
               />
               <SelectDropDown
+                UpdateSelectValue={handleUpdatePeriod}
                 DropDownLabel={"목표 기간"}
                 DropDownItems={["1개월", "3개월", "6개월"]}
                 DropDwonItemColor={"#f9822d"}
               />
               <SubmitButton
+                clickEvent={test}
                 Text={"로드맵 생성"}
                 BackColor={"#CE622C"}
                 TextColor={"white"}

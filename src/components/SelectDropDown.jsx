@@ -5,18 +5,20 @@ const SelectDropDown = ({
   DropDownLabel,
   DropDownItems,
   DropDwonItemColor,
-  // UpdateSelectValue,
+  UpdateSelectValue,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectYear, setSelectYear] = useState(null);
+  const [selectValue, setSelectValue] = useState(null);
 
   const UpdateDropDown = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const UpdateYear = (e) => {
-    setSelectYear(e.target.textContent);
-    UpdateDropDown();
+  const UpdateValue = (e) => {
+    const value = e.target.textContent;
+    setSelectValue(value); // 상태 업데이트
+    UpdateDropDown(); // 드롭다운 닫기
+    UpdateSelectValue(value); // 즉시 클릭한 값을 부모에 전달
   };
 
   console.log(menuOpen);
@@ -26,8 +28,8 @@ const SelectDropDown = ({
       <Wrap>
         <DropDownWrap $State={menuOpen} onClick={UpdateDropDown}>
           <span>
-            {selectYear ? (
-              <p style={{ color: "black" }}>{selectYear}</p>
+            {selectValue ? (
+              <p style={{ color: "black" }}>{selectValue}</p>
             ) : (
               DropDownLabel
             )}
@@ -37,7 +39,7 @@ const SelectDropDown = ({
         <DropDownItemsWrap $State={menuOpen}>
           {DropDownItems.map((item, i) => (
             <DropDownItem
-              onClick={UpdateYear}
+              onClick={UpdateValue}
               key={i}
               $HoverColor={DropDwonItemColor}
             >

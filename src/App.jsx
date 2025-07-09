@@ -8,6 +8,7 @@ import JobInforPage from "./pages/JobInforPage";
 import JobInforLayout from "./layouts/JobInforLayout";
 import JobUploadLayout from "./layouts/JobUploadLayout";
 import RoadMapPage from "./pages/RoadMapPage";
+import EmploymentStatusPage from "./pages/EmploymentStatusPage";
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
@@ -48,6 +49,7 @@ const App = () => {
               <Route element={<JobUploadLayout />} path="jobupload"></Route>
             </Route>
             <Route path="/roadmap" element={<RoadMapPage />} />
+            <Route path="EmploymentStatus" element={<EmploymentStatusPage />} />
           </Routes>
           <Footer />
         </Wrap>
