@@ -11,10 +11,6 @@
   font-style: normal;
 }
 
-* {
-  font-size: 16px;
-}
-
 /* @media (max-width: 1000px) {
   * {
     font-size: 12px !important;
@@ -112,7 +108,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   vertical-align: baseline;
   box-sizing: border-box;
 }
@@ -133,10 +128,10 @@ section {
 body {
   line-height: 1;
 }
-ol,
+/* ol,
 ul {
   list-style: none;
-}
+} */
 blockquote,
 q {
   quotes: none;

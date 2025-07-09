@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import SelectDropDown from "../components/SelectDropDown";
 import SubmitButton from "../components/SubmitButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import "github-markdown-css/github-markdown.css";
 
 const RoadMapPage = () => {
   const [markdown, setMarkdown] = useState("");
-
-  const [job, setJob] = useState("");
-  const [period, setPeriod] = useState("");
+  const [markdownTitle, setMarkdownTitle] = useState("로드맵을 선택해주세요");
+  const [job, setJob] = useState(null);
+  const [period, setPeriod] = useState(null);
 
   const handleUpdateJob = (jobItem) => {
     setJob(jobItem);
@@ -20,20 +21,43 @@ const RoadMapPage = () => {
     console.log(period);
   };
 
-  const test = () => {
-    console.log(job, period);
+  const sendData = async () => {
+    if (!job || !period) {
+      alert("직무와 기간을 모두 선택해주세요.");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4433/roadmap?job=${job}&period=${period}`
+      );
+      const data = await res.json();
+      const markdownText = data.content;
+
+      // 제목 추출 및 본문에서 제목 제거
+      const match = markdownText.match(/^##\s+(.*)$/m);
+      if (match && match.index !== undefined) {
+        const title = match[1].trim();
+        setMarkdownTitle(title);
+
+        const cleanedMarkdown =
+          markdownText.slice(0, match.index) +
+          markdownText.slice(match.index + match[0].length).trimStart();
+        setMarkdown(cleanedMarkdown);
+      } else {
+        setMarkdownTitle("로드맵을 선택해주세요");
+        setMarkdown(markdownText); // 제목 못 찾았으면 원본 그대로
+      }
+    } catch (error) {
+      console.error("로드맵 요청 실패:", error);
+    }
   };
 
-  useEffect(() => {
-    fetch(`http://localhost:4433/roadmap?job=${job}&period=${period}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-    fetch("../src/assets/markdowns/test.md")
-      .then((response) => response.text())
-      .then((text) => setMarkdown(text));
-  }, []);
+  // useEffect(() => {
+  //   fetch("../src/assets/markdowns/test.md")
+  //     .then((response) => response.text())
+  //     .then((text) => setMarkdown(text));
+  // }, []);
   return (
     <>
       <Wrap>
@@ -56,23 +80,29 @@ const RoadMapPage = () => {
                 UpdateSelectValue={handleUpdateJob}
                 DropDownLabel={"희망 직무 선택"}
                 DropDownItems={[
-                  "웹-프론트엔드",
-                  "웹-백엔드",
-                  "서버 엔지니어",
-                  "AI 엔지니어",
-                  "앱 개발",
-                  "정보보안",
+                  { ItemName: "AI 엔지니어", ReqName: "ai-engineer" },
+                  { ItemName: "앱-andoroid", ReqName: "app-android" },
+                  { ItemName: "앱-ios", ReqName: "app-ios" },
+                  { ItemName: "정보 보안", ReqName: "cyber-security" },
+                  { ItemName: "서버 엔지니어", ReqName: "server-engineer" },
+                  { ItemName: "웹-백엔드", ReqName: "web-back" },
+                  { ItemName: "웹-프론트", ReqName: "web-front" },
+                  // ai-engineer, app-android, app-ios, cyber-security, server-engineer, web-back, web-front
                 ]}
                 DropDwonItemColor={"#f9822d"}
               />
               <SelectDropDown
                 UpdateSelectValue={handleUpdatePeriod}
                 DropDownLabel={"목표 기간"}
-                DropDownItems={["1개월", "3개월", "6개월"]}
+                DropDownItems={[
+                  { ItemName: "6개월", ReqName: "6" },
+                  { ItemName: "3개월", ReqName: "3" },
+                  { ItemName: "1개월", ReqName: "1" },
+                ]}
                 DropDwonItemColor={"#f9822d"}
               />
               <SubmitButton
-                clickEvent={test}
+                clickEvent={sendData}
                 Text={"로드맵 생성"}
                 BackColor={"#CE622C"}
                 TextColor={"white"}
@@ -83,9 +113,11 @@ const RoadMapPage = () => {
         </RoadMapSecitonWrap>
         <RoadMapSecitonWrap>
           <SectionTitle style={{ marginBottom: "30px" }}>
-            로드맵을 선택해주세요
+            {markdownTitle}
           </SectionTitle>
-          <ReactMarkdown>{markdown}</ReactMarkdown>
+          <div style={{ display: "block" }} className="markdown-body">
+            <ReactMarkdown>{markdown}</ReactMarkdown>
+          </div>
         </RoadMapSecitonWrap>
       </Wrap>
     </>

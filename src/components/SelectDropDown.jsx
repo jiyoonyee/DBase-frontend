@@ -12,13 +12,15 @@ const SelectDropDown = ({
 
   const UpdateDropDown = () => {
     setMenuOpen(!menuOpen);
+    console.log("드롭");
   };
 
-  const UpdateValue = (e) => {
-    const value = e.target.textContent;
-    setSelectValue(value); // 상태 업데이트
-    UpdateDropDown(); // 드롭다운 닫기
-    UpdateSelectValue(value); // 즉시 클릭한 값을 부모에 전달
+  const UpdateValue = (item) => {
+    UpdateDropDown();
+    setSelectValue(item.ItemName); // 상태 업데이트
+    UpdateSelectValue(item.ReqName);
+    // 드롭다운 닫기
+    // 즉시 클릭한 값을 부모에 전달
   };
 
   console.log(menuOpen);
@@ -39,11 +41,11 @@ const SelectDropDown = ({
         <DropDownItemsWrap $State={menuOpen}>
           {DropDownItems.map((item, i) => (
             <DropDownItem
-              onClick={UpdateValue}
+              onClick={() => UpdateValue(item)}
               key={i}
               $HoverColor={DropDwonItemColor}
             >
-              {item}
+              {item.ItemName}
             </DropDownItem>
           ))}
         </DropDownItemsWrap>
