@@ -16,42 +16,6 @@ const JobInforLayout = () => {
           Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
           Stacks={"Python,Web,Java,JavaScript"}
         />
-        <CompanyItem
-          Year={"2025"}
-          Name={"슈퍼무브"}
-          Field={"개발"}
-          Location={"서울특별시 강남구"}
-          Deadline={"2025.05.30"}
-          Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
-          Stacks={"Python,Web,Java,JavaScript"}
-        />
-        <CompanyItem
-          Year={"2025"}
-          Name={"슈퍼무브"}
-          Field={"개발"}
-          Location={"서울특별시 강남구"}
-          Deadline={"2025.05.30"}
-          Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
-          Stacks={"Python,Web,Java,JavaScript"}
-        />
-        <CompanyItem
-          Year={"2025"}
-          Name={"슈퍼무브"}
-          Field={"개발"}
-          Location={"서울특별시 강남구"}
-          Deadline={"2025.05.30"}
-          Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
-          Stacks={"Python,Web,Java,JavaScript"}
-        />
-        <CompanyItem
-          Year={"2025"}
-          Name={"슈퍼무브"}
-          Field={"개발"}
-          Location={"서울특별시 강남구"}
-          Deadline={"2025.05.30"}
-          Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
-          Stacks={"Python,Web,Java,JavaScript"}
-        />
       </CompnayListWrap>
     </>
   );

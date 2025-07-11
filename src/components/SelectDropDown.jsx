@@ -101,11 +101,13 @@ const DropDownItemsWrap = styled.div`
   z-index: 20;
   background-color: #ffffff;
   border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  padding-top: ${(props) =>
-    props.$State ? "20px" : "0px"}; // 부드러운 padding 추가
+  border-bottom-left-radius: 10px; // 부드러운 padding 추가
   opacity: ${(props) => (props.$State ? "1" : "0")};
   transform: translateY(-20px);
+
+  & > div:nth-child(1) {
+    padding-top: ${(props) => (props.$State ? "20px" : "0px")};
+  }
 `;
 
 const DropDownItem = styled.div`

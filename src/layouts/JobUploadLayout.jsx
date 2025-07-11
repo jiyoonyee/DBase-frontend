@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
@@ -7,18 +7,70 @@ const JobUploadLayout = () => {
   const [nextPage, setNextPage] = useState(0);
   const [isEtcChecked, setIsEtcChecked] = useState(false);
 
+  const [jobFileName, setJobFileName] = useState("");
+  const [jobFilePlusName, setJobFilePlusName] = useState("");
+  const handleJobFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const decodedName = decodeURIComponent(file.name);
+      setJobFileName(decodedName);
+    }
+  };
+
+  const handleJobFilePlusChange = (e) => {
+    const file = e.target.files[0];
+    if (file) setJobFilePlusName(file.name);
+  };
+
   const handleNextPage = () => {
     if (nextPage != 2) {
       setNextPage((prev) => (prev + 1) % 3);
     }
-  };
 
+    if (nextPage == 0) {
+      handleSubmit();
+    }
+  };
   const handlebeforePage = () => {
+    if (nextPage === 0) return; // 첫 페이지일 경우 아무것도 하지 않음
     setNextPage(nextPage - 1);
   };
-
   const handleEtcCheckboxChange = (e) => {
     setIsEtcChecked(e.target.checked);
+  };
+
+  const jobFileRef = useRef(null);
+  const jobFilePlusRef = useRef(null);
+
+  const toBase64 = (str) => {
+    return btoa(unescape(encodeURIComponent(str)));
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+
+    const jobFile = jobFileRef.current.files[0];
+
+    if (jobFile) {
+      formData.append("file", jobFile);
+      const base64Name = toBase64(jobFile.name);
+      formData.append("filenameBase64", base64Name);
+    }
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+    try {
+      const res = await fetch("http://localhost:4433/job/input", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("업로드 실패");
+
+      console.log("업로드 성공");
+    } catch (err) {
+      console.error("업로드 에러:", err);
+    }
   };
 
   return (
@@ -62,53 +114,63 @@ const JobUploadLayout = () => {
               <div>
                 <div>
                   <InputLabel>채용의뢰서</InputLabel>
-                  <input type="file" id="jobFile" />
+                  <input
+                    type="file"
+                    id="jobFile"
+                    ref={jobFileRef}
+                    onChange={handleJobFileChange}
+                    accept=".pdf"
+                  />
                   <label htmlFor="jobFile">
                     <img
                       src="../src/assets/images/fileUpload.svg"
                       alt="파일 업로드"
                     />
-                    <div>PDF파일을 업로드하세요</div>
-                    <div>최대 10MB</div>
+
+                    <div style={{ textAlign: "center" }}>
+                      {jobFileName ? (
+                        `선택한 파일: ${jobFileName}`
+                      ) : (
+                        <>
+                          PDF파일을 업로드하세요 <br />
+                          최대 10MB
+                        </>
+                      )}
+                    </div>
                   </label>
                 </div>
                 <div>
-                  <InputLabel>추가자료</InputLabel>
-                  <input type="file" id="jobFilePlus" />
+                  <InputLabel $essentialState={true}>추가자료</InputLabel>
+                  <input
+                    type="file"
+                    id="jobFilePlus"
+                    ref={jobFilePlusRef}
+                    onChange={handleJobFilePlusChange}
+                    accept=".pdf"
+                  />
                   <label htmlFor="jobFilePlus">
                     <img
                       src="../src/assets/images/fileUpload.svg"
                       alt="파일 업로드"
                     />
-                    <div>PDF파일을 업로드하세요</div>
-                    <div>최대 10MB</div>
+                    <div style={{ textAlign: "center" }}>
+                      {jobFilePlusName ? (
+                        `선택한 파일: ${jobFilePlusName}`
+                      ) : (
+                        <>
+                          PDF파일을 업로드하세요 <br />
+                          최대 10MB
+                        </>
+                      )}
+                    </div>
                   </label>
                 </div>
               </div>
-            </div>
-            <div>
-              <SectionTitle>AI 분석 약관</SectionTitle>
-              <div>
-                <input type="checkbox" id="check1" />
-                <label htmlFor="check1"></label>
-                <label htmlFor="check1">
-                  채용 의뢰서 PDF를 AI로 분석하여 자동으로 정보 추출
-                </label>
-              </div>
-              <div>
-                <input type="checkbox" id="check2" />
-                <label htmlFor="check2"></label>
-                <label htmlFor="check2">
-                  AI 기반 기업 분석 및 상세 설명 생성
-                </label>
-              </div>
-              <div>
-                <input type="checkbox" id="check3" />
-                <label htmlFor="check3"></label>
-                <label htmlFor="check3">
-                  AI 분석 결과는 참고용이며, 정확하지 않은 정보일 수 있습니다.
-                  중요한 정보는 반드시 직접 확인해주세요.
-                </label>
+              <div
+                style={{ color: "red", fontWeight: "bold", fontSize: "18px" }}
+              >
+                AI 분석 결과는 참고용이며, 정확하지 않은 정보일 수 있습니다.
+                중요한 정보는 반드시 직접 확인해주세요.
               </div>
             </div>
           </JobUploadFileForm>
@@ -150,7 +212,9 @@ const JobUploadLayout = () => {
                 </InputWrap>
               </div>
               <div>
-                <InputLabel htmlFor="CompanyWorkInput2">홈페이지</InputLabel>
+                <InputLabel $essentialState={true} htmlFor="CompanyWorkInput2">
+                  홈페이지
+                </InputLabel>
                 <InputWrap>
                   <input type="text" id="CompanyWorkInput2" />
                 </InputWrap>
@@ -201,31 +265,6 @@ const JobUploadLayout = () => {
             </div>
             <div>
               <div>
-                <InputLabel>4대 사회보험</InputLabel>
-                <div>
-                  <CheckBoxWrap>
-                    <input type="checkbox" id="insurance1" />
-                    <label htmlFor="insurance1"></label>
-                    <label htmlFor="insurance1">국민연금</label>
-                  </CheckBoxWrap>
-                  <CheckBoxWrap>
-                    <input type="checkbox" id="insurance1" />
-                    <label htmlFor="insurance1"></label>
-                    <label htmlFor="insurance1">고용보험</label>
-                  </CheckBoxWrap>
-                  <CheckBoxWrap>
-                    <input type="checkbox" id="insurance1" />
-                    <label htmlFor="insurance1"></label>
-                    <label htmlFor="insurance1">산재보험</label>
-                  </CheckBoxWrap>
-                  <CheckBoxWrap>
-                    <input type="checkbox" id="insurance1" />
-                    <label htmlFor="insurance1"></label>
-                    <label htmlFor="insurance1">건강보험</label>
-                  </CheckBoxWrap>
-                </div>
-              </div>
-              <div>
                 <InputLabel>근무형태</InputLabel>
                 <InputWrap>
                   <input type="text" />
@@ -233,7 +272,7 @@ const JobUploadLayout = () => {
               </div>
             </div>
             <div>
-              <InputLabel>4대 사회보험</InputLabel>
+              <InputLabel>접수 서류</InputLabel>
               <div>
                 <CheckBoxWrap>
                   <input type="checkbox" id="insurance1" />
@@ -241,19 +280,19 @@ const JobUploadLayout = () => {
                   <label htmlFor="insurance1">이력서</label>
                 </CheckBoxWrap>
                 <CheckBoxWrap>
-                  <input type="checkbox" id="insurance1" />
-                  <label htmlFor="insurance1"></label>
-                  <label htmlFor="insurance1">자기소개서</label>
+                  <input type="checkbox" id="insurance2" />
+                  <label htmlFor="insurance2"></label>
+                  <label htmlFor="insurance2">자기소개서</label>
                 </CheckBoxWrap>
                 <CheckBoxWrap>
-                  <input type="checkbox" id="insurance1" />
-                  <label htmlFor="insurance1"></label>
-                  <label htmlFor="insurance1">포트폴리오</label>
+                  <input type="checkbox" id="insurance3" />
+                  <label htmlFor="insurance3"></label>
+                  <label htmlFor="insurance3">포트폴리오</label>
                 </CheckBoxWrap>
                 <CheckBoxWrap>
-                  <input type="checkbox" id="insurance1" />
-                  <label htmlFor="insurance1"></label>
-                  <label htmlFor="insurance1">힉교생활기록부</label>
+                  <input type="checkbox" id="insurance4" />
+                  <label htmlFor="insurance4"></label>
+                  <label htmlFor="insurance4">힉교생활기록부</label>
                 </CheckBoxWrap>
                 <CheckBoxWrap>
                   <input
@@ -263,13 +302,18 @@ const JobUploadLayout = () => {
                     checked={isEtcChecked}
                   />
                   <label htmlFor="insuranceEtc"></label>
-                  <InputWrap>
-                    <input
-                      type="text"
-                      placeholder="기타"
-                      disabled={!isEtcChecked}
-                    />
-                  </InputWrap>
+                  <label
+                    htmlFor="insuranceEtc"
+                    style={{ border: "none", padding: "0px", gap: "0px" }}
+                  >
+                    <InputWrap>
+                      <input
+                        type="text"
+                        placeholder="기타"
+                        disabled={!isEtcChecked}
+                      />
+                    </InputWrap>
+                  </label>
                 </CheckBoxWrap>
               </div>
             </div>
@@ -304,12 +348,14 @@ const JobUploadLayout = () => {
             clickEvent={handlebeforePage}
             BackColor={"white"}
             TextColor={"#6c6c6c"}
+            TextSize={"16px"}
             Text={"이전"}
           />
           <SubmitButton
             clickEvent={handleNextPage}
             BackColor={"#3449b4"}
             TextColor={"white"}
+            TextSize={"16px"}
             Text={nextPage == 2 ? "등록" : "다음"}
           />
         </ButtonWrap>
@@ -404,7 +450,6 @@ const InputWrap = styled.div`
   border-radius: 10px;
   border: 1px solid #cccccc;
   background-color: white;
-
   & > input {
     border: none;
     outline: none;
@@ -446,6 +491,9 @@ const CheckBoxWrap = styled.div`
   & > input {
     display: none;
   }
+  & > label {
+    cursor: pointer;
+  }
   & > label:nth-child(3) {
     /* width: ; */
     border: 1px solid #cccccc;
@@ -474,10 +522,13 @@ const CheckBoxWrap = styled.div`
     content: "✓";
     background-color: black;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     width: 100%;
     height: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     /* transform: translateY(5px); */
   }
 `;
@@ -517,6 +568,7 @@ const InputLabel = styled.label`
   position: relative;
 
   &::after {
+    display: ${(props) => (props.$essentialState ? "none" : "block")};
     position: absolute;
     top: 0px;
     right: 0px;
@@ -593,6 +645,7 @@ const JobUploadFileForm = styled.div`
         width: 100%;
         gap: 5px;
         & > label:nth-child(3) {
+          cursor: pointer;
           width: 100%;
           /* background-color: #cccccc; */
           aspect-ratio: 16 / 6;
@@ -814,15 +867,14 @@ const JobUploadCompanyDetailForm = styled.div`
     /* background-color: aliceblue; */
     display: flex;
     justify-content: center;
-    align-items: start;
+    /* align-items: start; */
     flex-direction: column;
     gap: 5px;
     width: 100%;
     & > div {
       display: flex;
-      justify-content: center;
+      justify-content: end;
       align-items: center;
-      width: 100%;
     }
   }
   & > div:nth-child(7) {

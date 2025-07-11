@@ -12,6 +12,7 @@ const JobInforPage = ({ loginState }) => {
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
   const isJobUploadPage = location.pathname.includes("/jobinfor/jobupload");
   const isJobElementPage = location.pathname.includes("/jobinfor/");
+  const isJobInforDetail = location.pathname.includes("/jobinfordetail");
 
   return (
     <>
@@ -29,9 +30,12 @@ const JobInforPage = ({ loginState }) => {
             )}
             {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
             {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
-            <PageSubTitle>
-              AI 매칭으로 나에게 맞는 채용정보를 찾아보세요
-            </PageSubTitle>
+            {isJobInforDetail && <PageTitle>알리콘</PageTitle>}
+            {!isJobInforDetail && (
+              <PageSubTitle>
+                AI 매칭으로 나에게 맞는 채용정보를 찾아보세요
+              </PageSubTitle>
+            )}
           </PageTitleWrap>
         </PageinforWrap>
         {isOnlyJobInforPage && (

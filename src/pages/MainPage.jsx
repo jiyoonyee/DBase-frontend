@@ -40,7 +40,7 @@ const MainPage = ({ updateHeaderState }) => {
             <Link>채용 의뢰 확인하기</Link>
           </TextWrap>
           <MascotWrap>
-            <img src="../src/assets/images/KIT.png" alt="" />
+            <img src="../src/assets/images/KIT.svg" alt="" />
             <img src="../src/assets/images/file.png" alt="" />
             <img src="../src/assets/images/glasses.png" alt="" />
             <img src="../src/assets/images/Mmockup.png" alt="" />

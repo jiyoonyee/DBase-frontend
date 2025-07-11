@@ -154,3 +154,8 @@ a {
 *::-webkit-scrollbar {
   display: none;
 }
+
+ul,
+ol {
+  list-style-position: inside;
+}

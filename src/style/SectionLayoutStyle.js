@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SectionItemWrap = styled.div`
   /* height: 100px; */
   width: 100%;
-  padding: 40px 20px;
+  padding: 40px 30px;
   background-color: white;
   border-radius: 10px;
   color: black;
@@ -13,6 +13,7 @@ export const SectionItemWrap = styled.div`
 export const SectionTitle = styled.div`
   font-size: 24px;
   font-weight: bold;
+  margin-bottom: 20px;
 `;
 
 export const SectionSubTtile = styled.div`

@@ -6,6 +6,7 @@ import {
   SectionTitle,
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
+import CompnayInfor from "../components/CompanyInfor";
 
 const EmploymentStatusPage = () => {
   return (
@@ -52,68 +53,7 @@ const EmploymentStatusPage = () => {
             </SectionItemWrap>
           </div>
           <div>
-            <SectionItemWrap>
-              <SectionTitle style={{ marginBottom: "10px" }}>
-                기업정보
-              </SectionTitle>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  gap: "15px",
-                  marginBottom: "20px",
-                }}
-              >
-                <div
-                  style={{
-                    color: "black",
-                    fontSize: "18px",
-                    fontWeight: "600",
-                  }}
-                >
-                  기업을 선택해주세요
-                </div>
-                <div
-                  style={{
-                    color: "#6c6c6c",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                  }}
-                >
-                  업태
-                </div>
-              </div>
-              <hr style={{ marginBottom: "20px" }} />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  gap: "30px",
-                  width: "100%",
-                }}
-              >
-                <CompnayInforItem>
-                  <div>설립연도</div>
-                  <div>-</div>
-                </CompnayInforItem>
-                <CompnayInforItem>
-                  <div>직원 수</div>
-                  <div>-</div>
-                </CompnayInforItem>
-                <CompnayInforItem>
-                  <div>주요 사업 내용</div>
-                  <div>-</div>
-                </CompnayInforItem>
-                <CompnayInforItem>
-                  <div>홈페이지</div>
-                  <div>-</div>
-                </CompnayInforItem>
-              </div>
-            </SectionItemWrap>
+            <CompnayInfor />
             <SectionItemWrap>
               <SectionTitle style={{ marginBottom: "5px" }}>
                 재직자
