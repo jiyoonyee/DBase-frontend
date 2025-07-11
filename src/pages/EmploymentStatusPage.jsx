@@ -153,7 +153,7 @@ const SectionMapalign = styled.div`
   justify-content: start;
   align-items: start;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const SectionMenualign = styled.div`
@@ -161,7 +161,7 @@ const SectionMenualign = styled.div`
   justify-content: start;
   align-items: start;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const MakerMenuWrap = styled.div`
