@@ -43,7 +43,7 @@ const EmploymentStatusPage = () => {
                 >
                   기업을 선택하세요
                 </div>
-                <SectionSubTtile>-</SectionSubTtile>
+                <SectionSmallTtile>-</SectionSmallTtile>
                 <MakerMenuWrap>
                   <MakerItem>지하철</MakerItem>
                   <MakerItem>식당</MakerItem>

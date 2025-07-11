@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SelectDropDown from "./SelectDropDown";
 
-const SearchCompanyInput = ({ DropDownItems, DropDownLabel }) => {
+const SearchCompanyInput = ({ DropDownItems, DropDownLabel, Placeholder }) => {
   return (
     <>
       <SearchWrap>
@@ -9,14 +9,11 @@ const SearchCompanyInput = ({ DropDownItems, DropDownLabel }) => {
           <a href="#">
             <img src="../src/assets/images/InputSearch.svg" alt="돋보기" />
           </a>
-          <input type="text" />
+          <input type="text" placeholder={Placeholder} />
         </InputWrap>
         <SelectDropDown
-          DropDownLabel={"연도 선택"}
-          DropDownItems={[
-            { ItemName: "전체선택", ReqName: "all" },
-            { ItemName: "2025", ReqName: "2025" },
-          ]}
+          DropDownLabel={DropDownLabel}
+          DropDownItems={DropDownItems}
           DropDwonItemColor={"#078bff"}
         />
       </SearchWrap>

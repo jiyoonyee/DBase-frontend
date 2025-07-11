@@ -5,7 +5,14 @@ import SearchCompanyInput from "../components/SearchCompanyInput";
 const JobInforLayout = () => {
   return (
     <>
-      <SearchCompanyInput />
+      <SearchCompanyInput
+        DropDownItems={[
+          { ItemName: "전체 선택", ReqName: "*" },
+          { ItemName: "2025", ReqName: "2025" },
+        ]}
+        DropDownLabel={"연도 선택"}
+        Placeholder={"회사명으로 검색"}
+      />
       <CompnayListWrap>
         <CompanyItem
           Year={"2025"}
