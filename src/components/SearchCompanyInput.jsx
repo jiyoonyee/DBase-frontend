@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SelectDropDown from "./SelectDropDown";
 
-const SearchCompanyInput = () => {
+const SearchCompanyInput = ({ DropDownItems, DropDownLabel }) => {
   return (
     <>
       <SearchWrap>

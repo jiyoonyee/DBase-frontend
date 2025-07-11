@@ -10,6 +10,8 @@ import JobUploadLayout from "./layouts/JobUploadLayout";
 import RoadMapPage from "./pages/RoadMapPage";
 import EmploymentStatusPage from "./pages/EmploymentStatusPage";
 import JobInforDetail from "./layouts/JobInforDetail";
+import CompanyApplyLayout from "./layouts/CompanyApplyLayout";
+import CompanyApplytCheck from "./layouts/CompanyApplyCheckLayout";
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
@@ -49,6 +51,14 @@ const App = () => {
               {/* 선생님 아니면 접근권한 없다고 컷내기 */}
               <Route element={<JobUploadLayout />} path="jobupload"></Route>
               <Route element={<JobInforDetail />} path="jobInforDetail"></Route>
+              <Route
+                element={<CompanyApplyLayout />}
+                path="companyapply"
+              ></Route>
+              <Route
+                element={<CompanyApplytCheck />}
+                path="companyapplycheck"
+              ></Route>
             </Route>
             <Route path="/roadmap" element={<RoadMapPage />} />
             <Route

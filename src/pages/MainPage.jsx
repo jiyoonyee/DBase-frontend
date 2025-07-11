@@ -37,7 +37,7 @@ const MainPage = ({ updateHeaderState }) => {
               </span>
             </div>
 
-            <Link>채용 의뢰 확인하기</Link>
+            <Link to={"/jobinfor"}>채용 의뢰 확인하기</Link>
           </TextWrap>
           <MascotWrap>
             <img src="../src/assets/images/KIT.svg" alt="" />

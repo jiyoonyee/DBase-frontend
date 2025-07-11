@@ -10,9 +10,13 @@ const JobInforPage = ({ loginState }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
-  const isJobUploadPage = location.pathname.includes("/jobinfor/jobupload");
+  const isJobUploadPage = location.pathname.includes("/jobupload");
   const isJobElementPage = location.pathname.includes("/jobinfor/");
   const isJobInforDetail = location.pathname.includes("/jobinfordetail");
+  const isOnlyJobCompanyapplyPage =
+    location.pathname === "/jobinfor/companyapply";
+  const isOnlyJobCompanyapplyCheckPage =
+    location.pathname === "/jobinfor/companyapplycheck";
 
   return (
     <>
@@ -21,6 +25,7 @@ const JobInforPage = ({ loginState }) => {
           <PageTitleWrap>
             {isJobElementPage && (
               <div
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   navigate(-1);
                 }}
@@ -31,10 +36,14 @@ const JobInforPage = ({ loginState }) => {
             {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
             {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
             {isJobInforDetail && <PageTitle>알리콘</PageTitle>}
-            {!isJobInforDetail && (
+            {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
+            {isOnlyJobInforPage && (
               <PageSubTitle>
                 AI 매칭으로 나에게 맞는 채용정보를 찾아보세요
               </PageSubTitle>
+            )}
+            {isOnlyJobCompanyapplyCheckPage && (
+              <PageTitle>지원현황 확인</PageTitle>
             )}
           </PageTitleWrap>
         </PageinforWrap>

@@ -1,10 +1,17 @@
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
-import { SectionItemWrap, SectionTitle } from "../style/SectionLayoutStyle";
+import {
+  SectionItemWrap,
+  SectionSmallTtile,
+  SectionTitle,
+} from "../style/SectionLayoutStyle";
 import KakaoMap from "./KakaoMap";
 import CompnayInfor from "../components/CompanyInfor";
+import { useNavigate } from "react-router-dom";
 
 const JobInforDetail = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div
@@ -22,6 +29,7 @@ const JobInforDetail = () => {
           </div>
         </div>
         <SubmitButton
+          clickEvent={() => navigate("/jobinfor/companyapply")}
           BackColor={"white"}
           TextColor={"black"}
           Text={"지원하기"}
@@ -141,8 +149,14 @@ const JobInforDetail = () => {
           <CompnayInfor />
           <SectionItemWrap>
             <SectionTitle>기업 위치</SectionTitle>
-
             <KakaoMap></KakaoMap>
+            <CompanySectionSubTitle style={{ marginTop: "20px" }}>
+              주소
+            </CompanySectionSubTitle>
+            <SectionSmallTtile style={{ wordBreak: "keep-all" }}>
+              서울특별시 성동구 고산자로 14길 26, 아케이드동 엠엘-비엠층
+              103호(행당동, 지웰홈스 왕십리)
+            </SectionSmallTtile>
           </SectionItemWrap>
         </div>
       </CompnayInforAlign>

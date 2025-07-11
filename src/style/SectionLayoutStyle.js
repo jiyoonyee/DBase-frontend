@@ -16,8 +16,20 @@ export const SectionTitle = styled.div`
   margin-bottom: 20px;
 `;
 
-export const SectionSubTtile = styled.div`
+export const SectionSmallTtile = styled.div`
   font-size: 16px;
   font-weight: 500;
   color: #6c6c6c;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+`;
+
+export const SectionSubTitle = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  color: #111111;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
 `;

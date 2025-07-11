@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SubmitButton from "./SubmitButton";
 import CompanyStackItem from "./CompanyStackItem";
+import { useNavigate } from "react-router-dom";
 
 /**
  * props
@@ -13,24 +14,15 @@ import CompanyStackItem from "./CompanyStackItem";
  * - 업무내용
  * - 필요 스택
  */
-const CompanyItem = ({
-  Year,
-  Name,
-  Field,
-  Location,
-  Deadline,
-  Work,
-  Stacks,
-}) => {
+const CompanyItem = ({ Year, Name, Field, Location, Deadline, Work, id }) => {
   //   const StacksList = Stacks.split(",");
-
-  const StacksList = Stacks.split(",");
-
+  const ComapanyId = id;
+  const navigate = useNavigate();
   return (
     <>
       <Wrap>
         <CompanyYear>{Year}년</CompanyYear>
-        <CompanyInforWrap>
+        <CompanyInforWrap style={{ marginBottom: "30px" }}>
           <CompanyNameWrap>
             <div>{Name}</div>
             <div>{Field}</div>
@@ -58,22 +50,21 @@ const CompanyItem = ({
               <div>{Work}</div>
             </div>
           </CompnayLocationWrap>
-          <CompanyStackWrap>
-            {StacksList.map((text, index) => (
-              <CompanyStackItem Stack={text} key={index} />
-            ))}
-          </CompanyStackWrap>
         </CompanyInforWrap>
         <ButtonWrap>
           <SubmitButton
             BackColor={"white"}
             TextColor={"#6C6C6C"}
             Text={"상세보기"}
+            clickEvent={() => navigate("jobinfordetail")}
           />
           <SubmitButton
             BackColor={"#3449B4"}
             TextColor={"#FFFFFF"}
             Text={"지원하기"}
+            clickEvent={() =>
+              navigate(`companyapply?comapany-id=${ComapanyId}`)
+            }
           />
         </ButtonWrap>
       </Wrap>

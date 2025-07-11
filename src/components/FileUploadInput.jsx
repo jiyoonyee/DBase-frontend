@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const FileUploadInput = () => {
+const FileUploadInput = ({ LabelName, LabelState = true }) => {
   return (
     <Wrap>
       <div>
-        <InputLabel>채용의뢰서</InputLabel>
+        <InputLabel $state={LabelState}>{LabelName}</InputLabel>
         <input type="file" id="jobFile" />
         <label htmlFor="jobFile">
           <img src="../src/assets/images/fileUpload.svg" alt="파일 업로드" />
@@ -17,10 +17,12 @@ const FileUploadInput = () => {
 };
 const InputLabel = styled.label`
   font-size: 16px;
-  color: #505050;
+  color: #111111;
+  font-weight: bold;
   position: relative;
 
   &::after {
+    display: ${(props) => (props.$state ? "block" : "none")};
     position: absolute;
     top: 0px;
     right: 0px;

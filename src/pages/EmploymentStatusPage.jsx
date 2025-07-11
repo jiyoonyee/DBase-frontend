@@ -2,7 +2,7 @@ import styled from "styled-components";
 import KakaoMap from "../layouts/KakaoMap";
 import {
   SectionItemWrap,
-  SectionSubTtile,
+  SectionSmallTtile,
   SectionTitle,
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
@@ -25,9 +25,9 @@ const EmploymentStatusPage = () => {
             <SectionItemWrap>
               <SectionMapalign>
                 <SectionTitle>취업 현황 지도</SectionTitle>
-                <SectionSubTtile>
+                <SectionSmallTtile>
                   학생들이 재직 중인 회사 위치를 확인하세요
-                </SectionSubTtile>
+                </SectionSmallTtile>
                 <KakaoMap />
               </SectionMapalign>
             </SectionItemWrap>
@@ -58,9 +58,9 @@ const EmploymentStatusPage = () => {
               <SectionTitle style={{ marginBottom: "5px" }}>
                 재직자
               </SectionTitle>
-              <SectionSubTtile style={{ marginBottom: "20px" }}>
+              <SectionSmallTtile style={{ marginBottom: "20px" }}>
                 알리콘
-              </SectionSubTtile>
+              </SectionSmallTtile>
               <EmployeeWrap>
                 <EmployeeItem />
                 <EmployeeItem />
