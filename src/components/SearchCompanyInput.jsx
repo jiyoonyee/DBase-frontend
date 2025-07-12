@@ -1,23 +1,30 @@
 import styled from "styled-components";
 import SelectDropDown from "./SelectDropDown";
 
-const SearchCompanyInput = ({ DropDownItems, DropDownLabel, Placeholder }) => {
+const SearchCompanyInput = ({ DropDownItems, DropDownLabel, Placeholder, onSearch }) => {
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    onSearch(value); // 입력할 때마다 검색 실행
+  };
+
   return (
-    <>
-      <SearchWrap>
-        <InputWrap>
-          <a href="#">
-            <img src="../src/assets/images/InputSearch.svg" alt="돋보기" />
-          </a>
-          <input type="text" placeholder={Placeholder} />
-        </InputWrap>
-        <SelectDropDown
-          DropDownLabel={DropDownLabel}
-          DropDownItems={DropDownItems}
-          DropDwonItemColor={"#078bff"}
+    <SearchWrap>
+      <InputWrap>
+        <a href="#">
+          <img src="../src/assets/images/InputSearch.svg" alt="돋보기" />
+        </a>
+        <input
+          type="text"
+          placeholder={Placeholder}
+          onChange={handleInputChange}
         />
-      </SearchWrap>
-    </>
+      </InputWrap>
+      <SelectDropDown
+        DropDownLabel={DropDownLabel}
+        DropDownItems={DropDownItems}
+        DropDwonItemColor={"#078bff"}
+      />
+    </SearchWrap>
   );
 };
 

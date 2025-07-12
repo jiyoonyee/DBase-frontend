@@ -4,25 +4,36 @@ import SearchCompanyInput from "../components/SearchCompanyInput";
 import { useEffect, useState } from "react";
 
 const JobInforLayout = () => {
-  const [Companys, setCompanys] = useState(null);
+  const [companies, setCompanies] = useState(null);
+  const [filteredCompanies, setFilteredCompanies] = useState(null); // 추가된 부분
 
-  const getCompnay = async () => {
+  const getCompanies = async () => {
     try {
       const res = await fetch(`http://localhost:4433/job`);
       const data = await res.json();
       if (data.success) {
-        setCompanys(data.result.slice().reverse());
+        setCompanies(data.result.slice().reverse());
+        setFilteredCompanies(data.result.slice().reverse()); // 초기 상태 설정
       }
-      console.log(data);
-      console.log(Companys);
     } catch (error) {
       console.error("로드맵 요청 실패:", error);
     }
   };
 
   useEffect(() => {
-    getCompnay();
+    getCompanies();
   }, []);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setFilteredCompanies(companies);
+    } else {
+      const filtered = companies.filter((company) =>
+        company.company_name.includes(searchText)
+      );
+      setFilteredCompanies(filtered);
+    }
+  };
 
   return (
     <>
@@ -33,10 +44,11 @@ const JobInforLayout = () => {
         ]}
         DropDownLabel={"연도 선택"}
         Placeholder={"회사명으로 검색"}
+        onSearch={handleSearch} // 검색 기능 추가
       />
-      <CompnayListWrap>
-        {Companys &&
-          Companys.map((item, i) => (
+      <CompanyListWrap>
+        {filteredCompanies &&
+          filteredCompanies.map((item, i) => (
             <CompanyItem
               key={i}
               Year={item.year}
@@ -48,12 +60,12 @@ const JobInforLayout = () => {
               id={item.id}
             />
           ))}
-      </CompnayListWrap>
+      </CompanyListWrap>
     </>
   );
 };
 
-const CompnayListWrap = styled.div`
+const CompanyListWrap = styled.div`
   display: flex;
 
   flex-wrap: wrap;
