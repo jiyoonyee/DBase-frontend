@@ -3,22 +3,129 @@ import styled from "styled-components";
 import PageInfor from "../components/PageInfor";
 import AcountButton from "../components/AcountButton";
 import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+
+export function HeroAnimation() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const setSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight * 0.6; // 화면 높이의 60%
+    };
+    setSize();
+    window.addEventListener("resize", setSize);
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.color = this.getRandomColor();
+      }
+      getRandomColor() {
+        const colors = [
+          "rgba(229, 251, 255, 0.8)",
+          "rgba(197, 255, 236, 0.5)",
+          "rgb(242, 255, 253)",
+          "rgba(246, 255, 254, 0.94)",
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x > canvas.width) this.x = 0;
+        else if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        else if (this.y < 0) this.y = canvas.height;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const particleCount = Math.min(
+      100,
+      Math.floor((window.innerWidth * (window.innerHeight * 0.6)) / 10000)
+    );
+    const particles = [];
+    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+    function connectParticles() {
+      const maxDistance = 150;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            ctx.strokeStyle = `rgba(16,185,129,${(1 - dist / maxDistance) * 0.2})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", setSize);
+    };
+  }, []);
+
+  return <CanvasStyled ref={canvasRef} />;
+}
+
+const CanvasStyled = styled.canvas`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 60vh; /* 화면 높이 60% */
+  opacity: 0.5;
+  pointer-events: none;
+`;
 
 const MainPage = ({ updateHeaderState }) => {
   const [inforWrap, inView] = useInView({
     threshold: 0.1,
   });
-  // console.log(inView, "inforWrap");
+
   useEffect(() => {
-    if (inView) {
-      updateHeaderState(true);
-    } else {
-      updateHeaderState(false);
-    }
+    updateHeaderState(inView);
   }, [inView, updateHeaderState]);
+
   return (
     <>
+      <HeroAnimation />
       <Wrap>
         <MainWrap>
           <TextWrap>
@@ -54,7 +161,7 @@ const MainPage = ({ updateHeaderState }) => {
             ImageURL={"../src/assets/images/page1.png"}
             TitleText={"채용정보를 한눈에 확인하세요"}
             PageText={
-              "AI 매칭 시스템으로 맞춤형 채용 정보를 확인하고 간편하게 회사에 대한 정보를 알아보세요"
+              "우리 학교로 들어온 채용 정보를 확인하고 AI 분석으로 간편하게 회사에 대한 정보를 알아보세요"
             }
           />
           <PageInfor
@@ -94,10 +201,9 @@ const MainPage = ({ updateHeaderState }) => {
 };
 
 const Wrap = styled.div`
-  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
+  background: linear-gradient(#020619, 0%,rgb(0, 5, 21), 15%,rgb(9, 35, 119), 25%, #0c2ca0);
   width: 100%;
   padding-bottom: 100px;
-  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
   & > div {
     margin: 0px 200px;
   }
@@ -113,19 +219,17 @@ const Wrap = styled.div`
 const MainWrap = styled.div`
   margin-top: 100px !important;
   height: calc(100vh - 100px);
-  /* background-color: #f0f8ff3b; */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   @media screen and (max-width: 1000px) {
-    & {
-      flex-direction: column-reverse;
-    }
+    flex-direction: column-reverse;
   }
 `;
 
 const InforWrap = styled.div`
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,12 +279,11 @@ const TextWrap = styled.div`
     gap: 20px;
   }
 
-  /* 메인 텍스트 */
   & > div > span > p {
     font-weight: bold;
     font-size: 70px;
   }
-  /* 서브 텍스트 */
+
   & > div > span:nth-child(2) {
     font-size: 18px;
     line-height: 28px;
@@ -198,43 +301,32 @@ const TextWrap = styled.div`
 const MascotWrap = styled.div`
   height: 100%;
   width: 100%;
-  /* background-color: #f0f8ff3b; */
   position: relative;
   & > img {
     position: absolute;
   }
 
-  /* 키트 */
   & > img:nth-child(1) {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%) scale(1.5);
-
-    z-index: 100;
+    z-index: 10;
   }
-
-  /* 파일 */
   & > img:nth-child(2) {
     transform: scale(1.3);
     top: 20%;
     left: 10%;
   }
-
-  /* 돋보기 */
   & > img:nth-child(3) {
     transform: scale(1.3);
     bottom: 20%;
     left: 10%;
   }
-
-  /* 모바일 목업 */
   & > img:nth-child(4) {
     top: 10%;
     right: 10%;
     transform: scale(1.3);
   }
-
-  /* 가방 */
   & > img:nth-child(5) {
     transform: scale(1.3);
     bottom: 30%;

@@ -204,7 +204,7 @@ const Wrap = styled.div`
   background: linear-gradient(
     to bottom,
     #0e0219 0%,
-    #351452 10%,
+rgb(52, 18, 80) 20%,
     #3e1a5c 25%,
     #5c258c 60%,
     #aa49ff 100%
