@@ -19,6 +19,7 @@ const EmploymentStatusPage = () => {
     convenience: 0,
     restaurant: 0,
   });
+  const [employees, setEmployees] = useState([]); // 재직자 목록 상태 추가
 
   // 주변 장소 위치 정보 배열
   // {lat, lng, type, name}
@@ -29,6 +30,7 @@ const EmploymentStatusPage = () => {
       setSelectedCompany(null);
       setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
       setPlacePositions([]);
+      setEmployees([]); // 회사 선택 해제 시 재직자 목록도 초기화
       return;
     }
 
@@ -41,6 +43,17 @@ const EmploymentStatusPage = () => {
         console.error("선택된 회사 정보 가져오기 실패:", err);
         setSelectedCompany(null);
         setPlacePositions([]);
+      });
+
+    // 회사별 재직자 목록 fetch
+    axios
+      .get(`http://localhost:4433/employee/list?companyId=${selectedCompanyId}`)
+      .then((res) => {
+        setEmployees(res.data);
+      })
+      .catch((err) => {
+        console.error("재직자 목록 가져오기 실패:", err);
+        setEmployees([]);
       });
   }, [selectedCompanyId]);
 
@@ -134,7 +147,7 @@ const EmploymentStatusPage = () => {
 
           <SectionItemWrap>
             <SectionMenualign>
-              <SectionTitle>선택된 회사 주변 편의시설</SectionTitle>
+              <SectionTitle>선택된 회사 정보</SectionTitle>
               {selectedCompany ? (
                 <div
                   style={{
@@ -186,16 +199,22 @@ const EmploymentStatusPage = () => {
           <SectionItemWrap>
             <SectionTitle style={{ marginBottom: "5px" }}>재직자</SectionTitle>
             <SectionSmallTtile style={{ marginBottom: "20px" }}>
-              {selectedCompany?.company_name || "알리콘"}
+              {selectedCompany?.company_name || "기업명"}
             </SectionSmallTtile>
             <EmployeeWrap>
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
+              {employees.length === 0 ? (
+                <div style={{ color: 'black', fontSize: '16px' }}>재직자 정보가 없습니다.</div>
+              ) : (
+                employees.map((emp, idx) => (
+                  <EmployeeItem
+                    key={emp.user_id || idx}
+                    name={emp.name}
+                    work_start_date={emp.work_start_date}
+                    work_end_date={emp.work_end_date}
+                    skills={emp.skills}
+                  />
+                ))
+              )}
             </EmployeeWrap>
           </SectionItemWrap>
         </div>
@@ -317,7 +336,6 @@ const MakerCount = styled.div`
 
 const EmployeeWrap = styled.div`
   overflow-y: auto;
-  height: 250px;
   padding-right: 20px;
 
   &::-webkit-scrollbar {
