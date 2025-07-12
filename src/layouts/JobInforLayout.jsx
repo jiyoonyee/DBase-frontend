@@ -11,7 +11,7 @@ const JobInforLayout = () => {
       const res = await fetch(`http://localhost:4433/job`);
       const data = await res.json();
       if (data.success) {
-        setCompanys(data.result);
+        setCompanys(data.result.slice().reverse());
       }
       console.log(data);
       console.log(Companys);
@@ -55,7 +55,7 @@ const JobInforLayout = () => {
 
 const CompnayListWrap = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+
   flex-wrap: wrap;
   gap: 50px;
 
