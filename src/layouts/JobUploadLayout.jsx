@@ -17,17 +17,81 @@ const JobUploadLayout = () => {
     }
   };
 
+  const validatePage0 = () => {
+    const jobName = document.getElementById("InputJobName")?.value.trim();
+    const deadline = document.getElementById("JobDeadLine")?.value.trim();
+
+    if (!jobName || !deadline || !jobFileRef.current?.files[0]) {
+      alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  const validatePage1 = () => {
+    const companyName = document
+      .getElementById("CompanyNameInput2")
+      ?.value.trim();
+    const year = document.getElementById("CompanyYearInput2")?.value.trim();
+    const work = document.getElementById("CompanyWorkInput2")?.value.trim();
+    const employees = document
+      .getElementById("CompanyemployeesInput2")
+      ?.value.trim();
+    const homepage = document.getElementById("CompanyWorkInput2")?.value.trim();
+    const address = document
+      .getElementById("CompanyAdressInput2")
+      ?.value.trim();
+
+    if (!companyName || !year || !work || !employees || !homepage || !address) {
+      alert("기업 기본 정보를 모두 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  // const validatePage2 = () => {
+  //   const job = document.querySelector('input[placeholder="기타"]') as HTMLInputElement | null;
+  //   const jobText = job?.disabled ? "" : job?.value.trim();
+
+  //   const fields = document.querySelectorAll("input[type=text], textarea");
+
+  //   const requiredFilled = Array.from(fields).every((field) => {
+  //     if (
+  //       field instanceof HTMLInputElement ||
+  //       field instanceof HTMLTextAreaElement
+  //     ) {
+  //       return field.disabled || field.value.trim() !== "";
+  //     }
+  //     return true;
+  //   });
+
+  //   if (!requiredFilled) {
+  //     alert("모든 채용 정보를 입력해주세요.");
+  //     return false;
+  //   }
+
+  //   return true;
+  // };
+
   const handleJobFilePlusChange = (e) => {
     const file = e.target.files[0];
     if (file) setJobFilePlusName(file.name);
   };
 
   const handleNextPage = () => {
-    if (nextPage != 2) {
+    let isValid = true;
+
+    if (nextPage === 0) isValid = validatePage0();
+    else if (nextPage === 1) isValid = validatePage1();
+    // else if (nextPage === 2) isValid = validatePage2();
+
+    if (!isValid) return;
+
+    if (nextPage !== 2) {
       setNextPage((prev) => (prev + 1) % 3);
     }
 
-    if (nextPage == 0) {
+    if (nextPage === 2) {
       handleSubmit();
     }
   };
@@ -52,6 +116,7 @@ const JobUploadLayout = () => {
       formData.append("file", jobFile); // 파일명 명시
       formData.append("fileName", jobFile.name); // 파일명 따로도 전송 가능
     }
+    console.log(jobFile.name);
 
     if (jobFilePlus) {
       formData.append("fileplus", jobFilePlus); // 파일명 명시
@@ -65,10 +130,13 @@ const JobUploadLayout = () => {
       console.log(pair[0], pair[1]);
     }
     try {
-      const res = await fetch("http://localhost:4433/job/input", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `http://localhost:4433/job/input?fileName=${jobFileName}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!res.ok) throw new Error("업로드 실패");
 
