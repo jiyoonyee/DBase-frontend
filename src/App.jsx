@@ -16,9 +16,11 @@ import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
+  const [TeacherState, setTeacherState] = useState(false);
 
-  const updateLoginState = (state) => {
-    setLoginState(state);
+  const updateLoginState = (Loginstate, TeacherState) => {
+    setLoginState(Loginstate);
+    setTeacherState(TeacherState);
   };
   const [headerState, setHeaderState] = useState(false);
 
@@ -43,7 +45,7 @@ const App = () => {
               path="/"
             />
             <Route
-              element={<JobInforPage loginState={LoginState} />}
+              element={<JobInforPage TeacherState={TeacherState} />}
               path="/jobinfor"
             >
               <Route index element={<JobInforLayout />}></Route>
@@ -64,7 +66,10 @@ const App = () => {
               path="/EmploymentStatus"
               element={<EmploymentStatusPage />}
             />
-            <Route path="/profile" element={<ProfilePage />}></Route>
+            <Route
+              path="/profile"
+              element={<ProfilePage LoginState={LoginState} />}
+            ></Route>
           </Routes>
 
           <Footer />

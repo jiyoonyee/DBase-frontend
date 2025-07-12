@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import HeroAnimation from "../components/HeroAnimation";
 
-const JobInforPage = ({ loginState }) => {
+const JobInforPage = ({ TeacherState }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
@@ -105,7 +105,7 @@ const JobInforPage = ({ loginState }) => {
                   navigate("companyapplycheck");
                 }}
               />
-              {loginState && (
+              {TeacherState && (
                 <SubmitButton
                   clickEvent={() => {
                     navigate("/jobinfor/jobupload");
