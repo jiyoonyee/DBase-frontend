@@ -5,7 +5,6 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
     const feedback = document.getElementById("feedbackInput").value.trim();
     if (!feedback) return alert("피드백을 입력해 주세요.");
     onSubmit(feedback);
-    onClose();
   };
 
   if (!isOpen) return null;
