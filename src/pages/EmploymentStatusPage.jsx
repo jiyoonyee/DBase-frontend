@@ -134,7 +134,7 @@ const EmploymentStatusPage = () => {
 
           <SectionItemWrap>
             <SectionMenualign>
-              <SectionTitle>선택된 회사 정보</SectionTitle>
+              <SectionTitle>선택된 회사 주변 편의시설</SectionTitle>
               {selectedCompany ? (
                 <div
                   style={{
@@ -160,16 +160,19 @@ const EmploymentStatusPage = () => {
                 {selectedCompany?.address || "-"}
               </SectionSmallTtile>
               <MakerMenuWrap>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   지하철
+                  <img src="../src/assets/images/subway.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.subway}</MakerCount>
                 </MakerItem>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   편의점
+                  <img src="../src/assets/images/convenience.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.convenience}</MakerCount>
                 </MakerItem>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   음식점
+                  <img src="../src/assets/images/restaurant.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.restaurant}</MakerCount>
                 </MakerItem>
               </MakerMenuWrap>

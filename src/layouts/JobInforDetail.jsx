@@ -118,7 +118,7 @@ const JobInforDetail = () => {
               <CompanySectionSubTitle>기타 요구사항</CompanySectionSubTitle>
               <div>{job?.additional_requirements || "-"}</div>
             </div>
-
+            
             <CompanyButtonWrap>
               <SubmitButton
                 Text={"추가자료 다운로드"}

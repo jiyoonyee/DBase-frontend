@@ -194,35 +194,69 @@ const MascotWrap = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
+
   & > img {
     position: absolute;
+    animation: floatY 3s ease-in-out infinite alternate;
   }
 
   & > img:nth-child(1) {
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.5);
     z-index: 10;
+    animation-delay: 0s;
   }
+
   & > img:nth-child(2) {
-    transform: scale(1.3);
     top: 20%;
     left: 10%;
-  }
-  & > img:nth-child(3) {
     transform: scale(1.3);
+    animation-delay: 0.2s;
+  }
+
+  & > img:nth-child(3) {
     bottom: 20%;
     left: 10%;
+    transform: scale(1.3);
+    animation-delay: 0.4s;
   }
+
   & > img:nth-child(4) {
     top: 10%;
     right: 10%;
     transform: scale(1.3);
+    animation-delay: 0.6s;
   }
+
   & > img:nth-child(5) {
-    transform: scale(1.3);
     bottom: 30%;
     right: 8%;
+    transform: scale(1.3);
+    animation-delay: 0.8s;
+  }
+
+  @keyframes floatY {
+    0% {
+      transform: translateY(0) scale(1.3);
+    }
+    100% {
+      transform: translateY(-10px) scale(1.3);
+    }
+  }
+
+  /* 특이하게 가운데 이미지는 translate로 위치 잡았기 때문에 예외 처리 */
+  & > img:nth-child(1) {
+    animation: floatYCenter 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatYCenter {
+    0% {
+      transform: translate(-50%, -50%) scale(2);
+    }
+    100% {
+      transform: translate(-50%, -60%) scale(2);
+    }
   }
 `;
 
