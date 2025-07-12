@@ -11,11 +11,11 @@ import ProfileActivity from "../components/ProfileActivity";
 import ProfileAward from "../components/ProfileAward";
 import StackItem from "../components/StackItem";
 import SubmitButton from "../components/SubmitButton";
-
 import HeroAnimation from "../components/HeroAnimation";
 import AcountButton from "../components/AcountButton";
 import { useState } from "react";
 import EditModal from "../components/EditModal";
+import { useEffect } from "react";
 
 const ProfilePage = ({ LoginState }) => {
   const [isEditStack, setIsEditStack] = useState(false);
@@ -25,21 +25,235 @@ const ProfilePage = ({ LoginState }) => {
   const [isEditProfileInfo, setIsEditProfileInfo] = useState(false);
   const [isEditEmploymentInfo, setIsEditEmploymentInfo] = useState(false);
   const [employmentStatus, setEmploymentStatus] = useState(true);
+  const [newSkills, setNewSkills] = useState("");
+  const [newProject, setNewProject] = useState({
+    date: "",
+    name: "",
+    description: "",
+  });
 
   // Sample profile state
   const [profile, setProfile] = useState({
-    name: "박현욱",
-    classInfo: "서울디지텍고등학교 3학년 3반",
-    email: "user@email.com",
-    phone: "010-0000-0000",
+    affiliation: "서울디지텍고등학교 3학년 3반",
+    phone_number: "010-0000-0000",
     address: "서울시 강서구",
-    position: "백엔드 개발자",
-    company: "ABC 회사",
-    duration: "2023.03 ~ 2024.01",
+    desired_position: "프론트 개발자",
+    company_name: "(주)ABC 회사",
+    work_start_date: "2023",
+    work_end_date: "재직중",
   });
+
+  const [userData, setUserData] = useState({
+    user_profile: {
+      name: "",
+      email: "",
+      category: "",
+      affiliation: "",
+      phone_number: "",
+      porfolio_url: "",
+      skills: "",
+      address: "",
+    },
+    company: {
+      desired_position: "",
+      employment_status: "",
+      company_name: "", // default: undefined
+      work_end_date: "",
+      work_start_date: "",
+      main_business: "",
+    },
+    experiences: [],
+  });
+
+  useEffect(() => {
+    fetch("http://localhost:4433/user/profile/personal", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data);
+        setProfile({
+          affiliation: data.user_profile.affiliation || "",
+          phone_number: data.user_profile.phone_number || "",
+          address: data.user_profile.address || "",
+          desired_position: data.company.desired_position || "",
+          company_name: data.company.company_name || "",
+          work_start_date: data.company.work_start_date || "",
+          work_end_date: data.company.work_end_date || "",
+        });
+        setEmploymentStatus(
+          data.company.employment_status === "구직중" ? false : true
+        );
+      })
+      .catch((err) => {
+        console.error("회사 정보 가져오기 실패:", err);
+      });
+  }, []);
 
   const handleChange = (field, value) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const updateUserInfo = async () => {
+    const updateData = {
+      affiliation: profile.affiliation,
+      phone_number: profile.phone_number,
+      address: profile.address,
+    };
+
+    await fetch("http://localhost:4433/user/profile/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json", // ✅ 이게 필요함!
+      },
+      credentials: "include",
+      body: JSON.stringify(updateData),
+    });
+  };
+
+  const updateUserJobInfo = async () => {
+    const updateData = {
+      company_name: profile.company_name,
+      work_start_date: profile.work_start_date.toString(),
+      work_end_date: profile.work_end_date.toString(),
+      desired_position: profile.desired_position,
+      employment_status: employmentStatus ? "취업 완료" : "구직중",
+    };
+
+    await fetch("http://localhost:4433/user/profile/update-status", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json", // ✅ 이게 필요함!
+      },
+      credentials: "include",
+      body: JSON.stringify(updateData),
+    });
+  };
+
+  const handleAddSkill = async () => {
+    if (!newSkills.trim()) return;
+
+    await fetch("http://localhost:4433/user/profile/update-skills", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ skills: newSkills }),
+    });
+
+    setNewSkills("");
+
+    location.reload();
+  };
+
+  const handleAddProject = async () => {
+    if (!newProject.name || !newProject.description) {
+      alert("활동명과 내용은 필수입니다.");
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:4433/user/profile/update-exp",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ...newProject,
+          type: "project",
+        }),
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      // UI에 추가 반영: userData에 직접 push 하거나 fetch 다시 호출
+      setUserData((prev) => ({
+        ...prev,
+        experiences: [...prev.experiences, { ...newProject, type: "project" }],
+      }));
+      setNewProject({ date: "", name: "", description: "" });
+      setIsEditProject(false);
+    } else {
+      alert("추가에 실패했습니다.");
+    }
+  };
+
+  const handleAddExperience = async () => {
+    if (!newProject.name || !newProject.description) {
+      alert("활동명과 내용은 필수입니다.");
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:4433/user/profile/update-exp",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ...newProject,
+          type: "experience",
+        }),
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      // UI에 추가 반영: userData에 직접 push 하거나 fetch 다시 호출
+      setUserData((prev) => ({
+        ...prev,
+        experiences: [
+          ...prev.experiences,
+          { ...newProject, type: "experience" },
+        ],
+      }));
+      setNewProject({ date: "", name: "", description: "" });
+      setIsEditProject(false);
+    } else {
+      alert("추가에 실패했습니다.");
+    }
+  };
+
+  const handleAddAward = async () => {
+    if (!newProject.name || !newProject.description) {
+      alert("활동명과 내용은 필수입니다.");
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:4433/user/profile/update-exp",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ...newProject,
+          type: "award",
+        }),
+      }
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      // UI에 추가 반영: userData에 직접 push 하거나 fetch 다시 호출
+      setUserData((prev) => ({
+        ...prev,
+        experiences: [...prev.experiences, { ...newProject, type: "award" }],
+      }));
+      setNewProject({ date: "", name: "", description: "" });
+      setIsEditProject(false);
+    } else {
+      alert("추가에 실패했습니다.");
+    }
   };
 
   return (
@@ -62,29 +276,33 @@ const ProfilePage = ({ LoginState }) => {
                   <SectionTitle style={{ marginBottom: "0px" }}>
                     <EditInputWrap
                       style={{ fontSize: "24px", fontWeight: "bold" }}
-                      disabled={!isEditProfileInfo}
-                      value={profile.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
+                      disabled
+                      value={userData.user_profile.name}
                     />
                   </SectionTitle>
                   <SectionSmallTtile>
                     <EditInputWrap
                       style={{ fontSize: "16px", color: "#6c6c6c" }}
                       disabled={!isEditProfileInfo}
-                      value={profile.classInfo}
-                      onChange={(e) =>
-                        handleChange("classInfo", e.target.value)
-                      }
+                      placeholder="예)3학년 3반"
+                      value={profile.affiliation}
+                      onChange={(e) => {
+                        handleChange("affiliation", e.target.value);
+                      }}
                     />
                   </SectionSmallTtile>
                   <div style={{ display: "flex" }}>
-                    <UserState $State={"재학"}>재학생</UserState>
+                    <UserState $State={"재학"}>
+                      {userData.user_profile.category === "student"
+                        ? "학생"
+                        : "선생님"}
+                    </UserState>
                   </div>
                   <SectionSmallTtile style={{ marginBottom: "0px" }}>
                     <EditInputWrap
                       style={{ fontSize: "16px", color: "#6c6c6c" }}
-                      disabled={!isEditProfileInfo}
-                      value={profile.email}
+                      disabled
+                      value={userData.user_profile.email}
                       onChange={(e) => handleChange("email", e.target.value)}
                     />
                   </SectionSmallTtile>
@@ -92,14 +310,18 @@ const ProfilePage = ({ LoginState }) => {
                     <EditInputWrap
                       style={{ fontSize: "16px", color: "#6c6c6c" }}
                       disabled={!isEditProfileInfo}
-                      value={profile.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
+                      placeholder="예)010-0000-0000"
+                      value={profile.phone_number}
+                      onChange={(e) =>
+                        handleChange("phone_number", e.target.value)
+                      }
                     />
                   </SectionSmallTtile>
                   <SectionSmallTtile>
                     <EditInputWrap
                       style={{ fontSize: "16px", color: "#6c6c6c" }}
                       disabled={!isEditProfileInfo}
+                      placeholder="예)서울시 강서구"
                       value={profile.address}
                       onChange={(e) => handleChange("address", e.target.value)}
                     />
@@ -107,7 +329,10 @@ const ProfilePage = ({ LoginState }) => {
                   <SubmitButton
                     TextColor={"#6c6c6c"}
                     Text={isEditProfileInfo ? "저장" : "정보 수정"}
-                    clickEvent={() => setIsEditProfileInfo((prev) => !prev)}
+                    clickEvent={() => {
+                      if (isEditProfileInfo) updateUserInfo();
+                      setIsEditProfileInfo((prev) => !prev);
+                    }}
                   />
                 </SectionItemWrap>
 
@@ -129,8 +354,11 @@ const ProfilePage = ({ LoginState }) => {
                     <EditInputWrap
                       style={{ fontSize: "16px", color: "#6c6c6c" }}
                       disabled={!isEditEmploymentInfo}
-                      value={profile.position}
-                      onChange={(e) => handleChange("position", e.target.value)}
+                      placeholder="예)프론트 개발자"
+                      value={profile.desired_position}
+                      onChange={(e) =>
+                        handleChange("desired_position", e.target.value)
+                      }
                     />
                   </SectionSmallTtile>
 
@@ -146,28 +374,62 @@ const ProfilePage = ({ LoginState }) => {
                       <EditInputWrap
                         style={{ fontSize: "16px", color: "#6c6c6c" }}
                         disabled={!isEditEmploymentInfo}
-                        value={profile.company}
+                        value={profile.company_name}
+                        placeholder="(주)ABC 회사"
                         onChange={(e) =>
-                          handleChange("company", e.target.value)
+                          handleChange("company_name", e.target.value)
                         }
                       />
                     </SectionSmallTtile>
-                    <SectionSmallTtile style={{ flex: 1 }}>
-                      <EditInputWrap
-                        style={{ fontSize: "16px", color: "#6c6c6c" }}
-                        disabled={!isEditEmploymentInfo}
-                        value={profile.duration}
-                        onChange={(e) =>
-                          handleChange("duration", e.target.value)
-                        }
-                      />
-                    </SectionSmallTtile>
+                    <div
+                      style={{
+                        flex: "2",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <SectionSmallTtile style={{ width: "auto" }}>
+                        <EditInputWrap
+                          style={{
+                            fontSize: "16px",
+                            color: "#6c6c6c",
+                            textAlign: "center",
+                          }}
+                          disabled={!isEditEmploymentInfo}
+                          placeholder="예)2023.03"
+                          value={profile.work_start_date}
+                          onChange={(e) =>
+                            handleChange("work_start_date", e.target.value)
+                          }
+                        />
+                      </SectionSmallTtile>
+                      <p style={{ width: "auto", textAlign: "center" }}>~</p>
+                      <SectionSmallTtile style={{ width: "auto" }}>
+                        <EditInputWrap
+                          style={{
+                            fontSize: "16px",
+                            color: "#6c6c6c",
+                            textAlign: "center",
+                          }}
+                          disabled={!isEditEmploymentInfo}
+                          placeholder="예)재직중"
+                          value={profile.work_end_date}
+                          onChange={(e) =>
+                            handleChange("work_end_date", e.target.value)
+                          }
+                        />
+                      </SectionSmallTtile>
+                    </div>
                   </div>
 
                   <SubmitButton
                     TextColor={"#6c6c6c"}
                     Text={isEditEmploymentInfo ? "저장" : "정보 수정"}
-                    clickEvent={() => setIsEditEmploymentInfo((prev) => !prev)}
+                    clickEvent={() => {
+                      setIsEditEmploymentInfo((prev) => !prev);
+                      if (isEditEmploymentInfo) updateUserJobInfo();
+                    }}
                   />
                 </SectionItemWrap>
               </div>
@@ -177,7 +439,9 @@ const ProfilePage = ({ LoginState }) => {
                     TextColor={"#6c6c6c"}
                     Text={isEditStack ? "수정" : "편집"}
                     BackColor={"white"}
-                    clickEvent={() => setIsEditStack((prev) => !prev)}
+                    clickEvent={() => {
+                      setIsEditStack((prev) => !prev);
+                    }}
                   />
                   <SectionTitle>기술 스택</SectionTitle>
 
@@ -188,9 +452,13 @@ const ProfilePage = ({ LoginState }) => {
                       flexWrap: "wrap",
                     }}
                   >
-                    <StackItem Stack={"JAVA"} />
-                    <StackItem Stack={"JavaScript"} />
-                    {/* ... 생략 */}
+                    {userData.user_profile.skills?.trim()
+                      ? userData.user_profile.skills
+                          .split(",")
+                          .map((item, i) => (
+                            <StackItem Stack={item.trim()} key={i} />
+                          ))
+                      : null}
                   </div>
 
                   {isEditStack && (
@@ -198,8 +466,21 @@ const ProfilePage = ({ LoginState }) => {
                       title="기술 스택 편집"
                       onClose={() => setIsEditStack(false)}
                     >
-                      <EditInput placeholder="스택 입력" />
-                      <AddButton>추가</AddButton>
+                      <EditInput
+                        placeholder="스택 입력"
+                        value={newSkills}
+                        onChange={(e) => {
+                          setNewSkills(e.target.value);
+                        }}
+                      />
+                      <AddButton
+                        onClick={() => {
+                          handleAddSkill();
+                          setIsEditStack(false);
+                        }}
+                      >
+                        추가
+                      </AddButton>
                     </EditModal>
                   )}
                 </SectionItemWrap>
@@ -211,15 +492,56 @@ const ProfilePage = ({ LoginState }) => {
                     clickEvent={() => setIsEditProject((prev) => !prev)}
                   />
                   <SectionTitle>프로젝트</SectionTitle>
+                  {userData.experiences.map((item, i) => {
+                    if (item.type === "project") {
+                      return (
+                        <ProfileProject
+                          key={i}
+                          ProjectName={item.name}
+                          ProjectExplain={item.description}
+                          ProjectStacks={item.skills}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
+
                   {isEditProject && (
                     <EditModal
                       title="프로젝트 추가"
                       onClose={() => setIsEditProject(false)}
                     >
-                      <EditInput placeholder="활동 날짜" />
-                      <EditInput placeholder="활동명" />
-                      <EditInput placeholder="활동 내용" />
-                      <AddButton>추가</AddButton>
+                      <EditInput
+                        placeholder="활동 날짜"
+                        value={newProject.date}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            date: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="활동명"
+                        value={newProject.name}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="활동 내용"
+                        value={newProject.description}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                      />
+                      <AddButton onClick={handleAddProject}>추가</AddButton>
                     </EditModal>
                   )}
                 </SectionItemWrap>
@@ -231,23 +553,56 @@ const ProfilePage = ({ LoginState }) => {
                     clickEvent={() => setIsEditActivity((prev) => !prev)}
                   />
                   <SectionTitle>경험 / 활동 / 교육</SectionTitle>
+                  {userData.experiences.map((item, i) => {
+                    if (item.type === "experience") {
+                      return (
+                        <ProfileProject
+                          key={i}
+                          ProjectName={item.name}
+                          ProjectExplain={item.description}
+                          ProjectStacks={item.skills}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
 
-                  {/* {isEditActivity && (
-                    <EditInputWrap>
-                      <EditInput placeholder="활동 날짜" />
-                      <EditInput placeholder="활동명" />
-                      <EditInput placeholder="활동 내용" />
-                    </EditInputWrap>
-                  )} */}
                   {isEditActivity && (
                     <EditModal
                       title="활동 내역 추가"
                       onClose={() => setIsEditActivity(false)}
                     >
-                      <EditInput placeholder="활동 날짜" />
-                      <EditInput placeholder="활동명" />
-                      <EditInput placeholder="활동 내용" />
-                      <AddButton>추가</AddButton>
+                      <EditInput
+                        placeholder="활동 날짜"
+                        value={newProject.date}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            date: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="활동명"
+                        value={newProject.name}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="활동 내용"
+                        value={newProject.description}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                      />
+                      <AddButton onClick={handleAddExperience}>추가</AddButton>
                     </EditModal>
                   )}
                 </SectionItemWrap>
@@ -261,15 +616,52 @@ const ProfilePage = ({ LoginState }) => {
                   />
                   <SectionTitle>자격 / 어학 / 수상</SectionTitle>
 
+                  {userData.experiences.map((item) => {
+                    if (item.type === "award") {
+                      <ProfileAward
+                        AwardDate={item.date}
+                        AwardTitle={item.name}
+                        AwardInstitution={item.description}
+                      />;
+                    }
+                  })}
+
                   {isEditAward && (
                     <EditModal
                       title="활동 내역 추가"
                       onClose={() => setIsEditAward(false)}
                     >
-                      <EditInput placeholder="수상,취득일" />
-                      <EditInput placeholder="자격증,수상 명" />
-                      <EditInput placeholder="자격증 내용 및 수상 내용" />
-                      <AddButton>추가</AddButton>
+                      <EditInput
+                        placeholder="수상,취득일"
+                        value={newProject.date}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            date: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="자격증,수상 명"
+                        value={newProject.name}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                      <EditInput
+                        placeholder="자격증 내용 및 수상 내용"
+                        value={newProject.description}
+                        onChange={(e) =>
+                          setNewProject((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                      />
+                      <AddButton onClick={handleAddAward}>추가</AddButton>
                     </EditModal>
                   )}
                 </SectionItemWrap>
