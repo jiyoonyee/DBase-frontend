@@ -17,59 +17,52 @@ const JobUploadLayout = () => {
     }
   };
 
-  const validatePage0 = () => {
-    const jobName = document.getElementById("InputJobName")?.value.trim();
-    const deadline = document.getElementById("JobDeadLine")?.value.trim();
+  // const validatePage0 = () => {
+  //   const jobName = document.getElementById("InputJobName")?.value.trim();
+  //   const deadline = document.getElementById("JobDeadLine")?.value.trim();
 
-    if (!jobName || !deadline || !jobFileRef.current?.files[0]) {
-      alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
-      return false;
-    }
-    return true;
-  };
+  //   if (!jobName || !deadline || !jobFileRef.current?.files[0]) {
+  //     alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
-  const validatePage1 = () => {
-    const companyName = document
-      .getElementById("CompanyNameInput2")
-      ?.value.trim();
-    const year = document.getElementById("CompanyYearInput2")?.value.trim();
-    const work = document.getElementById("CompanyWorkInput2")?.value.trim();
-    const employees = document
-      .getElementById("CompanyemployeesInput2")
-      ?.value.trim();
-    const homepage = document.getElementById("CompanyWorkInput2")?.value.trim();
-    const address = document
-      .getElementById("CompanyAdressInput2")
-      ?.value.trim();
+  // const validatePage1 = () => {
+  //   const companyName = document
+  //     .getElementById("CompanyNameInput2")
+  //     ?.value.trim();
+  //   const year = document.getElementById("CompanyYearInput2")?.value.trim();
+  //   const work = document.getElementById("CompanyWorkInput2")?.value.trim();
+  //   const employees = document
+  //     .getElementById("CompanyemployeesInput2")
+  //     ?.value.trim();
+  //   const homepage = document.getElementById("CompanyWorkInput2")?.value.trim();
+  //   const address = document
+  //     .getElementById("CompanyAdressInput2")
+  //     ?.value.trim();
 
-    if (!companyName || !year || !work || !employees || !homepage || !address) {
-      alert("기업 기본 정보를 모두 입력해주세요.");
-      return false;
-    }
-    return true;
-  };
+  //   if (!companyName || !year || !work || !employees || !homepage || !address) {
+  //     alert("기업 기본 정보를 모두 입력해주세요.");
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   // const validatePage2 = () => {
-  //   const job = document.querySelector('input[placeholder="기타"]') as HTMLInputElement | null;
-  //   const jobText = job?.disabled ? "" : job?.value.trim();
+  //   const job = document.querySelector('input[placeholder="기타"]');
+  //   const jobText = job && !job.disabled ? job.value.trim() : "";
 
   //   const fields = document.querySelectorAll("input[type=text], textarea");
 
   //   const requiredFilled = Array.from(fields).every((field) => {
-  //     if (
-  //       field instanceof HTMLInputElement ||
-  //       field instanceof HTMLTextAreaElement
-  //     ) {
-  //       return field.disabled || field.value.trim() !== "";
-  //     }
-  //     return true;
+  //     return field.disabled || field.value.trim() !== "";
   //   });
 
   //   if (!requiredFilled) {
   //     alert("모든 채용 정보를 입력해주세요.");
   //     return false;
   //   }
-
   //   return true;
   // };
 
@@ -81,8 +74,8 @@ const JobUploadLayout = () => {
   const handleNextPage = () => {
     let isValid = true;
 
-    if (nextPage === 0) isValid = validatePage0();
-    else if (nextPage === 1) isValid = validatePage1();
+    // if (nextPage === 0) isValid = validatePage0();
+    // else if (nextPage === 1) isValid = validatePage1();
     // else if (nextPage === 2) isValid = validatePage2();
 
     if (!isValid) return;
@@ -345,7 +338,7 @@ const JobUploadLayout = () => {
               </div>
             </div>
             <div>
-              <InputLabel>접수 서류</InputLabel>
+              <InputLabel style={{ width: "auto" }}>접수 서류</InputLabel>
               <div>
                 <CheckBoxWrap>
                   <input type="checkbox" id="insurance1" />
@@ -939,14 +932,15 @@ const JobUploadCompanyDetailForm = styled.div`
   & > div:nth-child(6) {
     /* background-color: aliceblue; */
     display: flex;
-    justify-content: center;
-    /* align-items: start; */
+    justify-content: start;
+    align-items: start;
     flex-direction: column;
     gap: 5px;
     width: 100%;
     & > div {
+      width: 100%;
       display: flex;
-      justify-content: end;
+      justify-content: space-between;
       align-items: center;
     }
   }
