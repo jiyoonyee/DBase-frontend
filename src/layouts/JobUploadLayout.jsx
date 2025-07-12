@@ -8,6 +8,10 @@ const JobUploadLayout = () => {
 
   const [jobFileName, setJobFileName] = useState("");
   const [jobFilePlusName, setJobFilePlusName] = useState("");
+  const [CompanyInfor, setCompanyInfor] = useState(null);
+
+  let deadline = "";
+
   const handleJobFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -22,10 +26,10 @@ const JobUploadLayout = () => {
   };
 
   const validatePage0 = () => {
-    const deadline = document.getElementById("UploadDeadLine")?.value.trim();
+    deadline = document.getElementById("UploadDeadLine").value.trim();
 
     if (!deadline || !jobFileRef.current?.files[0]) {
-      alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
+      alert("지원마감일, 채용의뢰서를 모두 입력해주세요.");
       return false;
     }
     handleFirstFormSubmit();
@@ -36,26 +40,26 @@ const JobUploadLayout = () => {
     .getElementById("UploadDeadLine")
     ?.value.trim();
 
-  // const validatePage1 = () => {
-  //   const companyName = document
-  //     .getElementById("CompanyNameInput2")
-  //     ?.value.trim();
-  //   const year = document.getElementById("CompanyYearInput2")?.value.trim();
-  //   const work = document.getElementById("CompanyWorkInput2")?.value.trim();
-  //   const employees = document
-  //     .getElementById("CompanyemployeesInput2")
-  //     ?.value.trim();
-  //   const homepage = document.getElementById("CompanyWorkInput2")?.value.trim();
-  //   const address = document
-  //     .getElementById("CompanyAdressInput2")
-  //     ?.value.trim();
+  const validatePage1 = () => {
+    const companyName = document
+      .getElementById("CompanyNameInput2")
+      ?.value.trim();
+    const year = document.getElementById("CompanyYearInput2")?.value.trim();
+    const work = document.getElementById("CompanyWorkInput2")?.value.trim();
+    const employees = document
+      .getElementById("CompanyemployeesInput2")
+      ?.value.trim();
+    const homepage = document.getElementById("CompanyWebsite")?.value.trim();
+    const address = document
+      .getElementById("CompanyAdressInput2")
+      ?.value.trim();
 
-  //   if (!companyName || !year || !work || !employees || !homepage || !address) {
-  //     alert("기업 기본 정보를 모두 입력해주세요.");
-  //     return false;
-  //   }
-  //   return true;
-  // };
+    if (!companyName || !year || !work || !employees || !homepage || !address) {
+      alert("기업 기본 정보를 모두 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
 
   // const validatePage2 = () => {
   //   const job = document.querySelector('input[placeholder="기타"]');
@@ -99,36 +103,40 @@ const JobUploadLayout = () => {
   const jobFileRef = useRef(null);
   const jobFilePlusRef = useRef(null);
 
-  const handleFirstFormSubmit = async () => {
+  const handleFirstFormSubmit = () => {
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
     const jobFilePlus = jobFilePlusRef.current.files[0];
 
     if (jobFile) {
-      formData.append("file", jobFile); // 파일명 명시
+      formData.append("file", jobFile);
     }
 
     if (jobFilePlus) {
-      formData.append("etcFile", jobFilePlus); // 파일명 명시
+      formData.append("etcFile", jobFilePlus);
     }
 
-    // formData.append("deadline", UploadDeadLine);
-    try {
-      const res = await fetch(
-        `http://localhost:4433/job/input?fileName=${jobFileName}&etcFileName=${jobFilePlusName}`,
-        {
-          method: "POST",
-          body: formData,
+    fetch(
+      `http://localhost:4433/job/input?fileName=${jobFileName}&etcFileName=${jobFilePlusName}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    )
+      .then((res) => {
+        // console.log(res);
+        // console.log(res.json());
+        // console.log(res.data);
+        const result = res.json();
+
+        if (result.success) {
+          setCompanyInfor(result.companyInfor);
         }
-      );
-
-      if (!res.ok) throw new Error("업로드 실패");
-
-      console.log("업로드 성공");
-    } catch (err) {
-      console.error("업로드 에러:", err);
-    }
+      })
+      .catch((err) => {
+        console.error("업로드 에러:", err);
+      });
   };
 
   return (
@@ -181,7 +189,9 @@ const JobUploadLayout = () => {
 
                     <div style={{ textAlign: "center" }}>
                       {jobFileName ? (
-                        `선택한 파일: ${jobFileName}`
+                        <div style={{ color: "blue", fontWeight: "bold" }}>
+                          선택한 파일: {jobFileName}
+                        </div>
                       ) : (
                         <>
                           PDF파일을 업로드하세요 <br />
@@ -264,11 +274,11 @@ const JobUploadLayout = () => {
                 </InputWrap>
               </div>
               <div>
-                <InputLabel $essentialState={true} htmlFor="CompanyWorkInput2">
+                <InputLabel $essentialState={true} htmlFor="CompanyWebsite">
                   홈페이지
                 </InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyWorkInput2" />
+                  <input type="text" id="CompanyWebsite" />
                 </InputWrap>
               </div>
             </div>
@@ -390,7 +400,7 @@ const ButtonWrap = styled.div`
 const JobUplaodForm = styled.div`
   color: black;
   /* width: 100%; */
-  margin: 0px 300px !important;
+  margin: 0px 200px !important;
   background-color: white;
   border-radius: 10px;
   padding: 30px;

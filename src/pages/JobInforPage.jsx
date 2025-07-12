@@ -25,7 +25,12 @@ const JobInforPage = ({ loginState }) => {
           <PageTitleWrap>
             {isJobElementPage && (
               <div
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  position: "absolute",
+                  top: "0",
+                  transform: "translateY(-150%)",
+                }}
                 onClick={() => {
                   navigate(-1);
                 }}
@@ -46,42 +51,45 @@ const JobInforPage = ({ loginState }) => {
               <PageTitle>지원현황 확인</PageTitle>
             )}
           </PageTitleWrap>
-        </PageinforWrap>
-        {isOnlyJobInforPage && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              gap: "10px",
-              marginBottom: "20px",
-            }}
-          >
-            <SubmitButton
-              imagePath={"../src/assets/images/Note.svg"}
-              BackColor={"white"}
-              TextColor={"black"}
-              TextSize={"20px"}
-              Text={"지원현황 확인"}
-              BorderState={false}
-              clickEvent={() => {
-                navigate("companyapplycheck");
+          {isOnlyJobInforPage && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                gap: "10px",
+                marginBottom: "20px",
+                position: "absolute",
+                right: "0",
+                transform: "translateY(-100%)",
               }}
-            />
-            {loginState && (
+            >
               <SubmitButton
-                clickEvent={() => {
-                  navigate("/jobinfor/jobupload");
-                }}
                 imagePath={"../src/assets/images/Note.svg"}
-                BackColor={"#3449B4"}
-                TextColor={"white"}
+                BackColor={"white"}
+                TextColor={"black"}
                 TextSize={"20px"}
-                Text={"지원의뢰서 등록"}
+                Text={"지원현황 확인"}
                 BorderState={false}
+                clickEvent={() => {
+                  navigate("companyapplycheck");
+                }}
               />
-            )}
-          </div>
-        )}
+              {loginState && (
+                <SubmitButton
+                  clickEvent={() => {
+                    navigate("/jobinfor/jobupload");
+                  }}
+                  imagePath={"../src/assets/images/Note.svg"}
+                  BackColor={"#3449B4"}
+                  TextColor={"white"}
+                  TextSize={"20px"}
+                  Text={"지원의뢰서 등록"}
+                  BorderState={false}
+                />
+              )}
+            </div>
+          )}
+        </PageinforWrap>
 
         <Outlet />
         {/* <JobInforLayout></JobInforLayout> */}
@@ -120,6 +128,7 @@ const PageinforWrap = styled.div`
   /* background-color: #95a8b93b; */
   margin-top: 100px !important;
   padding: 50px 0px;
+  position: relative;
 `;
 
 const PageTitleWrap = styled.div`
@@ -128,6 +137,7 @@ const PageTitleWrap = styled.div`
   align-items: start;
   flex-direction: column;
   gap: 30px;
+  position: relative;
 `;
 
 const PageTitle = styled.div`

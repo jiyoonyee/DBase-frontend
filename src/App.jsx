@@ -25,9 +25,7 @@ const App = () => {
   const updateHeaderState = (state) => {
     if (state) {
       setHeaderState(true);
-      console.log("헤더 늘리기");
     } else {
-      console.log("줄이기");
       setHeaderState(false);
     }
   };

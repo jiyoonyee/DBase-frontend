@@ -31,7 +31,7 @@ const Header = ({ updateLoginState, headerState }) => {
             <img src="../src/assets/images/Logo.svg" alt="logo" />
           </Link>
         </LogoWrap>
-        <MenuWrap>
+        <MenuWrap $shrink={headerState}>
           <Link to={"/jobinfor"}>채용정보</Link>
           <Link to={"/profile"}>내프로필</Link>
           <Link to={"/EmploymentStatus"}>취업현황</Link>
@@ -64,19 +64,18 @@ const Header = ({ updateLoginState, headerState }) => {
 const Wrap = styled.div`
   color: white;
   width: 100%;
-  height: ${(props) => (props.$shrink ? "50px" : "100px")};
-  /* padding: ${(props) => (props.$shrink ? "5px 0px" : "30px 0px")}; */
+  height: 100px;
   transition: all 0.3s ease-in-out;
   position: fixed;
   top: 0;
-  background-color: transparent;
+  background-color: ${(props) =>
+    props.$shrink ? "rgba(255, 255, 255, 0.11)" : "transparent"};
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.199);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(7.9px);
   z-index: 999;
-  /* height: ; */
 `;
 
 const HeaderWrap = styled.div`
@@ -102,13 +101,15 @@ const MenuWrap = styled.div`
   & > a {
     color: white;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-    padding: 8px 12px;
+    padding: 10px 15px;
     border-radius: 8px;
     transition: all 0.2s ease-in-out;
     text-decoration: none;
-
+    white-space: pre;
     &:hover {
-      background-color: rgba(84, 84, 84, 0.2);
+      background-color: ${(props) =>
+        props.$shrink ? "rgba(0, 0, 0, 0.3)" : "none"};
+      /* background-color: ; */
     }
   }
 `;

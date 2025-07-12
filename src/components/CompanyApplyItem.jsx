@@ -7,7 +7,7 @@ import styled from "styled-components";
 import SelectDropDown from "./SelectDropDown";
 import SubmitButton from "./SubmitButton";
 
-const CompanyApplyItem = () => {
+const CompanyApplyItem = ({ UserName, CompanyName, CompanyWork }) => {
   return (
     <SectionItemWrap>
       <SectionTitle>3-3 박현욱</SectionTitle>

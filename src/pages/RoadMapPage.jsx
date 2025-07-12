@@ -120,6 +120,7 @@ const RoadMapPage = () => {
 };
 const Wrap = styled.div`
   width: 100%;
+  min-height: 100vh;
   background: linear-gradient(
     to bottom,
     #1e0c04 0vh,
@@ -146,7 +147,7 @@ const PageinforWrap = styled.div`
   /* height: 100%; */
 
   /* background-color: #95a8b93b; */
-  margin-top: 100px !important;
+  margin-top: 150px !important;
   padding: 50px 0px;
 `;
 

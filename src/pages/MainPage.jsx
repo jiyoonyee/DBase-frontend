@@ -12,10 +12,8 @@ const MainPage = ({ updateHeaderState }) => {
   // console.log(inView, "inforWrap");
   useEffect(() => {
     if (inView) {
-      console.log("헤더 줄이기");
       updateHeaderState(true);
     } else {
-      console.log("늘리기");
       updateHeaderState(false);
     }
   }, [inView, updateHeaderState]);

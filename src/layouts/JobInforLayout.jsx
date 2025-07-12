@@ -16,7 +16,7 @@ const JobInforLayout = () => {
       console.log(data);
       console.log(Companys);
     } catch (error) {
-      console.error("로드맵 요청 실패:", error);
+      console.error(" 요청 실패:", error);
     }
   };
 
