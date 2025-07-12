@@ -5,6 +5,8 @@ import JobInforLayout from "../layouts/JobInforLayout";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 import FileUploadInput from "../components/FileUploadInput";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const JobInforPage = ({ loginState }) => {
   const location = useLocation();
@@ -17,6 +19,29 @@ const JobInforPage = ({ loginState }) => {
     location.pathname === "/jobinfor/companyapply";
   const isOnlyJobCompanyapplyCheckPage =
     location.pathname === "/jobinfor/companyapplycheck";
+
+  const [companyData, setCompanyData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const queryParams = new URLSearchParams(location.search);
+  const companyId = queryParams.get("companyId");
+
+  useEffect(() => {
+    if (!companyId) return;
+
+    setLoading(true);
+
+    axios
+      .get(`http://localhost:4433/job/company?id=${companyId}`)
+      .then((res) => {
+        setCompanyData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("API 호출 에러:", err);
+        setLoading(false);
+      });
+  }, [companyId]);
 
   return (
     <>
@@ -40,7 +65,7 @@ const JobInforPage = ({ loginState }) => {
             )}
             {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
             {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
-            {isJobInforDetail && <PageTitle>알리콘</PageTitle>}
+            {isJobInforDetail && <PageTitle>{companyData?.company_name || "채용 상세정보"}</PageTitle>}
             {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
             {isOnlyJobInforPage && (
               <PageSubTitle>

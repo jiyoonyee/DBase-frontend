@@ -110,7 +110,7 @@ const RoadMapPage = () => {
           <SectionTitle style={{ marginBottom: "30px" }}>
             {markdownTitle}
           </SectionTitle>
-          <div style={{ display: "block" }} className="markdown-body">
+          <div style={{ display: "block" , backgroundColor: "white", color: "black" }} className="markdown-body">
             <ReactMarkdown>{markdown}</ReactMarkdown>
           </div>
         </RoadMapSecitonWrap>

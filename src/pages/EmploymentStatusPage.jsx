@@ -19,9 +19,15 @@ const EmploymentStatusPage = () => {
     restaurant: 0,
   });
 
+  // 주변 장소 위치 정보 배열
+  // {lat, lng, type, name}
+  const [placePositions, setPlacePositions] = useState([]);
+
   useEffect(() => {
     if (!selectedCompanyId) {
       setSelectedCompany(null);
+      setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      setPlacePositions([]);
       return;
     }
 
@@ -33,12 +39,14 @@ const EmploymentStatusPage = () => {
       .catch((err) => {
         console.error("선택된 회사 정보 가져오기 실패:", err);
         setSelectedCompany(null);
+        setPlacePositions([]);
       });
   }, [selectedCompanyId]);
 
   useEffect(() => {
     if (!selectedCompany?.address) {
       setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      setPlacePositions([]);
       return;
     }
 
@@ -50,10 +58,11 @@ const EmploymentStatusPage = () => {
         const { x, y } = result[0];
         const location = new window.kakao.maps.LatLng(y, x);
 
+        // 주변 장소 개수와 위치 검색 함수
         const searchPlaceCount = (keyword, key) => {
           const options = {
             location,
-            radius: 300, // 300m 범위 내 검색
+            radius: 300, // 300m 반경 내 검색
             size: 15,
           };
 
@@ -61,20 +70,36 @@ const EmploymentStatusPage = () => {
             keyword,
             (data, status) => {
               if (status === window.kakao.maps.services.Status.OK) {
+                // 개수 상태 업데이트
                 setPlaceCounts((prev) => ({ ...prev, [key]: data.length }));
+
+                // 위치 정보도 업데이트 (기존 타입 데이터 제거 후 새로 추가)
+                setPlacePositions((prev) => {
+                  const filtered = prev.filter((item) => item.type !== key);
+                  const newPlaces = data.map((place) => ({
+                    lat: place.y,
+                    lng: place.x,
+                    type: key,
+                    name: place.place_name,
+                  }));
+                  return [...filtered, ...newPlaces];
+                });
               } else {
                 setPlaceCounts((prev) => ({ ...prev, [key]: 0 }));
+                setPlacePositions((prev) => prev.filter((item) => item.type !== key));
               }
             },
             options
           );
         };
 
+        // 키워드별 검색 실행
         searchPlaceCount("지하철역", "subway");
         searchPlaceCount("편의점", "convenience");
         searchPlaceCount("음식점", "restaurant");
       } else {
         setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+        setPlacePositions([]);
       }
     });
   }, [selectedCompany]);
@@ -96,7 +121,11 @@ const EmploymentStatusPage = () => {
               <SectionSmallTtile>
                 학생들이 재직 중인 회사 위치를 확인하세요
               </SectionSmallTtile>
-              <KakaoMap onSelectCompany={setSelectedCompanyId} />
+              {/* 장소 위치 정보 placePositions 전달 */}
+              <KakaoMap
+                onSelectCompany={setSelectedCompanyId}
+                placePositions={placePositions}
+              />
             </SectionMapalign>
           </SectionItemWrap>
 
