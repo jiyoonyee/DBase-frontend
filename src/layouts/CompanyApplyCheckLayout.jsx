@@ -34,7 +34,7 @@ const CompanyApplyItemWrap = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 `;
 
 export default CompanyApplytCheck;

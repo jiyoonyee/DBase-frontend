@@ -79,4 +79,5 @@ export const UserCompanyState = styled.div`
   font-weight: 600;
   border-radius: 1000px;
   margin-bottom: 10px;
+  cursor: pointer;
 `;

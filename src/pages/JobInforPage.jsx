@@ -7,9 +7,9 @@ import SubmitButton from "../components/SubmitButton";
 import FileUploadInput from "../components/FileUploadInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import HeroAnimation from "../components/HeroAnimation"; 
+import HeroAnimation from "../components/HeroAnimation";
 
-const JobInforPage = ({ loginState }) => {
+const JobInforPage = ({ TeacherState }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
@@ -46,7 +46,7 @@ const JobInforPage = ({ loginState }) => {
 
   return (
     <>
-    <HeroAnimation />
+      <HeroAnimation />
       <Wrap>
         <PageinforWrap>
           <PageTitleWrap>
@@ -67,7 +67,11 @@ const JobInforPage = ({ loginState }) => {
             )}
             {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
             {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
-            {isJobInforDetail && <PageTitle>{companyData?.company_name || "채용 상세정보"}</PageTitle>}
+            {isJobInforDetail && (
+              <PageTitle>
+                {companyData?.company_name || "채용 상세정보"}
+              </PageTitle>
+            )}
             {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
             {isOnlyJobInforPage && (
               <PageSubTitle>
@@ -101,7 +105,7 @@ const JobInforPage = ({ loginState }) => {
                   navigate("companyapplycheck");
                 }}
               />
-              {loginState && (
+              {TeacherState && (
                 <SubmitButton
                   clickEvent={() => {
                     navigate("/jobinfor/jobupload");

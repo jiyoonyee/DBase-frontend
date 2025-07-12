@@ -20,11 +20,6 @@ const JobUploadLayout = () => {
     }
   };
 
-  const handleJobFilePlusChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setJobFilePlusName(file.name);
-  };
-
   const handleNextPage = async () => {
     if (nextPage === 0) {
       await handleFirstFormSubmit();
@@ -36,7 +31,10 @@ const JobUploadLayout = () => {
   };
 
   const handlebeforePage = () => {
-    setNextPage((prev) => prev - 1);
+    if (nextPage != 0) {
+      setNextPage((prev) => prev - 1);
+    }
+    // setNextPage((prev) => prev - 1);
   };
 
   const jobFileRef = useRef(null);
@@ -186,7 +184,7 @@ const JobUploadLayout = () => {
 
       const data = await res.json();
       console.log(data, "업로드 성공");
-      navigate("/job/infor"); // 업로드 성공 후 페이지 이동
+      navigate("/jobinfor"); // 업로드 성공 후 페이지 이동
     } catch (err) {
       console.error("업로드 에러:", err);
       alert("업로드 중 오류가 발생했습니다.");
@@ -250,32 +248,6 @@ const JobUploadLayout = () => {
                         <div style={{ color: "blue", fontWeight: "bold" }}>
                           선택한 파일: {jobFileName}
                         </div>
-                      ) : (
-                        <>
-                          PDF파일을 업로드하세요 <br />
-                          최대 10MB
-                        </>
-                      )}
-                    </div>
-                  </label>
-                </div>
-                <div>
-                  <InputLabel $essentialState={true}>추가자료</InputLabel>
-                  <input
-                    type="file"
-                    id="jobFilePlus"
-                    ref={jobFilePlusRef}
-                    onChange={handleJobFilePlusChange}
-                    accept=".pdf"
-                  />
-                  <label htmlFor="jobFilePlus">
-                    <img
-                      src="../src/assets/images/fileUpload.svg"
-                      alt="파일 업로드"
-                    />
-                    <div style={{ textAlign: "center" }}>
-                      {jobFilePlusName ? (
-                        `선택한 파일: ${jobFilePlusName}`
                       ) : (
                         <>
                           PDF파일을 업로드하세요 <br />
@@ -735,9 +707,9 @@ const JobUploadFileForm = styled.div`
         gap: 5px;
         & > label:nth-child(3) {
           cursor: pointer;
-          width: 100%;
+          width: 50%;
           /* background-color: #cccccc; */
-          aspect-ratio: 16 / 6;
+          aspect-ratio: 8 / 2;
           border: 3px dashed #a1a1a1;
           border-radius: 10px;
           display: flex;
