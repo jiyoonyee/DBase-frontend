@@ -55,6 +55,7 @@ const JobInforLayout = () => {
 
 const CompnayListWrap = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   flex-wrap: wrap;
   gap: 50px;
 
