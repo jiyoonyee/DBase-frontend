@@ -15,7 +15,7 @@ const CompanyApplyLayout = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const companyId = params.get("comapanyId");
+    const companyId = params.get("companyId");
 
     if (companyId) {
       axios

@@ -66,7 +66,9 @@ const JobInforDetail = () => {
           </div>
         </div>
         <SubmitButton
-          clickEvent={() => navigate("/jobinfor/companyapply")}
+          clickEvent={() =>
+            navigate(`/jobinfor/companyapply?companyId=${companyId}`)
+          }
           BackColor={"white"}
           TextColor={"black"}
           Text={"지원하기"}

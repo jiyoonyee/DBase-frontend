@@ -64,7 +64,7 @@ const CompanyItem = ({ Year, Name, Field, Location, Deadline, Work, id }) => {
             BackColor={"#3449B4"}
             TextColor={"#FFFFFF"}
             Text={"지원하기"}
-            clickEvent={() => navigate(`companyapply?comapanyId=${ComapanyId}`)}
+            clickEvent={() => navigate(`companyapply?companyId=${ComapanyId}`)}
           />
         </ButtonWrap>
       </Wrap>
