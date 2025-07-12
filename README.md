@@ -13,7 +13,7 @@
   [node.js 설치(LTS)](https://nodejs.org/ko/download)  
   `npm -v` -> `version number`
 - pnpm **(10.12.1)**  
-   `npm intall -g pnpm`  
+   `npm install -g pnpm`  
    `pnpm -v` -> `version number`
 
 ## 실행
