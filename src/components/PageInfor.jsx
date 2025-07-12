@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const PageInfor = ({ TitleText, PageText }) => {
+const PageInfor = ({ ImageURL, TitleText, PageText }) => {
   return (
     <>
       <Wrap>
-        <ImageWrap></ImageWrap>
+        <ImageWrap $url={ImageURL}></ImageWrap>
         <InforTextWrap>
           <div>{TitleText}</div>
           <div>{PageText}</div>
@@ -34,8 +34,11 @@ const ImageWrap = styled.div`
   width: 45%;
   aspect-ratio: 16 / 9; /* 또는 2 / 1, 원하는 비율로 설정 */
   background-color: rgba(154, 176, 255, 0.5);
-  border-radius: 50px;
-
+  border-radius: 10px;
+  background-image: url(${(props) => props.$url});
+  background-size: cover;
+  background-position: center;
+  border: 1px solid white;
   @media screen and (max-width: 1000px) {
     & {
       width: 100%;

@@ -1,8 +1,24 @@
 import styled from "styled-components";
 import CompanyItem from "../components/CompanyItem";
 import SearchCompanyInput from "../components/SearchCompanyInput";
+import { useEffect } from "react";
 
 const JobInforLayout = () => {
+  const getCompnay = async () => {
+    try {
+      const res = await fetch(`http://localhost:4433/job`);
+      const data = await res.json();
+
+      console.log(data);
+    } catch (error) {
+      console.error("로드맵 요청 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    getCompnay();
+  }, []);
+
   return (
     <>
       <SearchCompanyInput

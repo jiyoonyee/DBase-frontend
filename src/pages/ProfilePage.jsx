@@ -100,12 +100,22 @@ const ProfilePage = () => {
 
 const Wrap = styled.div`
   width: 100%;
-  background: linear-gradient(#001300, 0%, #1b3d1b, 23%, #376635, 48%, #6dba69);
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #001300 0%,
+    #072807 25vh,
+    #1b3d1b 50vh,
+    #3c6b39 75vh,
+    #6dba69 100vh
+  );
   color: white;
   padding-bottom: 100px;
+
   & > div {
     margin: 0px 200px;
   }
+
   @media screen and (max-width: 1000px) {
     & > div {
       margin: 0px 20px;

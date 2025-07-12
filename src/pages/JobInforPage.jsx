@@ -92,12 +92,21 @@ const JobInforPage = ({ loginState }) => {
 
 const Wrap = styled.div`
   width: 100%;
-  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #020619 0vh,
+    #061751 20vh,
+    #0b2da2 50vh,
+    #0c2ca0 100vh
+  );
   color: white;
   padding-bottom: 100px;
+
   & > div {
     margin: 0px 200px;
   }
+
   @media screen and (max-width: 1000px) {
     & > div {
       margin: 0px 20px;

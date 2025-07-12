@@ -51,6 +51,7 @@ const Wrap = styled.div`
       flex-direction: column;
       gap: 10px;
       color: #a1a1a1;
+      cursor: pointer;
       & > img {
         width: 25px;
       }

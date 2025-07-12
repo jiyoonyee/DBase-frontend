@@ -53,24 +53,28 @@ const MainPage = ({ updateHeaderState }) => {
         </MainWrap>
         <InforWrap ref={inforWrap}>
           <PageInfor
+            ImageURL={"../src/assets/images/page1.png"}
             TitleText={"채용정보를 한눈에 확인하세요"}
             PageText={
               "AI 매칭 시스템으로 맞춤형 채용 정보를 확인하고 간편하게 회사에 대한 정보를 알아보세요"
             }
           />
           <PageInfor
+            ImageURL={"../src/assets/images/page2.png"}
             TitleText={"간단한 이력서와 프로필 등록"}
             PageText={
               "기술 스택, 프로젝트, 포트폴리오를 체계적으로 관리하고 나만의 이력서를 완성하세요"
             }
           />
           <PageInfor
+            ImageURL={"../src/assets/images/page3.png"}
             TitleText={"지도에서 회사의 위치들을 확인하세요"}
             PageText={
               "지도로 보는 선배들의 취업 현황과 회사 주변 편의 시설을 한눈에 확인하세요"
             }
           />
           <PageInfor
+            ImageURL={"../src/assets/images/page4.png"}
             TitleText={"원하는 기술 스택의 취업 로드맵을 따라가세요"}
             PageText={
               "AI가 분석한 맞춤형 취업 로드맵으로 체계적인 커리어 준비를 시작하세요"
@@ -80,7 +84,10 @@ const MainPage = ({ updateHeaderState }) => {
         <LoginWrap>
           <div>지금 바로 시작하세요</div>
           <div>DBase와 함께 여러분의 꿈을 만들어 보세요</div>
-          <AcountButton LinkPath={"#"} Label={"구글 계정으로 로그인 →"} />
+          <AcountButton
+            LinkPath={"http://localhost:4433/auth/google"}
+            Label={"구글 계정으로 로그인 →"}
+          />
           <div>@sdh.hs.kr 계정만 사용 가능합니다</div>
         </LoginWrap>
       </Wrap>

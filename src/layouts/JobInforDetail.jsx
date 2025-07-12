@@ -120,12 +120,12 @@ const JobInforDetail = () => {
 
             <CompanyButtonWrap>
               <SubmitButton
-                Text={"추가자료"}
+                Text={"추가자료 다운로드"}
                 TextColor={"#6c6c6c"}
                 BackColor={"white"}
               />
               <SubmitButton
-                Text={"채용의뢰서"}
+                Text={"채용의뢰서 다운로드"}
                 TextColor={"white"}
                 BackColor={"#3449B4"}
               />

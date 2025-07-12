@@ -39,7 +39,17 @@ const Header = ({ updateLoginState, headerState }) => {
         </MenuWrap>
 
         {user ? (
-          <div style={{ color: "white" }}>{user.name}님</div>
+          <div
+            style={{
+              color: "black",
+              backgroundColor: "white",
+              borderRadius: "10px",
+              padding: "15px 20px",
+              fontWeight: "bold",
+            }}
+          >
+            {user.name}님
+          </div>
         ) : (
           <AcountButton
             LinkPath={"http://localhost:4433/auth/google"}
@@ -91,6 +101,15 @@ const MenuWrap = styled.div`
   gap: 100px;
   & > a {
     color: white;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+
+    &:hover {
+      background-color: rgba(84, 84, 84, 0.2);
+    }
   }
 `;
 

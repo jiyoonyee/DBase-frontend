@@ -42,19 +42,18 @@ const JobUploadLayout = () => {
   const jobFileRef = useRef(null);
   const jobFilePlusRef = useRef(null);
 
-  const toBase64 = (str) => {
-    return btoa(unescape(encodeURIComponent(str)));
-  };
-
   const handleSubmit = async () => {
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
+    const jobFilePlus = jobFilePlusRef.current.files[0];
 
     if (jobFile) {
       formData.append("file", jobFile);
-      const base64Name = toBase64(jobFile.name);
-      formData.append("filenameBase64", base64Name);
+    }
+
+    if (jobFilePlus) {
+      formData.append("fileplus", jobFilePlus);
     }
     for (let pair of formData.entries()) {
       console.log(pair[0], pair[1]);

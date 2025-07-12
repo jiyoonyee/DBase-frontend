@@ -45,6 +45,7 @@ const CompanyApplytCheck = () => {
                   { ItemName: "미제출", ReqName: "미제출" },
                 ]}
                 DropDownLabel={"제출완료"} // 나중에 값 받아와서 초기화
+                DropDwonItemColor={"#078bff"}
               />
               <SubmitButton
                 Text={"지원서류 다운로드"}

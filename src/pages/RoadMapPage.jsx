@@ -53,11 +53,6 @@ const RoadMapPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetch("../src/assets/markdowns/test.md")
-  //     .then((response) => response.text())
-  //     .then((text) => setMarkdown(text));
-  // }, []);
   return (
     <>
       <Wrap>
@@ -123,22 +118,24 @@ const RoadMapPage = () => {
     </>
   );
 };
-
 const Wrap = styled.div`
   width: 100%;
+
   background: linear-gradient(
     to bottom,
-    #1e0c04 0%,
-    #4a210e 10%,
-    #753618 25%,
-    #ea6727 60%,
-    #ff8c42 100%
+    #1e0c04 0vh,
+    #35190a 20vh,
+    #753618 50vh,
+    #ea6727 75vh,
+    #ff8c42 100vh
   );
   color: white;
   padding-bottom: 100px;
+
   & > div {
     margin: 0px 200px;
   }
+
   @media screen and (max-width: 1000px) {
     & > div {
       margin: 0px 20px;
