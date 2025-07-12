@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import CompanyItem from "../components/CompanyItem";
 import SearchCompanyInput from "../components/SearchCompanyInput";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const JobInforLayout = () => {
+  const [Companys, setCompanys] = useState([]);
+
   const getCompnay = async () => {
     try {
       const res = await fetch(`http://localhost:4433/job`);
       const data = await res.json();
-
-      console.log(data);
+      if (data.succes) {
+        setCompanys(data);
+      }
     } catch (error) {
       console.error("로드맵 요청 실패:", error);
     }
@@ -30,15 +33,18 @@ const JobInforLayout = () => {
         Placeholder={"회사명으로 검색"}
       />
       <CompnayListWrap>
-        <CompanyItem
-          Year={"2025"}
-          Name={"슈퍼무브"}
-          Field={"개발"}
-          Location={"서울특별시 강남구"}
-          Deadline={"2025.05.30"}
-          Work={"모빌리티 관제 시스템 Web 개발 및 테스트"}
-          id={"1"}
-        />
+        {Companys.map((item, i) => (
+          <CompanyItem
+            key={i}
+            Year={item.year}
+            Name={item.company_name}
+            Field={item.business_type}
+            Location={item.address}
+            Deadline={item.deadline}
+            Work={item.main_business}
+            id={item.id}
+          />
+        ))}
       </CompnayListWrap>
     </>
   );
