@@ -105,7 +105,7 @@ const JobInforPage = ({ TeacherState }) => {
                   navigate("companyapplycheck");
                 }}
               />
-              {TeacherState && (
+              {!TeacherState && (
                 <SubmitButton
                   clickEvent={() => {
                     navigate("/jobinfor/jobupload");
