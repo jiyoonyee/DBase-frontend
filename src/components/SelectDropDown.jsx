@@ -6,6 +6,7 @@ const SelectDropDown = ({
   DropDownItems,
   DropDwonItemColor,
   UpdateSelectValue,
+  onBanryeoSelected, // ✅ 추가
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectValue, setSelectValue] = useState(null);
@@ -15,44 +16,43 @@ const SelectDropDown = ({
   };
 
   const UpdateValue = (item) => {
-    UpdateDropDown();
-    setSelectValue(item.ItemName); // 상태 업데이트
+    setMenuOpen(false);
+    setSelectValue(item.ItemName);
+
+    if (item.ItemName === "반려" && onBanryeoSelected) {
+      onBanryeoSelected(); // ✅ 부모에서 피드백 모달 열기
+    }
+
     UpdateSelectValue(item.ReqName);
-    // 드롭다운 닫기
-    // 즉시 클릭한 값을 부모에 전달
   };
 
   return (
-    <>
-      <Wrap>
-        <DropDownWrap $State={menuOpen} onClick={UpdateDropDown}>
-          <span>
-            {selectValue ? (
-              <p style={{ color: selectValue == "반려" ? "red" : "black" }}>
-                {selectValue}
-              </p>
-            ) : (
-              DropDownLabel
-            )}
-          </span>
-          <img src="../src/assets/images/DownArrow.svg" alt="드롭다운 화살표" />
-        </DropDownWrap>
-        <DropDownItemsWrap $State={menuOpen}>
-          {DropDownItems.map((item, i) => (
-            <DropDownItem
-              onClick={() => UpdateValue(item)}
-              key={i}
-              $HoverColor={
-                item.ItemName == "반려" ? "#b0afaf  " : DropDwonItemColor
-              }
-              style={{ color: item.ItemName == "반려" && "red" }}
-            >
-              {item.ItemName}
-            </DropDownItem>
-          ))}
-        </DropDownItemsWrap>
-      </Wrap>
-    </>
+    <Wrap>
+      <DropDownWrap $State={menuOpen} onClick={UpdateDropDown}>
+        <span>
+          {selectValue ? (
+            <p style={{ color: selectValue === "반려" ? "red" : "black" }}>
+              {selectValue}
+            </p>
+          ) : (
+            DropDownLabel
+          )}
+        </span>
+        <img src="../src/assets/images/DownArrow.svg" alt="드롭다운 화살표" />
+      </DropDownWrap>
+      <DropDownItemsWrap $State={menuOpen}>
+        {DropDownItems.map((item, i) => (
+          <DropDownItem
+            onClick={() => UpdateValue(item)}
+            key={i}
+            $HoverColor={item.ItemName === "반려" ? "#b0afaf" : DropDwonItemColor}
+            style={{ color: item.ItemName === "반려" ? "red" : "black" }}
+          >
+            {item.ItemName}
+          </DropDownItem>
+        ))}
+      </DropDownItemsWrap>
+    </Wrap>
   );
 };
 
@@ -128,4 +128,4 @@ const DropDownItem = styled.div`
   }
 `;
 
-export default SelectDropDown;
+export default SelectDropDown; 
