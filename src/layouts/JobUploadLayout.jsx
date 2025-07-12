@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 const JobUploadLayout = () => {
   const navigate = useNavigate();
   const [nextPage, setNextPage] = useState(0);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [jobFileName, setJobFileName] = useState("");
-  const [jobFilePlusName, setJobFilePlusName] = useState("");
   const [CompanyInfor, setCompanyInfor] = useState(null);
 
   const handleJobFileChange = (e) => {
@@ -38,7 +37,6 @@ const JobUploadLayout = () => {
   };
 
   const jobFileRef = useRef(null);
-  const jobFilePlusRef = useRef(null);
 
   let updatePayload = {
     company_information: {
@@ -68,16 +66,14 @@ const JobUploadLayout = () => {
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
-    const jobFilePlus = jobFilePlusRef.current.files[0];
 
     if (jobFile) formData.append("file", jobFile);
-    if (jobFilePlus) formData.append("etcFile", jobFilePlus);
 
     try {
       const res = await fetch(
         `http://localhost:4433/job/input?fileName=${encodeURIComponent(
           jobFileName
-        )}&etcFileName=${encodeURIComponent(jobFilePlusName)}`,
+        )}`,
         {
           method: "POST",
           body: formData,
