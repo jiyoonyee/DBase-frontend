@@ -44,7 +44,7 @@ const JobInforPage = ({ loginState }) => {
             {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
             {isOnlyJobInforPage && (
               <PageSubTitle>
-                AI 매칭으로 나에게 맞는 채용정보를 찾아보세요
+                우리 학교로 들어온 채용정보를 확인해보세요
               </PageSubTitle>
             )}
             {isOnlyJobCompanyapplyCheckPage && (
