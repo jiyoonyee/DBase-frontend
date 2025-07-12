@@ -42,7 +42,10 @@ const JobInforDetail = () => {
   if (!companyData) return <div>데이터가 없습니다.</div>;
 
   // jobs 배열 중 첫 번째 job을 기본으로 사용
-  const job = companyData.jobs && companyData.jobs.length > 0 ? companyData.jobs[0] : null;
+  const job =
+    companyData.jobs && companyData.jobs.length > 0
+      ? companyData.jobs[0]
+      : null;
 
   return (
     <>
@@ -54,7 +57,9 @@ const JobInforDetail = () => {
         }}
       >
         <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-          <div style={{ fontSize: "20px" }}>{job?.job_title || "직군 정보 없음"}</div>
+          <div style={{ fontSize: "20px" }}>
+            {job?.job_title || "직군 정보 없음"}
+          </div>
           <div style={{ display: "flex", gap: "10px" }}>
             <span style={{ color: "#ffffffcc" }}>{companyData.address}</span>
             <span style={{ color: "#ffffffcc" }}>{companyData.deadline}</span>
@@ -81,27 +86,36 @@ const JobInforDetail = () => {
               <CompanyApplicationSalaryWrap>
                 <div>
                   <div>급여 (정규직 채용 시)</div>
-                  <CompanySectionSubTitle>{job?.salary || "-"}</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>
+                    {job?.salary || "-"}
+                  </CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>실습 수당 (현장실습 시)</div>
-                  <CompanySectionSubTitle>{job?.internship_pay || "-"}</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>
+                    {job?.internship_pay || "-"}
+                  </CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>근무 형태</div>
-                  <CompanySectionSubTitle>{job?.work_type || "-"}</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>
+                    {job?.work_type || "-"}
+                  </CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>모집인원</div>
-                  <CompanySectionSubTitle>{job?.recruitment_count || "-"}</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>
+                    {job?.recruitment_count || "-"}
+                  </CompanySectionSubTitle>
                 </div>
               </CompanyApplicationSalaryWrap>
-              
             </CompanyApplicationSection>
             <hr />
             <CompanyWorkInforSection>
               <CompanyApplicationRequirementsWrap>
-                <CompanySectionSubTitle>요구조건(우대사항)</CompanySectionSubTitle>
+                <CompanySectionSubTitle>
+                  요구조건(우대사항)
+                </CompanySectionSubTitle>
                 <div>{job?.qualifications || "-"}</div>
               </CompanyApplicationRequirementsWrap>
               <div>
@@ -118,7 +132,7 @@ const JobInforDetail = () => {
               <CompanySectionSubTitle>기타 요구사항</CompanySectionSubTitle>
               <div>{job?.additional_requirements || "-"}</div>
             </div>
-            
+
             <CompanyButtonWrap>
               <SubmitButton
                 Text={"추가자료 다운로드"}
@@ -140,14 +154,22 @@ const JobInforDetail = () => {
             }}
           >
             <SectionTitle>AI 기업 분석</SectionTitle>
-            <CompanyAiInforWrap>{companyData.ai_analysis}</CompanyAiInforWrap>
+            <CompanyAiInforWrap>
+              {companyData.ai_analysis.split(".").map((item, index) => {
+                return (
+                  <div key={index} style={{ marginBottom: "10px" }}>
+                    {item}
+                  </div>
+                );
+              })}
+            </CompanyAiInforWrap>
             <KitWrap>
               <img src="../src/assets/images/KIT.svg" alt="" />
             </KitWrap>
           </SectionItemWrap>
         </div>
         <div>
-          <CompanyInfor companyId={companyId}/>
+          <CompanyInfor companyId={companyId} />
           <SectionItemWrap>
             <SectionTitle>기업 위치</SectionTitle>
             <KakaoMapMini address={companyData.address} />
@@ -255,14 +277,21 @@ const CompanyButtonWrap = styled.div`
 const CompanyAiInforWrap = styled.div`
   border-radius: 10px;
   background-color: #f0f0f0;
-  width: 80%;
-  height: 300px;
+  width: 85%;
+  padding: 25px;
+  line-height: 1.5;
+  font-weight: 500;
   position: relative;
   border-bottom-right-radius: 0px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-
+  justify-content: start;
+  font-size: 24px;
+  word-break: keep-all;
+  align-items: start;
+  flex-direction: column;
+  & > div {
+    font-weight: 500;
+  }
   &::before {
     position: absolute;
     display: block;
