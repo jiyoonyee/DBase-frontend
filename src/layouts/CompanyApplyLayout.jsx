@@ -7,76 +7,90 @@ import {
 } from "../style/SectionLayoutStyle";
 import FileUploadInput from "../components/FileUploadInput";
 import SubmitButton from "../components/SubmitButton";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const CompanyApplyLayout = () => {
-  return (
-    <>
-      <CompnayInforAlign>
-        <SectionItemWrap>
-          <SectionTitle>알리콘</SectionTitle>
-          <CompanySectionSubTitle style={{ marginBottom: "30px" }}>
-            AI,IoT 소프트웨어 개발 직군
-          </CompanySectionSubTitle>
-          <SectionSmallTtile>
-            <img src="../src/assets/images/CLocation.svg" alt="" />
-            서울특별시 성동구 고산자로 14길 26
-          </SectionSmallTtile>
-          <SectionSmallTtile>
-            <img src="../src/assets/images/CDeadline.svg" alt="" />
-            마감: 2025.06.12
-          </SectionSmallTtile>
-          <SectionSmallTtile>
-            <img src="../src/assets/images/CWork.svg" alt="" />
-            서울특별시 성동구 고산자로 14길 26
-          </SectionSmallTtile>
-          <hr />
-          <SectionSubTitle style={{ marginBottom: "20px" }}>
-            자격요건 (우대자격)
-          </SectionSubTitle>
-          <div>
-            <SectionSmallTtile style={{ marginBottom: "5px" }}>
-              웹 모바일 서비스 개발 경험
-            </SectionSmallTtile>
-            <ul>
-              <li>AI 알고리즘 개발 경험</li>
-              <li>IoT 모듈 개발 경험</li>
-            </ul>
-          </div>
-        </SectionItemWrap>
-        <SectionItemWrap>
-          <SectionTitle>지원서 작성</SectionTitle>
-          <SectionSmallTtile style={{ marginBottom: "30px" }}>
-            모든 필수 항목을 작성해주세요. 제출 후 수정이 불가능합니다.
-          </SectionSmallTtile>
-          <SectionSubTitle style={{ marginBottom: "20px" }}>
-            <img src="../src/assets/images/fileUpload.svg" alt="" />
-            서류 제출
-          </SectionSubTitle>
-          <FileWrap>
-            <FileUploadInput
-              LabelName={"이력서 + 자기소개서"}
-            ></FileUploadInput>
-            <FileUploadInput LabelName={"포트폴리오"}></FileUploadInput>
-            <FileUploadInput
-              LabelName={"기타"}
-              LabelState={false}
-            ></FileUploadInput>
-          </FileWrap>
+  const [company, setCompany] = useState(null);
 
-          <ButtonWrap>
-            <SubmitButton
-              Text={"지원서 제출"}
-              TextColor={"white"}
-              BackColor={"#3449B4"}
-              BorderState={false}
-              clickEvent={() => {
-                console.log("asd");
-              }}
-            />
-          </ButtonWrap>
-        </SectionItemWrap>
-      </CompnayInforAlign>
-    </>
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const companyId = params.get("comapanyId");
+
+    if (companyId) {
+      axios
+        .get(`http://localhost:4433/job/company?id=${companyId}`)
+        .then((res) => {
+          setCompany(res.data);
+        })
+        .catch((err) => {
+          console.error("회사 정보를 불러오지 못했습니다:", err);
+        });
+    }
+  }, []);
+
+  if (!company) return <div>불러오는 중...</div>;
+
+  const job = company.jobs && company.jobs.length > 0 ? company.jobs[0] : null;
+
+  return (
+    <CompnayInforAlign>
+      <SectionItemWrap>
+        <SectionTitle>{company.company_name}</SectionTitle>
+        <CompanySectionSubTitle style={{ marginBottom: "30px" }}>
+          {job?.job_title || "직무 정보 없음"}
+        </CompanySectionSubTitle>
+        <SectionSmallTtile>
+          <img src="../src/assets/images/CLocation.svg" alt="" />
+          {company.address}
+        </SectionSmallTtile>
+        <SectionSmallTtile>
+          <img src="../src/assets/images/CDeadline.svg" alt="" />
+          마감: {company.deadline}
+        </SectionSmallTtile>
+        <SectionSmallTtile>
+          <img src="../src/assets/images/CWork.svg" alt="" />
+          {company.main_business}
+        </SectionSmallTtile>
+        <hr />
+        <SectionSubTitle style={{ marginBottom: "20px" }}>
+          자격요건 (우대자격)
+        </SectionSubTitle>
+        <div>
+          <SectionSmallTtile style={{ marginBottom: "5px" }}>
+            {job?.qualifications || "자격요건 없음"}
+          </SectionSmallTtile>
+        </div>
+      </SectionItemWrap>
+
+      <SectionItemWrap>
+        <SectionTitle>지원서 작성</SectionTitle>
+        <SectionSmallTtile style={{ marginBottom: "30px" }}>
+          모든 필수 항목을 작성해주세요. 제출 후 수정이 불가능합니다.
+        </SectionSmallTtile>
+        <SectionSubTitle style={{ marginBottom: "20px" }}>
+          <img src="../src/assets/images/fileUpload.svg" alt="" />
+          서류 제출
+        </SectionSubTitle>
+        <FileWrap>
+          <FileUploadInput LabelName={"이력서 + 자기소개서"} />
+          <FileUploadInput LabelName={"포트폴리오"} />
+          <FileUploadInput LabelName={"기타"} LabelState={false} />
+        </FileWrap>
+
+        <ButtonWrap>
+          <SubmitButton
+            Text={"지원서 제출"}
+            TextColor={"white"}
+            BackColor={"#3449B4"}
+            BorderState={false}
+            clickEvent={() => {
+              console.log("지원서 제출");
+            }}
+          />
+        </ButtonWrap>
+      </SectionItemWrap>
+    </CompnayInforAlign>
   );
 };
 
@@ -118,7 +132,7 @@ const CompanySectionSubTitle = styled.div`
 
 const FileWrap = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 한 줄에 두 개씩
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   & > div {
     width: 100%;
