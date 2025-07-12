@@ -49,7 +49,13 @@ const JobUploadLayout = () => {
     const jobFilePlus = jobFilePlusRef.current.files[0];
 
     if (jobFile) {
-      formData.append("file", jobFile);
+      formData.append("file", jobFile); // 파일명 명시
+      formData.append("fileName", jobFile.name); // 파일명 따로도 전송 가능
+    }
+
+    if (jobFilePlus) {
+      formData.append("fileplus", jobFilePlus); // 파일명 명시
+      formData.append("filePlusName", jobFilePlus.name); // 파일명 따로도 전송 가능
     }
 
     if (jobFilePlus) {
