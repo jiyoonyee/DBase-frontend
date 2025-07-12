@@ -4,7 +4,7 @@ import PageInfor from "../components/PageInfor";
 import AcountButton from "../components/AcountButton";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import HeroAnimation from "../components/HeroAnimation"; // 분리한 컴포넌트 import
+import HeroAnimation from "../components/HeroAnimation"; 
 
 const MainPage = ({ updateHeaderState }) => {
   const [inforWrap, inView] = useInView({
@@ -93,7 +93,7 @@ const MainPage = ({ updateHeaderState }) => {
 };
 
 const Wrap = styled.div`
-  background: linear-gradient(#020619, 0%, rgb(0, 5, 21), 15%, rgb(9, 35, 119), 25%, #0c2ca0);
+  background: linear-gradient(#020619, 0%, rgb(0, 5, 21), 15%, rgb(9, 35, 119), 25%,rgb(10, 37, 134));
   width: 100%;
   padding-bottom: 100px;
   & > div {

@@ -7,6 +7,7 @@ import SubmitButton from "../components/SubmitButton";
 import FileUploadInput from "../components/FileUploadInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import HeroAnimation from "../components/HeroAnimation"; 
 
 const JobInforPage = ({ loginState }) => {
   const location = useLocation();
@@ -45,6 +46,7 @@ const JobInforPage = ({ loginState }) => {
 
   return (
     <>
+    <HeroAnimation />
       <Wrap>
         <PageinforWrap>
           <PageTitleWrap>

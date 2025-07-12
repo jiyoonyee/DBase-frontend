@@ -9,6 +9,7 @@ import {
   SectionTitle,
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
+import HeroAnimation from "../components/HeroAnimation";
 
 const EmploymentStatusPage = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
@@ -105,6 +106,8 @@ const EmploymentStatusPage = () => {
   }, [selectedCompany]);
 
   return (
+    <>
+    <HeroAnimation />
     <Wrap>
       <PageinforWrap>
         <PageTitleWrap>
@@ -195,6 +198,7 @@ const EmploymentStatusPage = () => {
         </div>
       </SectionWrap>
     </Wrap>
+    </>
   );
 };
 
