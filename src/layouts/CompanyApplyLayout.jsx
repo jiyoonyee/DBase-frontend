@@ -9,9 +9,17 @@ import FileUploadInput from "../components/FileUploadInput";
 import SubmitButton from "../components/SubmitButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CompanyApplyLayout = () => {
   const [company, setCompany] = useState(null);
+  const [files, setFiles] = useState({
+    resumeAndCoverLetter: null,
+    portfolio: null,
+    etcFiles: []
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -28,6 +36,63 @@ const CompanyApplyLayout = () => {
         });
     }
   }, []);
+
+  const handleFileChange = (file, fileType) => {
+    if (fileType === 'resumeAndCoverLetter') {
+      setFiles(prev => ({ ...prev, resumeAndCoverLetter: file }));
+    } else if (fileType === 'portfolio') {
+      setFiles(prev => ({ ...prev, portfolio: file }));
+    } else if (fileType === 'etc') {
+      setFiles(prev => ({ ...prev, etcFiles: [...prev.etcFiles, file] }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    // 필수 파일 체크
+    if (!files.resumeAndCoverLetter) {
+      alert("이력서 + 자기소개서는 필수입니다.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('resumeAndCoverLetter', files.resumeAndCoverLetter);
+      
+      if (files.portfolio) {
+        formData.append('portfolio', files.portfolio);
+      }
+      
+      files.etcFiles.forEach((file, index) => {
+        formData.append('etcFile', file);
+      });
+
+      formData.append('companyId', company.id);
+
+      const response = await axios.post(
+        'http://localhost:4433/apply/input',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        alert("지원서가 성공적으로 제출되었습니다!");
+        // jobinfor 페이지로 이동
+        navigate("/jobinfor");
+      }
+    } catch (error) {
+      console.error("지원서 제출 실패:", error);
+      alert("지원서 제출에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!company) return <div>불러오는 중...</div>;
 
@@ -73,20 +138,32 @@ const CompanyApplyLayout = () => {
           서류 제출
         </SectionSubTitle>
         <FileWrap>
-          <FileUploadInput LabelName={"이력서 + 자기소개서"} />
-          <FileUploadInput LabelName={"포트폴리오"} />
-          <FileUploadInput LabelName={"기타"} LabelState={false} />
+          <FileUploadInput 
+            LabelName={"이력서 + 자기소개서"} 
+            onFileChange={handleFileChange}
+            fileType="resumeAndCoverLetter"
+          />
+          <FileUploadInput 
+            LabelName={"포트폴리오"} 
+            onFileChange={handleFileChange}
+            fileType="portfolio"
+          />
+          <FileUploadInput 
+            LabelName={"기타"} 
+            LabelState={false} 
+            onFileChange={handleFileChange}
+            fileType="etc"
+          />
         </FileWrap>
 
         <ButtonWrap>
           <SubmitButton
-            Text={"지원서 제출"}
+            Text={isSubmitting ? "제출 중..." : "지원서 제출"}
             TextColor={"white"}
-            BackColor={"#3449B4"}
+            BackColor={isSubmitting ? "#cccccc" : "#3449B4"}
             BorderState={false}
-            clickEvent={() => {
-              console.log("지원서 제출");
-            }}
+            clickEvent={handleSubmit}
+            disabled={isSubmitting}
           />
         </ButtonWrap>
       </SectionItemWrap>

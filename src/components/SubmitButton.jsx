@@ -8,12 +8,14 @@ const SubmitButton = ({
   Text,
   clickEvent,
   BorderState = true,
+  disabled = false,
 }) => {
   return (
     <>
       <Wrap
         $BorderState={BorderState}
-        onClick={clickEvent}
+        $disabled={disabled}
+        onClick={disabled ? undefined : clickEvent}
         style={{
           backgroundColor: BackColor,
           color: TextColor,
@@ -41,8 +43,11 @@ const Wrap = styled.div`
   font-weight: 500;
   text-align: center;
   z-index: 1;
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   }
 `;
 
