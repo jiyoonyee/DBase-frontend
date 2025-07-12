@@ -7,6 +7,7 @@ import {
 } from "../style/SectionLayoutStyle";
 import SelectDropDown from "../components/SelectDropDown";
 import SubmitButton from "../components/SubmitButton";
+import CompanyApplyItem from "../components/CompanyApplyItem";
 
 const CompanyApplytCheck = () => {
   return (
@@ -22,40 +23,7 @@ const CompanyApplytCheck = () => {
         Placeholder={"회사명으로 검색"}
       />
       <CompanyApplyItemWrap>
-        <SectionItemWrap>
-          <SectionTitle>3-3 박현욱</SectionTitle>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ width: "30%" }}>
-              <SectionSmallTtile>알리콘</SectionSmallTtile>
-              <SectionSmallTtile>
-                AI, IoT 소프트웨어 개발 직군
-              </SectionSmallTtile>
-            </div>
-            <ButtonWrap>
-              <SelectDropDown
-                DropDownItems={[
-                  { ItemName: "제출완료", ReqName: "제출완료" },
-                  { ItemName: "반려", ReqName: "반려" },
-                  { ItemName: "미제출", ReqName: "미제출" },
-                ]}
-                DropDownLabel={"제출완료"} // 나중에 값 받아와서 초기화
-                DropDwonItemColor={"#078bff"}
-              />
-              <SubmitButton
-                Text={"지원서류 다운로드"}
-                BorderState={false}
-                BackColor={"#3449B4"}
-                TextColor={"white"}
-              />
-            </ButtonWrap>
-          </div>
-        </SectionItemWrap>
+        <CompanyApplyItem />
       </CompanyApplyItemWrap>
     </>
   );
@@ -65,16 +33,6 @@ const CompanyApplyItemWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  justify-content: end;
-  width: 100%;
-  gap: 10px;
-  & > div {
-    width: 20%;
-  }
 `;
 
 export default CompanyApplytCheck;

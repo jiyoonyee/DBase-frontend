@@ -120,7 +120,6 @@ const RoadMapPage = () => {
 };
 const Wrap = styled.div`
   width: 100%;
-
   background: linear-gradient(
     to bottom,
     #1e0c04 0vh,

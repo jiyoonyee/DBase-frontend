@@ -5,7 +5,6 @@ import SubmitButton from "../components/SubmitButton";
 
 const JobUploadLayout = () => {
   const [nextPage, setNextPage] = useState(0);
-  const [isEtcChecked, setIsEtcChecked] = useState(false);
 
   const [jobFileName, setJobFileName] = useState("");
   const [jobFilePlusName, setJobFilePlusName] = useState("");
@@ -17,16 +16,25 @@ const JobUploadLayout = () => {
     }
   };
 
-  // const validatePage0 = () => {
-  //   const jobName = document.getElementById("InputJobName")?.value.trim();
-  //   const deadline = document.getElementById("JobDeadLine")?.value.trim();
+  const handleJobFilePlusChange = (e) => {
+    const file = e.target.files[0];
+    if (file) setJobFilePlusName(file.name);
+  };
 
-  //   if (!jobName || !deadline || !jobFileRef.current?.files[0]) {
-  //     alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const validatePage0 = () => {
+    const deadline = document.getElementById("UploadDeadLine")?.value.trim();
+
+    if (!deadline || !jobFileRef.current?.files[0]) {
+      alert("회사명, 지원마감일, 채용의뢰서를 모두 입력해주세요.");
+      return false;
+    }
+    handleFirstFormSubmit();
+    return true;
+  };
+
+  const UploadDeadLine = document
+    .getElementById("UploadDeadLine")
+    ?.value.trim();
 
   // const validatePage1 = () => {
   //   const companyName = document
@@ -66,15 +74,10 @@ const JobUploadLayout = () => {
   //   return true;
   // };
 
-  const handleJobFilePlusChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setJobFilePlusName(file.name);
-  };
-
   const handleNextPage = () => {
     let isValid = true;
 
-    // if (nextPage === 0) isValid = validatePage0();
+    if (nextPage === 0) isValid = validatePage0();
     // else if (nextPage === 1) isValid = validatePage1();
     // else if (nextPage === 2) isValid = validatePage2();
 
@@ -85,21 +88,18 @@ const JobUploadLayout = () => {
     }
 
     if (nextPage === 2) {
-      handleSubmit();
+      // handleSubmit();
     }
   };
   const handlebeforePage = () => {
     if (nextPage === 0) return; // 첫 페이지일 경우 아무것도 하지 않음
     setNextPage(nextPage - 1);
   };
-  const handleEtcCheckboxChange = (e) => {
-    setIsEtcChecked(e.target.checked);
-  };
 
   const jobFileRef = useRef(null);
   const jobFilePlusRef = useRef(null);
 
-  const handleSubmit = async () => {
+  const handleFirstFormSubmit = async () => {
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
@@ -107,24 +107,16 @@ const JobUploadLayout = () => {
 
     if (jobFile) {
       formData.append("file", jobFile); // 파일명 명시
-      formData.append("fileName", jobFile.name); // 파일명 따로도 전송 가능
-    }
-    console.log(jobFile.name);
-
-    if (jobFilePlus) {
-      formData.append("fileplus", jobFilePlus); // 파일명 명시
-      formData.append("filePlusName", jobFilePlus.name); // 파일명 따로도 전송 가능
     }
 
     if (jobFilePlus) {
-      formData.append("fileplus", jobFilePlus);
+      formData.append("etcFile", jobFilePlus); // 파일명 명시
     }
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+
+    // formData.append("deadline", UploadDeadLine);
     try {
       const res = await fetch(
-        `http://localhost:4433/job/input?fileName=${jobFileName}`,
+        `http://localhost:4433/job/input?fileName=${jobFileName}&etcFileName=${jobFilePlusName}`,
         {
           method: "POST",
           body: formData,
@@ -155,15 +147,9 @@ const JobUploadLayout = () => {
               <SectionTitle>기본정보</SectionTitle>
               <div>
                 <div>
-                  <InputLabel htmlFor="InputJobName">회사명</InputLabel>
+                  <InputLabel htmlFor="UploadDeadLine">지원마감일</InputLabel>
                   <InputWrap>
-                    <input type="text" id="InputJobName" />
-                  </InputWrap>
-                </div>
-                <div>
-                  <InputLabel htmlFor="JobDeadLine">지원마감일</InputLabel>
-                  <InputWrap>
-                    <input type="date" id="JobDeadLine" />
+                    <input type="date" id="UploadDeadLine" />
                   </InputWrap>
                 </div>
               </div>
@@ -337,52 +323,7 @@ const JobUploadLayout = () => {
                 </InputWrap>
               </div>
             </div>
-            <div>
-              <InputLabel style={{ width: "auto" }}>접수 서류</InputLabel>
-              <div>
-                <CheckBoxWrap>
-                  <input type="checkbox" id="insurance1" />
-                  <label htmlFor="insurance1"></label>
-                  <label htmlFor="insurance1">이력서</label>
-                </CheckBoxWrap>
-                <CheckBoxWrap>
-                  <input type="checkbox" id="insurance2" />
-                  <label htmlFor="insurance2"></label>
-                  <label htmlFor="insurance2">자기소개서</label>
-                </CheckBoxWrap>
-                <CheckBoxWrap>
-                  <input type="checkbox" id="insurance3" />
-                  <label htmlFor="insurance3"></label>
-                  <label htmlFor="insurance3">포트폴리오</label>
-                </CheckBoxWrap>
-                <CheckBoxWrap>
-                  <input type="checkbox" id="insurance4" />
-                  <label htmlFor="insurance4"></label>
-                  <label htmlFor="insurance4">힉교생활기록부</label>
-                </CheckBoxWrap>
-                <CheckBoxWrap>
-                  <input
-                    type="checkbox"
-                    id="insuranceEtc"
-                    onChange={handleEtcCheckboxChange}
-                    checked={isEtcChecked}
-                  />
-                  <label htmlFor="insuranceEtc"></label>
-                  <label
-                    htmlFor="insuranceEtc"
-                    style={{ border: "none", padding: "0px", gap: "0px" }}
-                  >
-                    <InputWrap>
-                      <input
-                        type="text"
-                        placeholder="기타"
-                        disabled={!isEtcChecked}
-                      />
-                    </InputWrap>
-                  </label>
-                </CheckBoxWrap>
-              </div>
-            </div>
+
             <div>
               <div>
                 <InputLabel>실습 수당(현장실습)</InputLabel>
@@ -663,7 +604,7 @@ const JobUploadFileForm = styled.div`
       justify-content: center;
       align-items: center;
       gap: 20px;
-      width: 100%;
+      width: 50%;
 
       & > div {
         flex: 1;
@@ -929,22 +870,8 @@ const JobUploadCompanyDetailForm = styled.div`
       width: 30%;
     }
   }
+
   & > div:nth-child(6) {
-    /* background-color: aliceblue; */
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
-    & > div {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-  & > div:nth-child(7) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -960,7 +887,7 @@ const JobUploadCompanyDetailForm = styled.div`
     }
   }
 
-  & > div:nth-child(8) {
+  & > div:nth-child(7) {
     width: 100%;
     display: flex;
     justify-content: start;

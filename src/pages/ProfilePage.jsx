@@ -11,6 +11,7 @@ import ProfileActivity from "../components/ProfileActivity";
 import ProfileAward from "../components/ProfileAward";
 import StackItem from "../components/StackItem";
 import SubmitButton from "../components/SubmitButton";
+import PortfilePortflio from "../components/ProfilePortfolio";
 
 const ProfilePage = () => {
   return (
@@ -90,6 +91,9 @@ const ProfilePage = () => {
               <SectionTitle>자격 / 어학 / 수상</SectionTitle>
               <ProfileAward />
               <ProfileAward />
+            </SectionItemWrap>
+            <SectionItemWrap>
+              <PortfilePortflio LabelState={false} />
             </SectionItemWrap>
           </div>
         </ProfileWrapAlign>
