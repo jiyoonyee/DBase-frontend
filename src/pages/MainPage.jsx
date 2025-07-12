@@ -4,21 +4,20 @@ import PageInfor from "../components/PageInfor";
 import AcountButton from "../components/AcountButton";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import HeroAnimation from "../components/HeroAnimation"; 
 
 const MainPage = ({ updateHeaderState }) => {
   const [inforWrap, inView] = useInView({
     threshold: 0.1,
   });
-  // console.log(inView, "inforWrap");
+
   useEffect(() => {
-    if (inView) {
-      updateHeaderState(true);
-    } else {
-      updateHeaderState(false);
-    }
+    updateHeaderState(inView);
   }, [inView, updateHeaderState]);
+
   return (
     <>
+      <HeroAnimation />
       <Wrap>
         <MainWrap>
           <TextWrap>
@@ -54,7 +53,7 @@ const MainPage = ({ updateHeaderState }) => {
             ImageURL={"../src/assets/images/page1.png"}
             TitleText={"채용정보를 한눈에 확인하세요"}
             PageText={
-              "AI 매칭 시스템으로 맞춤형 채용 정보를 확인하고 간편하게 회사에 대한 정보를 알아보세요"
+              "우리 학교로 들어온 채용 정보를 확인하고 AI 분석으로 간편하게 회사에 대한 정보를 알아보세요"
             }
           />
           <PageInfor
@@ -94,10 +93,9 @@ const MainPage = ({ updateHeaderState }) => {
 };
 
 const Wrap = styled.div`
-  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
+  background: linear-gradient(#020619, 0%, rgb(0, 5, 21), 15%, rgb(9, 35, 119), 25%,rgb(10, 37, 134));
   width: 100%;
   padding-bottom: 100px;
-  background: linear-gradient(#020619, 0%, #061751, 15%, #0b2da2, 25%, #0c2ca0);
   & > div {
     margin: 0px 200px;
   }
@@ -113,19 +111,17 @@ const Wrap = styled.div`
 const MainWrap = styled.div`
   margin-top: 100px !important;
   height: calc(100vh - 100px);
-  /* background-color: #f0f8ff3b; */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   @media screen and (max-width: 1000px) {
-    & {
-      flex-direction: column-reverse;
-    }
+    flex-direction: column-reverse;
   }
 `;
 
 const InforWrap = styled.div`
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,12 +171,11 @@ const TextWrap = styled.div`
     gap: 20px;
   }
 
-  /* 메인 텍스트 */
   & > div > span > p {
     font-weight: bold;
     font-size: 70px;
   }
-  /* 서브 텍스트 */
+
   & > div > span:nth-child(2) {
     font-size: 18px;
     line-height: 28px;
@@ -198,47 +193,70 @@ const TextWrap = styled.div`
 const MascotWrap = styled.div`
   height: 100%;
   width: 100%;
-  /* background-color: #f0f8ff3b; */
   position: relative;
+
   & > img {
     position: absolute;
+    animation: floatY 3s ease-in-out infinite alternate;
   }
 
-  /* 키트 */
   & > img:nth-child(1) {
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%) scale(1.5);
-
-    z-index: 100;
+    transform: translate(-50%, -50%) scale(1.5);
+    z-index: 10;
+    animation-delay: 0s;
   }
 
-  /* 파일 */
   & > img:nth-child(2) {
-    transform: scale(1.3);
     top: 20%;
     left: 10%;
+    transform: scale(1.3);
+    animation-delay: 0.2s;
   }
 
-  /* 돋보기 */
   & > img:nth-child(3) {
-    transform: scale(1.3);
     bottom: 20%;
     left: 10%;
+    transform: scale(1.3);
+    animation-delay: 0.4s;
   }
 
-  /* 모바일 목업 */
   & > img:nth-child(4) {
     top: 10%;
     right: 10%;
     transform: scale(1.3);
+    animation-delay: 0.6s;
   }
 
-  /* 가방 */
   & > img:nth-child(5) {
-    transform: scale(1.3);
     bottom: 30%;
     right: 8%;
+    transform: scale(1.3);
+    animation-delay: 0.8s;
+  }
+
+  @keyframes floatY {
+    0% {
+      transform: translateY(0) scale(1.3);
+    }
+    100% {
+      transform: translateY(-10px) scale(1.3);
+    }
+  }
+
+  /* 특이하게 가운데 이미지는 translate로 위치 잡았기 때문에 예외 처리 */
+  & > img:nth-child(1) {
+    animation: floatYCenter 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatYCenter {
+    0% {
+      transform: translate(-50%, -50%) scale(2);
+    }
+    100% {
+      transform: translate(-50%, -60%) scale(2);
+    }
   }
 `;
 

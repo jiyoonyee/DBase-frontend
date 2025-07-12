@@ -9,6 +9,7 @@ import {
   SectionTitle,
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
+import HeroAnimation from "../components/HeroAnimation";
 
 const EmploymentStatusPage = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
@@ -18,10 +19,18 @@ const EmploymentStatusPage = () => {
     convenience: 0,
     restaurant: 0,
   });
+  const [employees, setEmployees] = useState([]); // 재직자 목록 상태 추가
+
+  // 주변 장소 위치 정보 배열
+  // {lat, lng, type, name}
+  const [placePositions, setPlacePositions] = useState([]);
 
   useEffect(() => {
     if (!selectedCompanyId) {
       setSelectedCompany(null);
+      setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      setPlacePositions([]);
+      setEmployees([]); // 회사 선택 해제 시 재직자 목록도 초기화
       return;
     }
 
@@ -33,12 +42,25 @@ const EmploymentStatusPage = () => {
       .catch((err) => {
         console.error("선택된 회사 정보 가져오기 실패:", err);
         setSelectedCompany(null);
+        setPlacePositions([]);
+      });
+
+    // 회사별 재직자 목록 fetch
+    axios
+      .get(`http://localhost:4433/employee/list?companyId=${selectedCompanyId}`)
+      .then((res) => {
+        setEmployees(res.data);
+      })
+      .catch((err) => {
+        console.error("재직자 목록 가져오기 실패:", err);
+        setEmployees([]);
       });
   }, [selectedCompanyId]);
 
   useEffect(() => {
     if (!selectedCompany?.address) {
       setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      setPlacePositions([]);
       return;
     }
 
@@ -50,10 +72,11 @@ const EmploymentStatusPage = () => {
         const { x, y } = result[0];
         const location = new window.kakao.maps.LatLng(y, x);
 
+        // 주변 장소 개수와 위치 검색 함수
         const searchPlaceCount = (keyword, key) => {
           const options = {
             location,
-            radius: 300, // 300m 범위 내 검색
+            radius: 300, // 300m 반경 내 검색
             size: 15,
           };
 
@@ -61,25 +84,43 @@ const EmploymentStatusPage = () => {
             keyword,
             (data, status) => {
               if (status === window.kakao.maps.services.Status.OK) {
+                // 개수 상태 업데이트
                 setPlaceCounts((prev) => ({ ...prev, [key]: data.length }));
+
+                // 위치 정보도 업데이트 (기존 타입 데이터 제거 후 새로 추가)
+                setPlacePositions((prev) => {
+                  const filtered = prev.filter((item) => item.type !== key);
+                  const newPlaces = data.map((place) => ({
+                    lat: place.y,
+                    lng: place.x,
+                    type: key,
+                    name: place.place_name,
+                  }));
+                  return [...filtered, ...newPlaces];
+                });
               } else {
                 setPlaceCounts((prev) => ({ ...prev, [key]: 0 }));
+                setPlacePositions((prev) => prev.filter((item) => item.type !== key));
               }
             },
             options
           );
         };
 
+        // 키워드별 검색 실행
         searchPlaceCount("지하철역", "subway");
         searchPlaceCount("편의점", "convenience");
         searchPlaceCount("음식점", "restaurant");
       } else {
         setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+        setPlacePositions([]);
       }
     });
   }, [selectedCompany]);
 
   return (
+    <>
+    <HeroAnimation />
     <Wrap>
       <PageinforWrap>
         <PageTitleWrap>
@@ -96,7 +137,11 @@ const EmploymentStatusPage = () => {
               <SectionSmallTtile>
                 학생들이 재직 중인 회사 위치를 확인하세요
               </SectionSmallTtile>
-              <KakaoMap onSelectCompany={setSelectedCompanyId} />
+              {/* 장소 위치 정보 placePositions 전달 */}
+              <KakaoMap
+                onSelectCompany={setSelectedCompanyId}
+                placePositions={placePositions}
+              />
             </SectionMapalign>
           </SectionItemWrap>
 
@@ -128,16 +173,19 @@ const EmploymentStatusPage = () => {
                 {selectedCompany?.address || "-"}
               </SectionSmallTtile>
               <MakerMenuWrap>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   지하철
+                  <img src="../src/assets/images/subway.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.subway}</MakerCount>
                 </MakerItem>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   편의점
+                  <img src="../src/assets/images/convenience.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.convenience}</MakerCount>
                 </MakerItem>
-                <MakerItem>
+                <MakerItem style={{ padding: "20px" }}>
                   음식점
+                  <img src="../src/assets/images/restaurant.svg" alt="" style={{ padding: "10px" }} />
                   <MakerCount>{placeCounts.restaurant}</MakerCount>
                 </MakerItem>
               </MakerMenuWrap>
@@ -151,21 +199,28 @@ const EmploymentStatusPage = () => {
           <SectionItemWrap>
             <SectionTitle style={{ marginBottom: "5px" }}>재직자</SectionTitle>
             <SectionSmallTtile style={{ marginBottom: "20px" }}>
-              {selectedCompany?.company_name || "알리콘"}
+              {selectedCompany?.company_name || "기업명"}
             </SectionSmallTtile>
             <EmployeeWrap>
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
-              <EmployeeItem />
+              {employees.length === 0 ? (
+                <div style={{ color: 'black', fontSize: '16px' }}>재직자 정보가 없습니다.</div>
+              ) : (
+                employees.map((emp, idx) => (
+                  <EmployeeItem
+                    key={emp.user_id || idx}
+                    name={emp.name}
+                    work_start_date={emp.work_start_date}
+                    work_end_date={emp.work_end_date}
+                    skills={emp.skills}
+                  />
+                ))
+              )}
             </EmployeeWrap>
           </SectionItemWrap>
         </div>
       </SectionWrap>
     </Wrap>
+    </>
   );
 };
 
@@ -175,7 +230,7 @@ const Wrap = styled.div`
   background: linear-gradient(
     to bottom,
     #0e0219 0%,
-    #351452 10%,
+rgb(52, 18, 80) 20%,
     #3e1a5c 25%,
     #5c258c 60%,
     #aa49ff 100%
@@ -281,7 +336,6 @@ const MakerCount = styled.div`
 
 const EmployeeWrap = styled.div`
   overflow-y: auto;
-  height: 250px;
   padding-right: 20px;
 
   &::-webkit-scrollbar {

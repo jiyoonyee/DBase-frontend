@@ -16,7 +16,7 @@ const PageInfor = ({ ImageURL, TitleText, PageText }) => {
 
 const Wrap = styled.div`
   width: 100%;
-
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;

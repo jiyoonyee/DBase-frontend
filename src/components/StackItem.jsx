@@ -15,6 +15,7 @@ const Wrap = styled.div`
   color: #6c6c6c;
   border-radius: 1000px;
   font-weight: bold;
+  z-index: 1;
 `;
 
 export default StackItem;

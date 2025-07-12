@@ -4,6 +4,7 @@ import SubmitButton from "../components/SubmitButton";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "github-markdown-css/github-markdown.css";
+import HeroAnimation from "../components/HeroAnimation"; 
 
 const RoadMapPage = () => {
   const [markdown, setMarkdown] = useState("");
@@ -55,6 +56,7 @@ const RoadMapPage = () => {
 
   return (
     <>
+    <HeroAnimation />
       <Wrap>
         <PageinforWrap>
           <PageTitleWrap>
@@ -110,7 +112,7 @@ const RoadMapPage = () => {
           <SectionTitle style={{ marginBottom: "30px" }}>
             {markdownTitle}
           </SectionTitle>
-          <div style={{ display: "block" }} className="markdown-body">
+          <div style={{ display: "block" , backgroundColor: "white", color: "black" }} className="markdown-body">
             <ReactMarkdown>{markdown}</ReactMarkdown>
           </div>
         </RoadMapSecitonWrap>

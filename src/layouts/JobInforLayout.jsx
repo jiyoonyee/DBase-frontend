@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const JobInforLayout = () => {
   const [companies, setCompanies] = useState(null);
-  const [filteredCompanies, setFilteredCompanies] = useState(null); // 추가된 부분
+  const [filteredCompanies, setFilteredCompanies] = useState(null); 
 
   const getCompanies = async () => {
     try {

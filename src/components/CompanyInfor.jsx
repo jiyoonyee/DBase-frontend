@@ -77,7 +77,6 @@ const CompanyInfor = ({ companyId }) => {
     return null;
   }
 
-  // API에서 받아오는 데이터 키는 실제 API 스펙에 맞게 조정하세요
   return (
     <SectionItemWrap>
       <SectionTitle style={{ marginBottom: "10px" }}>기업정보</SectionTitle>

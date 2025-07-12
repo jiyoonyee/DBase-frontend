@@ -12,10 +12,12 @@ import ProfileAward from "../components/ProfileAward";
 import StackItem from "../components/StackItem";
 import SubmitButton from "../components/SubmitButton";
 import PortfilePortflio from "../components/ProfilePortfolio";
+import HeroAnimation from "../components/HeroAnimation"; 
 
 const ProfilePage = () => {
   return (
     <>
+    <HeroAnimation />
       <Wrap>
         <PageinforWrap>
           <PageTitleWrap>
@@ -111,7 +113,7 @@ const Wrap = styled.div`
     #072807 25vh,
     #1b3d1b 50vh,
     #3c6b39 75vh,
-    #6dba69 100vh
+    #52904F 100vh
   );
   color: white;
   padding-bottom: 100px;

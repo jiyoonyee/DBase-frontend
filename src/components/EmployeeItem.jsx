@@ -2,9 +2,8 @@ import styled from "styled-components";
 import StackItem from "./StackItem";
 import SubmitButton from "./SubmitButton";
 
-const EmployeeItem = ({ Stacks }) => {
-  //   const StacksList = Stacks.split(",");
-  const StacksList = ["JavaScript", "Nest.js", "express"];
+const EmployeeItem = ({ name, work_start_date, work_end_date, skills }) => {
+  const StacksList = skills ? skills.split(',').map(s => s.trim()) : [];
   return (
     <>
       <Wrap>
@@ -14,12 +13,13 @@ const EmployeeItem = ({ Stacks }) => {
               fontSize: "20px",
               fontWeight: "bold",
               color: "black",
-              letterSpacing: "18px",
             }}
           >
-            이*우
+            {name}
           </div>
-          <div style={{ fontSize: "16px", color: "#6c6c6c" }}>2024.12.12 ~</div>
+          <div style={{ fontSize: "16px", color: "#6c6c6c" }}>
+            {work_start_date} ~ {work_end_date ? work_end_date : "재직중"}
+          </div>
         </EmployeeInforWrap>
         <CompanyStackWrap>
           {StacksList.map((text, index) => (
@@ -39,7 +39,6 @@ const Wrap = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 30px;
   & > div {
     width: 100%;
   }

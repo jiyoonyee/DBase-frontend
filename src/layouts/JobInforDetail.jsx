@@ -5,12 +5,44 @@ import {
   SectionSmallTtile,
   SectionTitle,
 } from "../style/SectionLayoutStyle";
-import KakaoMap from "./KakaoMap";
-import CompnayInfor from "../components/CompanyInfor";
-import { useNavigate } from "react-router-dom";
+import KakaoMapMini from "./KakaoMapMini";
+import CompanyInfor from "../components/CompanyInfor";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const JobInforDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [companyData, setCompanyData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const queryParams = new URLSearchParams(location.search);
+  const companyId = queryParams.get("companyId");
+
+  useEffect(() => {
+    if (!companyId) return;
+
+    setLoading(true);
+
+    axios
+      .get(`http://localhost:4433/job/company?id=${companyId}`)
+      .then((res) => {
+        setCompanyData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("API 호출 에러:", err);
+        setLoading(false);
+      });
+  }, [companyId]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (!companyData) return <div>데이터가 없습니다.</div>;
+
+  // jobs 배열 중 첫 번째 job을 기본으로 사용
+  const job = companyData.jobs && companyData.jobs.length > 0 ? companyData.jobs[0] : null;
 
   return (
     <>
@@ -22,10 +54,10 @@ const JobInforDetail = () => {
         }}
       >
         <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-          <div style={{ fontSize: "20px" }}>AI,Iot 소프트웨어 개발 직군</div>
+          <div style={{ fontSize: "20px" }}>{job?.job_title || "직군 정보 없음"}</div>
           <div style={{ display: "flex", gap: "10px" }}>
-            <span style={{ color: "#ffffffcc" }}>회사 위치</span>
-            <span style={{ color: "#ffffffcc" }}>마감일</span>
+            <span style={{ color: "#ffffffcc" }}>{companyData.address}</span>
+            <span style={{ color: "#ffffffcc" }}>{companyData.deadline}</span>
           </div>
         </div>
         <SubmitButton
@@ -35,78 +67,47 @@ const JobInforDetail = () => {
           Text={"지원하기"}
         />
       </div>
-      <CompnayInforAlign>
+      <CompanyInforAlign>
         <div>
           <SectionItemWrap>
             <CompanyApplicationSection>
               <SectionTitle style={{ marginBottom: "10px" }}>
-                AI,IoT 소프트웨어 개발 직군
+                {job?.job_title || "직군 정보 없음"}
               </SectionTitle>
               <ul style={{ marginBottom: "20px" }}>
-                <li>
-                  소프트웨어 개발 분야: 공간 자율운영 솔루션 Alicom의 프론트,
-                  백엔드 개발 및 고도화
-                </li>
-                <li>
-                  소프트웨어 개발 분야: 공간 자율운영 솔루션 Alicom의 프론트,
-                  백엔드 개발 및 고도화
-                </li>
-                <li>
-                  소프트웨어 개발 분야: 공간 자율운영 솔루션 Alicom의 프론트,
-                  백엔드 개발 및 고도화
-                </li>
+                <li>{job?.job_description || "직무 설명 없음"}</li>
               </ul>
 
               <CompanyApplicationSalaryWrap>
                 <div>
                   <div>급여 (정규직 채용 시)</div>
-                  <CompanySectionSubTitle>월급 220만원</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>{job?.salary || "-"}</CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>실습 수당 (현장실습 시)</div>
-                  <CompanySectionSubTitle>시급 5000원</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>{job?.internship_pay || "-"}</CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>근무 형태</div>
-                  <CompanySectionSubTitle>월급 220만원</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>{job?.work_type || "-"}</CompanySectionSubTitle>
                 </div>
                 <div>
                   <div>모집인원</div>
-                  <CompanySectionSubTitle>월급 220만원</CompanySectionSubTitle>
+                  <CompanySectionSubTitle>{job?.recruitment_count || "-"}</CompanySectionSubTitle>
                 </div>
               </CompanyApplicationSalaryWrap>
-              <CompanyApplicationRequirementsWrap>
-                <CompanySectionSubTitle>
-                  요구조건(우대사항)
-                </CompanySectionSubTitle>
-                <div>웹, 모바일 서비스 개발 경험</div>
-                <ul>
-                  <li>AI 알고리즘 개발 경험</li>
-                  <li>IoT 모듈 개발 경험</li>
-                </ul>
-              </CompanyApplicationRequirementsWrap>
+              
             </CompanyApplicationSection>
-
             <hr />
-
             <CompanyWorkInforSection>
-              <div>
-                <CompanySectionSubTitle>근로조건</CompanySectionSubTitle>
-                <ul>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                </ul>
-              </div>
+              <CompanyApplicationRequirementsWrap>
+                <CompanySectionSubTitle>요구조건(우대사항)</CompanySectionSubTitle>
+                <div>{job?.qualifications || "-"}</div>
+              </CompanyApplicationRequirementsWrap>
               <div>
                 <CompanySectionSubTitle>근무시간</CompanySectionSubTitle>
                 <ul>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
-                  <li>현장실습 인턴 3개월</li>
+                  <li>{job?.working_hours || "-"}</li>
                 </ul>
               </div>
             </CompanyWorkInforSection>
@@ -115,9 +116,9 @@ const JobInforDetail = () => {
 
             <div>
               <CompanySectionSubTitle>기타 요구사항</CompanySectionSubTitle>
-              <div>당사는 개쩌는 사람을 원함</div>
+              <div>{job?.additional_requirements || "-"}</div>
             </div>
-
+            
             <CompanyButtonWrap>
               <SubmitButton
                 Text={"추가자료 다운로드"}
@@ -139,32 +140,31 @@ const JobInforDetail = () => {
             }}
           >
             <SectionTitle>AI 기업 분석</SectionTitle>
-            <CompanyAiInforWrap></CompanyAiInforWrap>
+            <CompanyAiInforWrap>{companyData.ai_analysis}</CompanyAiInforWrap>
             <KitWrap>
               <img src="../src/assets/images/KIT.svg" alt="" />
             </KitWrap>
           </SectionItemWrap>
         </div>
         <div>
-          <CompnayInfor />
+          <CompanyInfor companyId={companyId}/>
           <SectionItemWrap>
             <SectionTitle>기업 위치</SectionTitle>
-            <KakaoMap></KakaoMap>
+            <KakaoMapMini address={companyData.address} />
             <CompanySectionSubTitle style={{ marginTop: "20px" }}>
               주소
             </CompanySectionSubTitle>
             <SectionSmallTtile style={{ wordBreak: "keep-all" }}>
-              서울특별시 성동구 고산자로 14길 26, 아케이드동 엠엘-비엠층
-              103호(행당동, 지웰홈스 왕십리)
+              {companyData.address}
             </SectionSmallTtile>
           </SectionItemWrap>
         </div>
-      </CompnayInforAlign>
+      </CompanyInforAlign>
     </>
   );
 };
 
-const CompnayInforAlign = styled.div`
+const CompanyInforAlign = styled.div`
   margin-top: 20px !important;
   display: flex;
   justify-content: space-between;
@@ -237,10 +237,11 @@ const CompanyApplicationRequirementsWrap = styled.div`
 
 const CompanyWorkInforSection = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: start;
+  gap: 20px;
   & > div {
-    width: 100%;
+    width: 48%;
   }
 `;
 

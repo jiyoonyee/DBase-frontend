@@ -529,7 +529,7 @@ const FormHeader = styled.div`
   & > div:nth-child(2) {
     font-size: 16px;
     color: #6c6c6c;
-    font-weight: bold;
+    font-weight: 500;
   }
 `;
 
@@ -817,8 +817,8 @@ const JobUploadCompanyForm = styled.div`
   /* background-color: aliceblue; */
   & label {
     color: #242424;
-    font-weight: bold;
-    font-size: 20px;
+    font-weight: 500;
+    font-size: 18px;
   }
 
   & > div:nth-child(2) {

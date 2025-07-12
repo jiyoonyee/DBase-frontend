@@ -38,9 +38,9 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   padding: 15px;
-  font-weight: bold;
+  font-weight: 500;
   text-align: center;
-
+  z-index: 1;
   &:hover {
     cursor: pointer;
   }
