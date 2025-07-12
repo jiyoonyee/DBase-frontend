@@ -12,7 +12,6 @@ const SelectDropDown = ({
 
   const UpdateDropDown = () => {
     setMenuOpen(!menuOpen);
-    console.log("드롭");
   };
 
   const UpdateValue = (item) => {
@@ -22,8 +21,6 @@ const SelectDropDown = ({
     // 드롭다운 닫기
     // 즉시 클릭한 값을 부모에 전달
   };
-
-  console.log(menuOpen);
 
   return (
     <>

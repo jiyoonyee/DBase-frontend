@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 const CompanyItem = ({ Year, Name, Field, Location, Deadline, Work, id }) => {
   //   const StacksList = Stacks.split(",");
   const ComapanyId = id;
-  console.log(id, "id");
   const navigate = useNavigate();
   return (
     <>

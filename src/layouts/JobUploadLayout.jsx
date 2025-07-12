@@ -1,24 +1,16 @@
-import { useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
+import { useNavigate } from "react-router-dom";
 
 const JobUploadLayout = () => {
+  const navigate = useNavigate();
   const [nextPage, setNextPage] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   const [jobFileName, setJobFileName] = useState("");
   const [jobFilePlusName, setJobFilePlusName] = useState("");
   const [CompanyInfor, setCompanyInfor] = useState(null);
-
-  let deadline = "";
-  let companyName = "";
-  let companyYear = "";
-  let comapnyWork = "";
-  let companyBusiness = "";
-  let companyEmployees = "";
-  let comapnyMainBusiness = "";
-  let companyWebsite = "";
-  let companyAddress = "";
 
   const handleJobFileChange = (e) => {
     const file = e.target.files[0];
@@ -33,119 +25,177 @@ const JobUploadLayout = () => {
     if (file) setJobFilePlusName(file.name);
   };
 
-  const validatePage0 = () => {
-    deadline = document.getElementById("UploadDeadLine").value.trim();
-
-    if (!deadline || !jobFileRef.current?.files[0]) {
-      alert("지원마감일, 채용의뢰서를 모두 입력해주세요.");
-      return false;
-    }
-    handleFirstFormSubmit();
-    return true;
-  };
-
-  const UploadDeadLine = document
-    .getElementById("UploadDeadLine")
-    ?.value.trim();
-
-  const validatePage1 = () => {
-    const companyName = document
-      .getElementById("CompanyNameInput2")
-      ?.value.trim();
-    const year = document.getElementById("CompanyYearInput2")?.value.trim();
-    const work = document.getElementById("CompanyWorkInput2")?.value.trim();
-    const employees = document
-      .getElementById("CompanyemployeesInput2")
-      ?.value.trim();
-    const homepage = document.getElementById("CompanyWebsite")?.value.trim();
-    const address = document
-      .getElementById("CompanyAdressInput2")
-      ?.value.trim();
-
-    if (!companyName || !year || !work || !employees || !homepage || !address) {
-      alert("기업 기본 정보를 모두 입력해주세요.");
-      return false;
-    }
-    return true;
-  };
-
-  // const validatePage2 = () => {
-  //   const job = document.querySelector('input[placeholder="기타"]');
-  //   const jobText = job && !job.disabled ? job.value.trim() : "";
-
-  //   const fields = document.querySelectorAll("input[type=text], textarea");
-
-  //   const requiredFilled = Array.from(fields).every((field) => {
-  //     return field.disabled || field.value.trim() !== "";
-  //   });
-
-  //   if (!requiredFilled) {
-  //     alert("모든 채용 정보를 입력해주세요.");
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  const handleNextPage = () => {
-    let isValid = true;
-
-    if (nextPage === 0) isValid = validatePage0();
-    // else if (nextPage === 1) isValid = validatePage1();
-    // else if (nextPage === 2) isValid = validatePage2();
-
-    if (!isValid) return;
-
-    if (nextPage !== 2) {
-      setNextPage((prev) => (prev + 1) % 3);
-    }
-
-    if (nextPage === 2) {
-      // handleSubmit();
+  const handleNextPage = async () => {
+    if (nextPage === 0) {
+      await handleFirstFormSubmit();
+    } else if (nextPage === 1) {
+      setNextPage((prevNextPage) => prevNextPage + 1);
+    } else if (nextPage === 2) {
+      await handleUploadCompany();
     }
   };
+
   const handlebeforePage = () => {
-    if (nextPage === 0) return; // 첫 페이지일 경우 아무것도 하지 않음
-    setNextPage(nextPage - 1);
+    setNextPage((prev) => prev - 1);
   };
 
   const jobFileRef = useRef(null);
   const jobFilePlusRef = useRef(null);
 
-  const handleFirstFormSubmit = () => {
+  let updatePayload = {
+    company_information: {
+      company_name: "",
+      year: "",
+      business_type: "",
+      employee_count: "",
+      main_business: "",
+      website: "",
+      address: "",
+    },
+    job_information: {
+      job_title: "",
+      recruitment_count: "",
+      job_description: "",
+      required_documents: [],
+      qualifications: "",
+      working_hours: "",
+      work_type: "",
+      internship_pay: "",
+      salary: "",
+      additional_requirements: "",
+    },
+  };
+
+  const handleFirstFormSubmit = async () => {
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
     const jobFilePlus = jobFilePlusRef.current.files[0];
 
-    if (jobFile) {
-      formData.append("file", jobFile);
-    }
+    if (jobFile) formData.append("file", jobFile);
+    if (jobFilePlus) formData.append("etcFile", jobFilePlus);
 
-    if (jobFilePlus) {
-      formData.append("etcFile", jobFilePlus);
-    }
-
-    fetch(
-      `http://localhost:4433/job/input?fileName=${jobFileName}&etcFileName=${jobFilePlusName}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    )
-      .then((res) => {
-        // console.log(res);
-        // console.log(res.json());
-        // console.log(res.data);
-        const result = res.json();
-
-        if (result.success) {
-          setCompanyInfor(result.companyInfor);
+    try {
+      const res = await fetch(
+        `http://localhost:4433/job/input?fileName=${encodeURIComponent(
+          jobFileName
+        )}&etcFileName=${encodeURIComponent(jobFilePlusName)}`,
+        {
+          method: "POST",
+          body: formData,
         }
-      })
-      .catch((err) => {
-        console.error("업로드 에러:", err);
-      });
+      );
+
+      if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
+
+      const data = await res.json();
+
+      setCompanyInfor(data); // 상태 저장
+      console.log("업로드 성공:", data);
+      setNextPage((prevNextPage) => prevNextPage + 1);
+
+      document.getElementById("companyName").value =
+        data.company_information.company_name;
+      document.getElementById("companyYear").value =
+        data.company_information.year;
+      document.getElementById("companyWork").value =
+        data.company_information.business_type;
+      document.getElementById("companyMainWork").value =
+        data.company_information.main_business;
+      document.getElementById("companyEmployees").value =
+        data.company_information.employee_count;
+      document.getElementById("companyWebsite").value =
+        data.company_information.website;
+      document.getElementById("companyAddress").value =
+        data.company_information.address;
+      document.getElementById("jobTitleInput").value =
+        data.job_information.job_title;
+      document.getElementById("recruitmentNumberInput").value =
+        data.job_information.recruitment_count;
+      document.getElementById("jobDescriptionInput").value =
+        data.job_information.job_description;
+      document.getElementById("jobRequirementsInput").value =
+        data.job_information.qualifications;
+      document.getElementById("jobWorkingHoursInput").value =
+        data.job_information.working_hours;
+      document.getElementById("jobTypeInput").value =
+        data.job_information.work_type;
+      document.getElementById("internshipAllowanceInput").value =
+        data.job_information.internship_pay;
+      document.getElementById("salaryInput").value =
+        data.job_information.salary;
+      document.getElementById("otherRequirementsInput").value =
+        data.job_information.additional_requirements;
+    } catch (err) {
+      console.error("업로드 에러:", err);
+      alert("업로드 중 오류가 발생했습니다.");
+    }
   };
+
+  const handleUploadCompany = async () => {
+    console.log("업로드할 데이터:", updatePayload);
+    updatePayload.company_information.company_name =
+      document.getElementById("companyName").value;
+    updatePayload.company_information.year =
+      document.getElementById("companyYear").value;
+    updatePayload.company_information.business_type =
+      document.getElementById("companyWork").value;
+    updatePayload.company_information.employee_count =
+      document.getElementById("companyEmployees").value;
+    updatePayload.company_information.main_business =
+      document.getElementById("companyMainWork").value;
+    updatePayload.company_information.website =
+      document.getElementById("companyWebsite").value;
+    updatePayload.company_information.address =
+      document.getElementById("companyAddress").value;
+
+    updatePayload.job_information.job_title =
+      document.getElementById("jobTitleInput").value;
+    updatePayload.job_information.recruitment_count = document.getElementById(
+      "recruitmentNumberInput"
+    ).value;
+    updatePayload.job_information.job_description = document.getElementById(
+      "jobDescriptionInput"
+    ).value;
+    updatePayload.job_information.qualifications = document.getElementById(
+      "jobRequirementsInput"
+    ).value;
+    updatePayload.job_information.working_hours = document.getElementById(
+      "jobWorkingHoursInput"
+    ).value;
+    updatePayload.job_information.work_type =
+      document.getElementById("jobTypeInput").value;
+    updatePayload.job_information.internship_pay = document.getElementById(
+      "internshipAllowanceInput"
+    ).value;
+    updatePayload.job_information.salary =
+      document.getElementById("salaryInput").value;
+    updatePayload.job_information.additional_requirements =
+      document.getElementById("otherRequirementsInput").value;
+
+    try {
+      const res = await fetch(`http://localhost:4433/job/input/update`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json", // ✅ 중요!!
+        },
+        body: JSON.stringify(updatePayload),
+      });
+
+      if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
+
+      const data = await res.json();
+      console.log(data, "업로드 성공");
+      navigate("/job/infor"); // 업로드 성공 후 페이지 이동
+    } catch (err) {
+      console.error("업로드 에러:", err);
+      alert("업로드 중 오류가 발생했습니다.");
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log(document.companyName);
+  // }, []);
 
   return (
     <>
@@ -248,52 +298,52 @@ const JobUploadLayout = () => {
             <SectionTitle>기업 기본 정보</SectionTitle>
             <div>
               <div>
-                <InputLabel htmlFor="CompanyNameInput2">회사명</InputLabel>
+                <InputLabel htmlFor="companyName">회사명</InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyNameInput2" />
+                  <input type="text" id="companyName" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel htmlFor="CompanyYearInput2">설립연도</InputLabel>
+                <InputLabel htmlFor="companyYear">설립연도</InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyYearInput2" />
+                  <input type="text" id="companyYear" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel htmlFor="CompanyWorkInput2">업태</InputLabel>
+                <InputLabel htmlFor="companyWork">업태</InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyWorkInput2" />
+                  <input type="text" id="companyWork" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel htmlFor="CompanyemployeesInput2">직원수</InputLabel>
+                <InputLabel htmlFor="companyEmployees">직원수</InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyemployeesInput2" />
+                  <input type="text" id="companyEmployees" />
                 </InputWrap>
               </div>
             </div>
             <div>
               <div>
-                <InputLabel htmlFor="CompanyWorkInput2">
+                <InputLabel htmlFor="companyMainWork">
                   주요 사업 내용
                 </InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyWorkInput2" />
+                  <input type="text" id="companyMainWork" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel $essentialState={true} htmlFor="CompanyWebsite">
+                <InputLabel $essentialState={true} htmlFor="companyWebsite">
                   홈페이지
                 </InputLabel>
                 <InputWrap>
-                  <input type="text" id="CompanyWebsite" />
+                  <input type="text" id="companyWebsite" />
                 </InputWrap>
               </div>
             </div>
             <div>
-              <InputLabel htmlFor="CompanyAdressInput2">소재지</InputLabel>
+              <InputLabel htmlFor="companyAddress">소재지</InputLabel>
               <InputWrap>
-                <input type="text" id="CompanyAdressInput2" />
+                <input type="text" id="companyAddress" />
               </InputWrap>
             </div>
           </JobUploadCompanyForm>
@@ -301,65 +351,79 @@ const JobUploadLayout = () => {
             <SectionTitle>채용 정보</SectionTitle>
             <div>
               <div>
-                <InputLabel>모집 직종</InputLabel>
+                <InputLabel htmlFor="jobTitleInput">모집 직종</InputLabel>
                 <InputWrap>
-                  <input type="text" />
+                  <input type="text" id="jobTitleInput" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel>모집 인원</InputLabel>
+                <InputLabel htmlFor="recruitmentNumberInput">
+                  모집 인원
+                </InputLabel>
                 <InputWrap>
-                  <input type="text" />
+                  <input type="text" id="recruitmentNumberInput" />
                 </InputWrap>
               </div>
             </div>
             <div>
-              <InputLabel>직무 내용(구체적)</InputLabel>
+              <InputLabel htmlFor="jobDescriptionInput">
+                직무 내용(구체적)
+              </InputLabel>
               <TextareaWrap>
-                <textarea></textarea>
+                <textarea id="jobDescriptionInput"></textarea>
               </TextareaWrap>
             </div>
             <div>
               <div>
-                <InputLabel>자격요건(우대자격)</InputLabel>
+                <InputLabel htmlFor="jobRequirementsInput">
+                  자격요건(우대자격)
+                </InputLabel>
                 <TextareaWrap>
-                  <textarea></textarea>
+                  <textarea id="jobRequirementsInput"></textarea>
                 </TextareaWrap>
               </div>
               <div>
-                <InputLabel>근무 시간</InputLabel>
+                <InputLabel htmlFor="jobWorkingHoursInput">
+                  근무 시간
+                </InputLabel>
                 <TextareaWrap>
-                  <textarea></textarea>
+                  <textarea id="jobWorkingHoursInput"></textarea>
                 </TextareaWrap>
               </div>
             </div>
             <div>
               <div>
-                <InputLabel>근무형태</InputLabel>
+                <InputLabel htmlFor="jobTypeInput">근무형태</InputLabel>
                 <InputWrap>
-                  <input type="text" />
+                  <input type="text" id="jobTypeInput" />
                 </InputWrap>
               </div>
             </div>
 
             <div>
               <div>
-                <InputLabel>실습 수당(현장실습)</InputLabel>
+                <InputLabel htmlFor="internshipAllowanceInput">
+                  실습 수당(현장실습)
+                </InputLabel>
                 <InputWrap>
-                  <input type="text" />
+                  <input type="text" id="internshipAllowanceInput" />
                 </InputWrap>
               </div>
               <div>
-                <InputLabel>실습 수당(현장실습)</InputLabel>
+                <InputLabel htmlFor="salaryInput">
+                  급여 (정규직 채용 시)
+                </InputLabel>
                 <InputWrap>
-                  <input type="text" />
+                  <input type="text" id="salaryInput" />
                 </InputWrap>
               </div>
             </div>
             <div>
-              <InputLabel>근무형태</InputLabel>
+              <InputLabel htmlFor="otherRequirementsInput">
+                기타 요구 사항
+              </InputLabel>
               <InputWrap>
-                <input type="text" />
+                <input type="text" id="otherRequirementsInput" />
               </InputWrap>
             </div>
           </JobUploadCompanyDetailForm>
