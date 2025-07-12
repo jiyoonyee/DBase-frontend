@@ -4,7 +4,7 @@ import axios from "axios";
 
 const { kakao } = window;
 
-const KakaoMap = () => {
+const KakaoMap = ({ onSelectCompany }) => {
   const [companyList, setCompanyList] = useState([]);
 
   useEffect(() => {
@@ -24,30 +24,33 @@ const KakaoMap = () => {
 
     const options = {
       center: new kakao.maps.LatLng(37.538917, 126.990532), // 디지텍
-      level: 3,
+      level: 8,
     };
 
     const map = new kakao.maps.Map(container, options);
-
     const geocoder = new kakao.maps.services.Geocoder();
 
-    if (companyList.length === 0) {
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(37.538917, 126.990532),
-      });
+    // 디폴트 위치 마커
+    const defaultMarker = new kakao.maps.Marker({
+      map: map,
+      position: new kakao.maps.LatLng(37.538917, 126.990532),
+    });
+    defaultMarker.companyId = "default";
+    kakao.maps.event.addListener(defaultMarker, "click", () => {
+      console.log("디지텍");
+      if (onSelectCompany) onSelectCompany(null);
+    });
 
-      marker.companyId = "default";
-      kakao.maps.event.addListener(marker, "click", () => {
-        console.log("터졌나안터졌나");
-      });
+    // 회사 마커들
+    companyList.forEach((companyWrapper) => {
+      const address = companyWrapper.company?.address;
 
-      return;
-    }
+      if (!address) {
+        console.warn(`주소 없음: company_id=${companyWrapper.company_id}`);
+        return;
+      }
 
-    // 성공 시
-    companyList.forEach((company) => {
-      geocoder.addressSearch(company.address, (result, status) => {
+      geocoder.addressSearch(address, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
@@ -56,17 +59,18 @@ const KakaoMap = () => {
             position: coords,
           });
 
-          marker.companyId = company.company_id;
+          marker.companyId = companyWrapper.company_id;
 
           kakao.maps.event.addListener(marker, "click", () => {
             console.log("companyId:", marker.companyId);
+            if (onSelectCompany) onSelectCompany(marker.companyId);
           });
         } else {
-          console.warn(`주소 변환 실패: ${company.address}`);
+          console.warn(`주소 변환 실패: ${address}`);
         }
       });
     });
-  }, [companyList]);
+  }, [companyList, onSelectCompany]);
 
   return <Wrap id="map" />;
 };

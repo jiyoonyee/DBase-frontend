@@ -1,39 +1,119 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import KakaoMap from "../layouts/KakaoMap";
+import CompanyInfor from "../components/CompanyInfor";
 import {
   SectionItemWrap,
   SectionSmallTtile,
   SectionTitle,
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
-import CompnayInfor from "../components/CompanyInfor";
 
 const EmploymentStatusPage = () => {
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [placeCounts, setPlaceCounts] = useState({
+    subway: 0,
+    convenience: 0,
+    restaurant: 0,
+  });
+
+  useEffect(() => {
+    if (!selectedCompanyId) {
+      setSelectedCompany(null);
+      return;
+    }
+
+    axios
+      .get(`http://localhost:4433/job/company?id=${selectedCompanyId}`)
+      .then((res) => {
+        setSelectedCompany(res.data);
+      })
+      .catch((err) => {
+        console.error("선택된 회사 정보 가져오기 실패:", err);
+        setSelectedCompany(null);
+      });
+  }, [selectedCompanyId]);
+
+  useEffect(() => {
+    if (!selectedCompany?.address) {
+      setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      return;
+    }
+
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const places = new window.kakao.maps.services.Places();
+
+    geocoder.addressSearch(selectedCompany.address, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const { x, y } = result[0];
+        const location = new window.kakao.maps.LatLng(y, x);
+
+        const searchPlaceCount = (keyword, key) => {
+          const options = {
+            location,
+            radius: 300, // 300m 범위 내 검색
+            size: 15,
+          };
+
+          places.keywordSearch(
+            keyword,
+            (data, status) => {
+              if (status === window.kakao.maps.services.Status.OK) {
+                setPlaceCounts((prev) => ({ ...prev, [key]: data.length }));
+              } else {
+                setPlaceCounts((prev) => ({ ...prev, [key]: 0 }));
+              }
+            },
+            options
+          );
+        };
+
+        searchPlaceCount("지하철역", "subway");
+        searchPlaceCount("편의점", "convenience");
+        searchPlaceCount("음식점", "restaurant");
+      } else {
+        setPlaceCounts({ subway: 0, convenience: 0, restaurant: 0 });
+      }
+    });
+  }, [selectedCompany]);
+
   return (
-    <>
-      <Wrap>
-        <PageinforWrap>
-          <PageTitleWrap>
-            <PageTitle>취업 현황</PageTitle>
-            <PageSubTitle>
-              학생들의 취업 현황을 지도로 확인해보세요
-            </PageSubTitle>
-          </PageTitleWrap>
-        </PageinforWrap>
-        <SectionWrap>
-          <div>
-            <SectionItemWrap>
-              <SectionMapalign>
-                <SectionTitle>취업 현황 지도</SectionTitle>
-                <SectionSmallTtile>
-                  학생들이 재직 중인 회사 위치를 확인하세요
-                </SectionSmallTtile>
-                <KakaoMap />
-              </SectionMapalign>
-            </SectionItemWrap>
-            <SectionItemWrap>
-              <SectionMenualign>
-                <SectionTitle>선택된 회사 정보</SectionTitle>
+    <Wrap>
+      <PageinforWrap>
+        <PageTitleWrap>
+          <PageTitle>취업 현황</PageTitle>
+          <PageSubTitle>학생들의 취업 현황을 지도로 확인해보세요</PageSubTitle>
+        </PageTitleWrap>
+      </PageinforWrap>
+
+      <SectionWrap>
+        <div>
+          <SectionItemWrap>
+            <SectionMapalign>
+              <SectionTitle>취업 현황 지도</SectionTitle>
+              <SectionSmallTtile>
+                학생들이 재직 중인 회사 위치를 확인하세요
+              </SectionSmallTtile>
+              <KakaoMap onSelectCompany={setSelectedCompanyId} />
+            </SectionMapalign>
+          </SectionItemWrap>
+
+          <SectionItemWrap>
+            <SectionMenualign>
+              <SectionTitle>선택된 회사 정보</SectionTitle>
+              {selectedCompany ? (
+                <div
+                  style={{
+                    fontSize: "18px",
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {selectedCompany.company_name}
+                </div>
+              ) : (
                 <div
                   style={{
                     fontSize: "18px",
@@ -43,41 +123,53 @@ const EmploymentStatusPage = () => {
                 >
                   기업을 선택하세요
                 </div>
-                <SectionSmallTtile>-</SectionSmallTtile>
-                <MakerMenuWrap>
-                  <MakerItem>지하철</MakerItem>
-                  <MakerItem>식당</MakerItem>
-                  <MakerItem>카페</MakerItem>
-                </MakerMenuWrap>
-              </SectionMenualign>
-            </SectionItemWrap>
-          </div>
-          <div>
-            <CompnayInfor />
-            <SectionItemWrap>
-              <SectionTitle style={{ marginBottom: "5px" }}>
-                재직자
-              </SectionTitle>
-              <SectionSmallTtile style={{ marginBottom: "20px" }}>
-                알리콘
+              )}
+              <SectionSmallTtile>
+                {selectedCompany?.address || "-"}
               </SectionSmallTtile>
-              <EmployeeWrap>
-                <EmployeeItem />
-                <EmployeeItem />
-                <EmployeeItem />
-                <EmployeeItem />
-                <EmployeeItem />
-                <EmployeeItem />
-                <EmployeeItem />
-              </EmployeeWrap>
-            </SectionItemWrap>
-          </div>
-        </SectionWrap>
-      </Wrap>
-    </>
+              <MakerMenuWrap>
+                <MakerItem>
+                  지하철
+                  <MakerCount>{placeCounts.subway}</MakerCount>
+                </MakerItem>
+                <MakerItem>
+                  편의점
+                  <MakerCount>{placeCounts.convenience}</MakerCount>
+                </MakerItem>
+                <MakerItem>
+                  음식점
+                  <MakerCount>{placeCounts.restaurant}</MakerCount>
+                </MakerItem>
+              </MakerMenuWrap>
+            </SectionMenualign>
+          </SectionItemWrap>
+        </div>
+
+        <div>
+          <CompanyInfor companyId={selectedCompanyId} />
+
+          <SectionItemWrap>
+            <SectionTitle style={{ marginBottom: "5px" }}>재직자</SectionTitle>
+            <SectionSmallTtile style={{ marginBottom: "20px" }}>
+              {selectedCompany?.company_name || "알리콘"}
+            </SectionSmallTtile>
+            <EmployeeWrap>
+              <EmployeeItem />
+              <EmployeeItem />
+              <EmployeeItem />
+              <EmployeeItem />
+              <EmployeeItem />
+              <EmployeeItem />
+              <EmployeeItem />
+            </EmployeeWrap>
+          </SectionItemWrap>
+        </div>
+      </SectionWrap>
+    </Wrap>
   );
 };
 
+// 🔽 Styled Components
 const Wrap = styled.div`
   width: 100%;
   background: linear-gradient(
@@ -101,9 +193,6 @@ const Wrap = styled.div`
 `;
 
 const PageinforWrap = styled.div`
-  /* height: 100%; */
-
-  /* background-color: #95a8b93b; */
   margin-top: 100px !important;
   padding: 50px 0px;
 `;
@@ -148,7 +237,6 @@ const SectionWrap = styled.div`
 `;
 
 const SectionMapalign = styled.div`
-  /* height: 100px; */
   display: flex;
   justify-content: start;
   align-items: start;
@@ -178,54 +266,39 @@ const MakerItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 33%;
   aspect-ratio: 16 / 5;
+  color: black;
 `;
 
-const CompnayInforItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  width: 100%;
-
-  & > div {
-    width: 50%;
-  }
-  & > div:nth-child(1) {
-    color: #6c6c6c;
-    font-weight: bold;
-  }
-  & > div:nth-child(2) {
-    color: black;
-    text-align: end;
-    word-break: keep-all;
-  }
+const MakerCount = styled.div`
+  margin-top: 4px;
+  font-weight: bold;
+  color: #3e8eff;
+  font-size: 18px;
 `;
 
 const EmployeeWrap = styled.div`
   overflow-y: auto;
   height: 250px;
   padding-right: 20px;
-  /* 스크롤바 전체 영역 */
+
   &::-webkit-scrollbar {
     display: block;
     width: 8px;
   }
 
-  /* 스크롤바 트랙 (배경) */
   &::-webkit-scrollbar-track {
     background: #e0e0e0;
     border-radius: 4px;
   }
 
-  /* 스크롤바 핸들 (움직이는 부분) */
   &::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
   }
 
-  /* 스크롤바 핸들 호버 시 색상 */
   &::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
