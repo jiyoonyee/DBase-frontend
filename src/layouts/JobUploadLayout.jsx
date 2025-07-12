@@ -11,6 +11,14 @@ const JobUploadLayout = () => {
   const [CompanyInfor, setCompanyInfor] = useState(null);
 
   let deadline = "";
+  let companyName = "";
+  let companyYear = "";
+  let comapnyWork = "";
+  let companyBusiness = "";
+  let companyEmployees = "";
+  let comapnyMainBusiness = "";
+  let companyWebsite = "";
+  let companyAddress = "";
 
   const handleJobFileChange = (e) => {
     const file = e.target.files[0];

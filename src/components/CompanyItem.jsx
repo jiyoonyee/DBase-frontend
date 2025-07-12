@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 const CompanyItem = ({ Year, Name, Field, Location, Deadline, Work, id }) => {
   //   const StacksList = Stacks.split(",");
   const ComapanyId = id;
+  console.log(id, "id");
   const navigate = useNavigate();
   return (
     <>
@@ -56,15 +57,15 @@ const CompanyItem = ({ Year, Name, Field, Location, Deadline, Work, id }) => {
             BackColor={"white"}
             TextColor={"#6C6C6C"}
             Text={"상세보기"}
-            clickEvent={() => navigate("jobinfordetail")}
+            clickEvent={() =>
+              navigate(`jobinfordetail?companyId=${ComapanyId}`)
+            }
           />
           <SubmitButton
             BackColor={"#3449B4"}
             TextColor={"#FFFFFF"}
             Text={"지원하기"}
-            clickEvent={() =>
-              navigate(`companyapply?comapany-id=${ComapanyId}`)
-            }
+            clickEvent={() => navigate(`companyapply?comapanyId=${ComapanyId}`)}
           />
         </ButtonWrap>
       </Wrap>
