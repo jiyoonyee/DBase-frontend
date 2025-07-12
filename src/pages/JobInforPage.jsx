@@ -63,6 +63,9 @@ const JobInforPage = ({ loginState }) => {
               TextSize={"20px"}
               Text={"지원현황 확인"}
               BorderState={false}
+              clickEvent={() => {
+                navigate("companyapplycheck");
+              }}
             />
             {loginState && (
               <SubmitButton

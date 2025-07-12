@@ -40,6 +40,7 @@ const Wrap = styled.div`
   padding: 15px;
   font-weight: bold;
   text-align: center;
+
   &:hover {
     cursor: pointer;
   }

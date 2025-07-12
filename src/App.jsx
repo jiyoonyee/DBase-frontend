@@ -12,6 +12,7 @@ import EmploymentStatusPage from "./pages/EmploymentStatusPage";
 import JobInforDetail from "./layouts/JobInforDetail";
 import CompanyApplyLayout from "./layouts/CompanyApplyLayout";
 import CompanyApplytCheck from "./layouts/CompanyApplyCheckLayout";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
@@ -65,7 +66,9 @@ const App = () => {
               path="/EmploymentStatus"
               element={<EmploymentStatusPage />}
             />
+            <Route path="/profile" element={<ProfilePage />}></Route>
           </Routes>
+
           <Footer />
         </Wrap>
       </BrowserRouter>

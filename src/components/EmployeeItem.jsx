@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CompanyStackItem from "./CompanyStackItem";
+import StackItem from "./StackItem";
 import SubmitButton from "./SubmitButton";
 
 const EmployeeItem = ({ Stacks }) => {
@@ -23,7 +23,7 @@ const EmployeeItem = ({ Stacks }) => {
         </EmployeeInforWrap>
         <CompanyStackWrap>
           {StacksList.map((text, index) => (
-            <CompanyStackItem Stack={text} key={index} />
+            <StackItem Stack={text} key={index} />
           ))}
         </CompanyStackWrap>
         <SubmitButton TextColor={"black"} Text={"재직 선배 프로필 보기"} />

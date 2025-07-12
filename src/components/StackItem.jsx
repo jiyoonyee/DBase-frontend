@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CompanyStackItem = ({ Stack }) => {
+const StackItem = ({ Stack }) => {
   return (
     <>
       <Wrap>{Stack}</Wrap>
@@ -17,4 +17,4 @@ const Wrap = styled.div`
   font-weight: bold;
 `;
 
-export default CompanyStackItem;
+export default StackItem;

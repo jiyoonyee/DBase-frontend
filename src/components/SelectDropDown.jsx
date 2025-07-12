@@ -31,7 +31,9 @@ const SelectDropDown = ({
         <DropDownWrap $State={menuOpen} onClick={UpdateDropDown}>
           <span>
             {selectValue ? (
-              <p style={{ color: "black" }}>{selectValue}</p>
+              <p style={{ color: selectValue == "반려" ? "red" : "black" }}>
+                {selectValue}
+              </p>
             ) : (
               DropDownLabel
             )}
@@ -43,7 +45,10 @@ const SelectDropDown = ({
             <DropDownItem
               onClick={() => UpdateValue(item)}
               key={i}
-              $HoverColor={DropDwonItemColor}
+              $HoverColor={
+                item.ItemName == "반려" ? "#b0afaf  " : DropDwonItemColor
+              }
+              style={{ color: item.ItemName == "반려" && "red" }}
             >
               {item.ItemName}
             </DropDownItem>
@@ -55,7 +60,6 @@ const SelectDropDown = ({
 };
 
 const Wrap = styled.div`
-  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;

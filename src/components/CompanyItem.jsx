@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SubmitButton from "./SubmitButton";
-import CompanyStackItem from "./CompanyStackItem";
+import CompanyStackItem from "./StackItem";
 import { useNavigate } from "react-router-dom";
 
 /**
