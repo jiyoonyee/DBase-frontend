@@ -11,13 +11,13 @@ import ProfileActivity from "../components/ProfileActivity";
 import ProfileAward from "../components/ProfileAward";
 import StackItem from "../components/StackItem";
 import SubmitButton from "../components/SubmitButton";
-import PortfilePortflio from "../components/ProfilePortfolio";
-import HeroAnimation from "../components/HeroAnimation"; 
+
+import HeroAnimation from "../components/HeroAnimation";
 
 const ProfilePage = () => {
   return (
     <>
-    <HeroAnimation />
+      <HeroAnimation />
       <Wrap>
         <PageinforWrap>
           <PageTitleWrap>
@@ -49,14 +49,26 @@ const ProfilePage = () => {
                 <UserCompanyState $State={false}>구직중 </UserCompanyState>
               </div>
               <SectionSmallTtile>백엔드 개발자</SectionSmallTtile>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
+                }}
+              >
                 <SectionSmallTtile>회사명</SectionSmallTtile>
                 <SectionSmallTtile>근무 기간</SectionSmallTtile>
               </div>
+              <SubmitButton TextColor={"#6c6c6c"} Text={"정보 수정"} />
             </SectionItemWrap>
           </div>
           <div>
             <SectionItemWrap>
+              <SubmitButton
+                TextColor={"#6c6c6c"}
+                Text={"편집"}
+                BackColor={"white"}
+              />
               <SectionTitle>기술 스택</SectionTitle>
               <div
                 style={{
@@ -79,23 +91,37 @@ const ProfilePage = () => {
                 <StackItem Stack={"Flask"} />
               </div>
             </SectionItemWrap>
+
             <SectionItemWrap>
+              <SubmitButton
+                TextColor={"#6c6c6c"}
+                Text={"편집"}
+                BackColor={"white"}
+              />
               <SectionTitle>프로젝트</SectionTitle>
+
               <ProfileProject />
               <ProfileProject />
             </SectionItemWrap>
             <SectionItemWrap>
+              <SubmitButton
+                TextColor={"#6c6c6c"}
+                Text={"편집"}
+                BackColor={"white"}
+              />
               <SectionTitle>경험 / 활동 / 교육</SectionTitle>
               <ProfileActivity />
               <ProfileActivity />
             </SectionItemWrap>
             <SectionItemWrap>
+              <SubmitButton
+                TextColor={"#6c6c6c"}
+                Text={"편집"}
+                BackColor={"white"}
+              />
               <SectionTitle>자격 / 어학 / 수상</SectionTitle>
               <ProfileAward />
               <ProfileAward />
-            </SectionItemWrap>
-            <SectionItemWrap>
-              <PortfilePortflio LabelState={false} />
             </SectionItemWrap>
           </div>
         </ProfileWrapAlign>
@@ -113,7 +139,7 @@ const Wrap = styled.div`
     #072807 25vh,
     #1b3d1b 50vh,
     #3c6b39 75vh,
-    #52904F 100vh
+    #52904f 100vh
   );
   color: white;
   padding-bottom: 100px;
@@ -164,6 +190,15 @@ const ProfileWrapAlign = styled.div`
   }
   & > div:nth-child(2) {
     width: 70%;
+    & > div {
+      position: relative;
+      & > div:nth-child(1) {
+        height: auto;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+    }
   }
 `;
 

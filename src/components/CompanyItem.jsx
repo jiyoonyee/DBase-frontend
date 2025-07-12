@@ -119,25 +119,23 @@ const CompnayLocationWrap = styled.div`
   align-items: start;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
   & > div {
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: start;
     gap: 10px;
     color: #6c6c6c;
+    width: 100%;
   }
+
   & > div > div {
     font-weight: 500;
+    max-width: 100%; /* ✅ 최대 너비를 설정해야 ellipsis가 작동 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-`;
-
-const CompanyStackWrap = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 30px 0px;
 `;
 
 const ButtonWrap = styled.div`

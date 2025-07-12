@@ -6,13 +6,13 @@ import {
   SectionSubTitle,
 } from "../style/SectionLayoutStyle";
 
-const ProfileAward = () => {
+const ProfileAward = ({ AwardDate, AwardTitle, AwardInstitution }) => {
   return (
     <>
       <ProfileRecordWrap>
-        <SectionSmallTtile>2025.12</SectionSmallTtile>
-        <SectionSubTitle>웹앱경진대회 최우수상</SectionSubTitle>
-        <SectionSmallTtile>서울디지텍고등학교</SectionSmallTtile>
+        <SectionSmallTtile>{AwardDate}</SectionSmallTtile>
+        <SectionSubTitle>{AwardTitle}</SectionSubTitle>
+        <SectionSmallTtile>{AwardInstitution}</SectionSmallTtile>
       </ProfileRecordWrap>
     </>
   );
