@@ -105,11 +105,11 @@ const CompanyNameWrap = styled.div`
   gap: 15px;
   & > div:nth-child(1) {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 30px;
   }
   & > div:nth-child(2) {
     font-weight: 500;
-    font-size: 24px;
+    font-size: 20px;
     word-break: keep-all;
   }
 `;
@@ -128,7 +128,7 @@ const CompnayLocationWrap = styled.div`
     color: #6c6c6c;
   }
   & > div > div {
-    font-weight: bold;
+    font-weight: 500;
   }
 `;
 

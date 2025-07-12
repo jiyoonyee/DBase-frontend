@@ -63,7 +63,7 @@ const InputWrap = styled.div`
     outline: none;
     border: none;
     width: 100%;
-    font-size: 24px;
+    font-size: 20px;
     /* height: 0; */
     /* border-radius: 100px; */
   }

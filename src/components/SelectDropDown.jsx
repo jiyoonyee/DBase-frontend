@@ -83,7 +83,7 @@ const DropDownWrap = styled.div`
   & > span {
     color: #6c6c6c;
     /* font-weight: bold; */
-    font-size: 20px;
+    font-size: 18px;
     width: 100%;
   }
   & > img {
