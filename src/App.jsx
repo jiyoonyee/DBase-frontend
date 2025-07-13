@@ -13,7 +13,7 @@ import JobInforDetail from "./layouts/JobInforDetail";
 import CompanyApplyLayout from "./layouts/CompanyApplyLayout";
 import CompanyApplytCheck from "./layouts/CompanyApplyCheckLayout";
 import ProfilePage from "./pages/ProfilePage";
-import RequireAuth from "./components/RequireAuth"; // 추가
+import ScrollToTop from "./components/ScrollTop";
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
@@ -36,10 +36,12 @@ const App = () => {
     <>
       <BrowserRouter>
         <Wrap>
+          <ScrollToTop />
           <Header
             updateLoginState={updateLoginState}
             headerState={headerState}
           />
+
           <Routes>
             <Route
               element={<MainPage updateHeaderState={updateHeaderState} />}
