@@ -20,9 +20,9 @@ const Header = ({ updateLoginState, headerState }) => {
         if (data.statusCode != 401) {
           setUser(data);
           if (data.category === "teacher") {
-            updateLoginState(true, false);
-          } else {
             updateLoginState(true, true);
+          } else {
+            updateLoginState(true, false);
           }
         }
       });

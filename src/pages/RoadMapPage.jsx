@@ -4,9 +4,10 @@ import SubmitButton from "../components/SubmitButton";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "github-markdown-css/github-markdown.css";
-import HeroAnimation from "../components/HeroAnimation"; 
+import HeroAnimation from "../components/HeroAnimation";
+import AcountButton from "../components/AcountButton";
 
-const RoadMapPage = () => {
+const RoadMapPage = ({ LoginState }) => {
   const [markdown, setMarkdown] = useState("");
   const [markdownTitle, setMarkdownTitle] = useState("로드맵을 선택해주세요");
   const [job, setJob] = useState(null);
@@ -56,66 +57,98 @@ const RoadMapPage = () => {
 
   return (
     <>
-    <HeroAnimation />
+      <HeroAnimation />
+
       <Wrap>
-        <PageinforWrap>
-          <PageTitleWrap>
-            <PageTitle>취업 로드맵</PageTitle>
-            <PageSubTitle>
-              AI가 분석한 맞춤형 취업 로드맵으로 체계적으로 취업을 준비하세요
-            </PageSubTitle>
-          </PageTitleWrap>
-        </PageinforWrap>
-        <RoadMapSecitonWrap>
-          <SectionTitle>로드맵 설정</SectionTitle>
-          <div>
-            <SectionSubTtile>
-              희망 직무를 선택하면 AI가 맞춤형 로드맵을 생성합니다
-            </SectionSubTtile>
-            <div>
-              <SelectDropDown
-                UpdateSelectValue={handleUpdateJob}
-                DropDownLabel={"희망 직무 선택"}
-                DropDownItems={[
-                  { ItemName: "AI 엔지니어", ReqName: "ai-engineer" },
-                  { ItemName: "앱-andoroid", ReqName: "app-android" },
-                  { ItemName: "앱-ios", ReqName: "app-ios" },
-                  { ItemName: "정보 보안", ReqName: "cyber-security" },
-                  { ItemName: "서버 엔지니어", ReqName: "server-engineer" },
-                  { ItemName: "웹-백엔드", ReqName: "web-back" },
-                  { ItemName: "웹-프론트", ReqName: "web-front" },
-                  // ai-engineer, app-android, app-ios, cyber-security, server-engineer, web-back, web-front
-                ]}
-                DropDwonItemColor={"#f9822d"}
-              />
-              <SelectDropDown
-                UpdateSelectValue={handleUpdatePeriod}
-                DropDownLabel={"목표 기간"}
-                DropDownItems={[
-                  { ItemName: "6개월", ReqName: "6" },
-                  { ItemName: "3개월", ReqName: "3" },
-                  { ItemName: "1개월", ReqName: "1" },
-                ]}
-                DropDwonItemColor={"#f9822d"}
-              />
-              <SubmitButton
-                clickEvent={sendData}
-                Text={"로드맵 생성"}
-                BackColor={"#CE622C"}
-                TextColor={"white"}
-                imagePath={"../src/assets/images/RoadMapWhite.svg"}
-              />
-            </div>
+        {LoginState ? (
+          <>
+            <PageinforWrap>
+              <PageTitleWrap>
+                <PageTitle>취업 로드맵</PageTitle>
+                <PageSubTitle>
+                  AI가 분석한 맞춤형 취업 로드맵으로 체계적으로 취업을
+                  준비하세요
+                </PageSubTitle>
+              </PageTitleWrap>
+            </PageinforWrap>
+            <RoadMapSecitonWrap>
+              <SectionTitle>로드맵 설정</SectionTitle>
+              <div>
+                <SectionSubTtile>
+                  희망 직무를 선택하면 AI가 맞춤형 로드맵을 생성합니다
+                </SectionSubTtile>
+                <div>
+                  <SelectDropDown
+                    UpdateSelectValue={handleUpdateJob}
+                    DropDownLabel={"희망 직무 선택"}
+                    DropDownItems={[
+                      { ItemName: "AI 엔지니어", ReqName: "ai-engineer" },
+                      { ItemName: "앱-andoroid", ReqName: "app-android" },
+                      { ItemName: "앱-ios", ReqName: "app-ios" },
+                      { ItemName: "정보 보안", ReqName: "cyber-security" },
+                      { ItemName: "서버 엔지니어", ReqName: "server-engineer" },
+                      { ItemName: "웹-백엔드", ReqName: "web-back" },
+                      { ItemName: "웹-프론트", ReqName: "web-front" },
+                      // ai-engineer, app-android, app-ios, cyber-security, server-engineer, web-back, web-front
+                    ]}
+                    DropDwonItemColor={"#f9822d"}
+                  />
+                  <SelectDropDown
+                    UpdateSelectValue={handleUpdatePeriod}
+                    DropDownLabel={"목표 기간"}
+                    DropDownItems={[
+                      { ItemName: "6개월", ReqName: "6" },
+                      { ItemName: "3개월", ReqName: "3" },
+                      { ItemName: "1개월", ReqName: "1" },
+                    ]}
+                    DropDwonItemColor={"#f9822d"}
+                  />
+                  <SubmitButton
+                    clickEvent={sendData}
+                    Text={"로드맵 생성"}
+                    BackColor={"#CE622C"}
+                    TextColor={"white"}
+                    imagePath={"../src/assets/images/RoadMapWhite.svg"}
+                  />
+                </div>
+              </div>
+            </RoadMapSecitonWrap>
+            <RoadMapSecitonWrap>
+              <SectionTitle style={{ marginBottom: "30px" }}>
+                {markdownTitle}
+              </SectionTitle>
+              <div
+                style={{
+                  display: "block",
+                  backgroundColor: "white",
+                  color: "black",
+                }}
+                className="markdown-body"
+              >
+                <ReactMarkdown>{markdown}</ReactMarkdown>
+              </div>
+            </RoadMapSecitonWrap>
+          </>
+        ) : (
+          <div
+            style={{
+              height: "100vh",
+              marginTop: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            로그인 후 이용해주세요.
+            <AcountButton
+              LinkPath={"http://localhost:4433/auth/google"}
+              Label={"구글 계정으로 로그인"}
+            />
+            <div>@sdh.hs.kr 계정만 사용 가능합니다</div>
           </div>
-        </RoadMapSecitonWrap>
-        <RoadMapSecitonWrap>
-          <SectionTitle style={{ marginBottom: "30px" }}>
-            {markdownTitle}
-          </SectionTitle>
-          <div style={{ display: "block" , backgroundColor: "white", color: "black" }} className="markdown-body">
-            <ReactMarkdown>{markdown}</ReactMarkdown>
-          </div>
-        </RoadMapSecitonWrap>
+        )}
       </Wrap>
     </>
   );

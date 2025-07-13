@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 const JobUploadLayout = () => {
   const navigate = useNavigate();
   const [nextPage, setNextPage] = useState(0);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [jobFileName, setJobFileName] = useState("");
-  const [CompanyInfor, setCompanyInfor] = useState(null);
+  // const [CompanyInfor, setCompanyInfor] = useState(null);
 
   const handleJobFileChange = (e) => {
     const file = e.target.files[0];
@@ -63,6 +63,7 @@ const JobUploadLayout = () => {
   };
 
   const handleFirstFormSubmit = async () => {
+    setLoading(true);
     const formData = new FormData();
 
     const jobFile = jobFileRef.current.files[0];
@@ -84,7 +85,10 @@ const JobUploadLayout = () => {
 
       const data = await res.json();
 
-      setCompanyInfor(data); // 상태 저장
+      if (data) {
+        setLoading(false);
+      }
+
       console.log("업로드 성공:", data);
       setNextPage((prevNextPage) => prevNextPage + 1);
 
@@ -194,6 +198,11 @@ const JobUploadLayout = () => {
   return (
     <>
       <JobUplaodForm>
+        {loading && (
+          <LoadingWrap>
+            <div className="loader"></div>
+          </LoadingWrap>
+        )}
         <FormHeader>
           <div>
             <img src="../src/assets/images/world.svg" alt="지구본" />
@@ -233,10 +242,20 @@ const JobUploadLayout = () => {
                     onChange={handleJobFileChange}
                     accept=".pdf"
                   />
-                  <label htmlFor="jobFile">
+                  <label
+                    htmlFor="jobFile"
+                    style={{
+                      border: `${jobFileName && "2px solid blue"}`,
+                    }}
+                  >
                     <img
                       src="../src/assets/images/fileUpload.svg"
                       alt="파일 업로드"
+                      style={{
+                        filter: jobFileName
+                          ? "invert(34%) sepia(98%) saturate(1067%) hue-rotate(201deg) brightness(90%) contrast(100%)"
+                          : "none",
+                      }}
                     />
 
                     <div style={{ textAlign: "center" }}>
@@ -397,10 +416,6 @@ const JobUploadLayout = () => {
           </JobUploadCompanyDetailForm>
         </FormWrap>
         <ButtonWrap>
-          {/* <button onClick={handlebeforePage}>이전</button>
-          <button onClick={handleNextPage}>
-            {nextPage == 2 ? "등록" : "다음"}
-          </button> */}
           <SubmitButton
             clickEvent={handlebeforePage}
             BackColor={"white"}
@@ -423,6 +438,49 @@ const JobUploadLayout = () => {
     </>
   );
 };
+
+const LoadingWrap = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(171, 171, 171, 0.571);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .loader {
+    position: relative;
+    height: 80px;
+    aspect-ratio: 1;
+    padding: 10px;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    mask: conic-gradient(#000 0 0) content-box exclude, conic-gradient(#000 0 0);
+
+    filter: blur(12px);
+  }
+
+  .loader::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: repeating-conic-gradient(#0000 0% 5%, #3478f6, #0000 20% 50%);
+
+    animation: spin 1.5s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+`;
 
 const ButtonWrap = styled.div`
   display: flex;
@@ -536,57 +594,6 @@ const TextareaWrap = styled.div`
     width: 100%;
     outline: none;
     border: none;
-  }
-`;
-
-const CheckBoxWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 10px;
-  & > input {
-    display: none;
-  }
-  & > label {
-    cursor: pointer;
-  }
-  & > label:nth-child(3) {
-    /* width: ; */
-    border: 1px solid #cccccc;
-    border-radius: 10px;
-    padding: 15px;
-  }
-  & > label:nth-child(2) {
-    width: 35px;
-    height: 35px;
-
-    /* background-color: black; */
-    text-align: center;
-    border-radius: 5px;
-    border: 1px solid #cccccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  & > input:nth-child(3) {
-    display: block;
-  }
-
-  input:checked + label::before {
-    content: "✓";
-    background-color: black;
-    color: white;
-    font-size: 18px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* transform: translateY(5px); */
   }
 `;
 

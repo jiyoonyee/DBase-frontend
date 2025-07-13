@@ -13,6 +13,7 @@ import JobInforDetail from "./layouts/JobInforDetail";
 import CompanyApplyLayout from "./layouts/CompanyApplyLayout";
 import CompanyApplytCheck from "./layouts/CompanyApplyCheckLayout";
 import ProfilePage from "./pages/ProfilePage";
+import RequireAuth from "./components/RequireAuth"; // 추가
 
 const App = () => {
   const [LoginState, setLoginState] = useState(false);
@@ -45,11 +46,16 @@ const App = () => {
               path="/"
             />
             <Route
-              element={<JobInforPage TeacherState={TeacherState} />}
+              element={
+                <JobInforPage
+                  LoginState={LoginState}
+                  TeacherState={TeacherState}
+                />
+              }
               path="/jobinfor"
             >
               <Route index element={<JobInforLayout />}></Route>
-              {/* 선생님 아니면 접근권한 없다고 컷내기 */}
+
               <Route element={<JobUploadLayout />} path="jobupload"></Route>
               <Route element={<JobInforDetail />} path="jobInforDetail"></Route>
               <Route
@@ -61,10 +67,13 @@ const App = () => {
                 path="companyapplycheck"
               ></Route>
             </Route>
-            <Route path="/roadmap" element={<RoadMapPage />} />
+            <Route
+              path="/roadmap"
+              element={<RoadMapPage LoginState={LoginState} />}
+            />
             <Route
               path="/EmploymentStatus"
-              element={<EmploymentStatusPage />}
+              element={<EmploymentStatusPage LoginState={LoginState} />}
             />
             <Route
               path="/profile"

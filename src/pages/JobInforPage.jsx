@@ -8,8 +8,9 @@ import FileUploadInput from "../components/FileUploadInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import HeroAnimation from "../components/HeroAnimation";
+import AcountButton from "../components/AcountButton";
 
-const JobInforPage = ({ TeacherState }) => {
+const JobInforPage = ({ LoginState, TeacherState }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isOnlyJobInforPage = location.pathname === "/jobinfor";
@@ -48,82 +49,104 @@ const JobInforPage = ({ TeacherState }) => {
     <>
       <HeroAnimation />
       <Wrap>
-        <PageinforWrap>
-          <PageTitleWrap>
-            {isJobElementPage && (
-              <div
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  top: "0",
-                  transform: "translateY(-150%)",
-                }}
-                onClick={() => {
-                  navigate(-1);
-                }}
-              >
-                ← 채용정보로 돌아가기
-              </div>
-            )}
-            {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
-            {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
-            {isJobInforDetail && (
-              <PageTitle>
-                {companyData?.company_name || "채용 상세정보"}
-              </PageTitle>
-            )}
-            {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
-            {isOnlyJobInforPage && (
-              <PageSubTitle>
-                우리 학교로 들어온 채용정보를 확인해보세요
-              </PageSubTitle>
-            )}
-            {isOnlyJobCompanyapplyCheckPage && (
-              <PageTitle>지원현황 확인</PageTitle>
-            )}
-          </PageTitleWrap>
-          {isOnlyJobInforPage && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "end",
-                gap: "10px",
-                marginBottom: "20px",
-                position: "absolute",
-                right: "0",
-                transform: "translateY(-100%)",
-              }}
-            >
-              <SubmitButton
-                imagePath={"../src/assets/images/Note.svg"}
-                BackColor={"white"}
-                TextColor={"black"}
-                TextSize={"20px"}
-                Text={"지원현황 확인"}
-                BorderState={false}
-                clickEvent={() => {
-                  navigate("companyapplycheck");
-                }}
-              />
-              {!TeacherState && (
-                <SubmitButton
-                  clickEvent={() => {
-                    navigate("/jobinfor/jobupload");
+        {LoginState ? (
+          <>
+            <PageinforWrap>
+              <PageTitleWrap>
+                {isJobElementPage && (
+                  <div
+                    style={{
+                      cursor: "pointer",
+                      position: "absolute",
+                      top: "0",
+                      transform: "translateY(-150%)",
+                    }}
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                  >
+                    ← 채용정보로 돌아가기
+                  </div>
+                )}
+                {isOnlyJobInforPage && <PageTitle>채용정보</PageTitle>}
+                {isJobUploadPage && <PageTitle>채용의뢰서 등록</PageTitle>}
+                {isJobInforDetail && (
+                  <PageTitle>
+                    {companyData?.company_name || "채용 상세정보"}
+                  </PageTitle>
+                )}
+                {isOnlyJobCompanyapplyPage && <PageTitle>지원하기</PageTitle>}
+                {isOnlyJobInforPage && (
+                  <PageSubTitle>
+                    우리 학교로 들어온 채용정보를 확인해보세요
+                  </PageSubTitle>
+                )}
+                {isOnlyJobCompanyapplyCheckPage && (
+                  <PageTitle>지원현황 확인</PageTitle>
+                )}
+              </PageTitleWrap>
+              {isOnlyJobInforPage && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "end",
+                    gap: "10px",
+                    marginBottom: "20px",
+                    position: "absolute",
+                    right: "0",
+                    transform: "translateY(-100%)",
                   }}
-                  imagePath={"../src/assets/images/Note.svg"}
-                  BackColor={"#3449B4"}
-                  TextColor={"white"}
-                  TextSize={"20px"}
-                  Text={"지원의뢰서 등록"}
-                  BorderState={false}
-                />
+                >
+                  <SubmitButton
+                    imagePath={"../src/assets/images/Note.svg"}
+                    BackColor={"white"}
+                    TextColor={"black"}
+                    TextSize={"20px"}
+                    Text={"지원현황 확인"}
+                    BorderState={false}
+                    clickEvent={() => {
+                      navigate("companyapplycheck");
+                    }}
+                  />
+                  {TeacherState && (
+                    <SubmitButton
+                      clickEvent={() => {
+                        navigate("/jobinfor/jobupload");
+                      }}
+                      imagePath={"../src/assets/images/Note.svg"}
+                      BackColor={"#3449B4"}
+                      TextColor={"white"}
+                      TextSize={"20px"}
+                      Text={"지원의뢰서 등록"}
+                      BorderState={false}
+                    />
+                  )}
+                </div>
               )}
-            </div>
-          )}
-        </PageinforWrap>
+            </PageinforWrap>
 
-        <Outlet />
-        {/* <JobInforLayout></JobInforLayout> */}
+            <Outlet />
+          </>
+        ) : (
+          <div
+            style={{
+              height: "100vh",
+              marginTop: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            로그인 후 이용해주세요.
+            <AcountButton
+              LinkPath={"http://localhost:4433/auth/google"}
+              Label={"구글 계정으로 로그인"}
+            />
+            <div>@sdh.hs.kr 계정만 사용 가능합니다</div>
+          </div>
+        )}
       </Wrap>
     </>
   );

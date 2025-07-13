@@ -10,8 +10,9 @@ import {
 } from "../style/SectionLayoutStyle";
 import EmployeeItem from "../components/EmployeeItem";
 import HeroAnimation from "../components/HeroAnimation";
+import AcountButton from "../components/AcountButton";
 
-const EmploymentStatusPage = () => {
+const EmploymentStatusPage = ({ LoginState }) => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [placeCounts, setPlaceCounts] = useState({
@@ -100,7 +101,9 @@ const EmploymentStatusPage = () => {
                 });
               } else {
                 setPlaceCounts((prev) => ({ ...prev, [key]: 0 }));
-                setPlacePositions((prev) => prev.filter((item) => item.type !== key));
+                setPlacePositions((prev) =>
+                  prev.filter((item) => item.type !== key)
+                );
               }
             },
             options
@@ -120,106 +123,148 @@ const EmploymentStatusPage = () => {
 
   return (
     <>
-    <HeroAnimation />
-    <Wrap>
-      <PageinforWrap>
-        <PageTitleWrap>
-          <PageTitle>취업 현황</PageTitle>
-          <PageSubTitle>학생들의 취업 현황을 지도로 확인해보세요</PageSubTitle>
-        </PageTitleWrap>
-      </PageinforWrap>
+      <HeroAnimation />
 
-      <SectionWrap>
-        <div>
-          <SectionItemWrap>
-            <SectionMapalign>
-              <SectionTitle>취업 현황 지도</SectionTitle>
-              <SectionSmallTtile>
-                학생들이 재직 중인 회사 위치를 확인하세요
-              </SectionSmallTtile>
-              {/* 장소 위치 정보 placePositions 전달 */}
-              <KakaoMap
-                onSelectCompany={setSelectedCompanyId}
-                placePositions={placePositions}
-              />
-            </SectionMapalign>
-          </SectionItemWrap>
+      <Wrap>
+        {LoginState ? (
+          <>
+            <PageinforWrap>
+              <PageTitleWrap>
+                <PageTitle>취업 현황</PageTitle>
+                <PageSubTitle>
+                  학생들의 취업 현황을 지도로 확인해보세요
+                </PageSubTitle>
+              </PageTitleWrap>
+            </PageinforWrap>
 
-          <SectionItemWrap>
-            <SectionMenualign>
-              <SectionTitle>선택된 회사 정보</SectionTitle>
-              {selectedCompany ? (
-                <div
-                  style={{
-                    fontSize: "18px",
-                    color: "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {selectedCompany.company_name}
-                </div>
-              ) : (
-                <div
-                  style={{
-                    fontSize: "18px",
-                    color: "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  기업을 선택하세요
-                </div>
-              )}
-              <SectionSmallTtile>
-                {selectedCompany?.address || "-"}
-              </SectionSmallTtile>
-              <MakerMenuWrap>
-                <MakerItem style={{ padding: "20px" }}>
-                  지하철
-                  <img src="../src/assets/images/subway.svg" alt="" style={{ padding: "10px" }} />
-                  <MakerCount>{placeCounts.subway}</MakerCount>
-                </MakerItem>
-                <MakerItem style={{ padding: "20px" }}>
-                  편의점
-                  <img src="../src/assets/images/convenience.svg" alt="" style={{ padding: "10px" }} />
-                  <MakerCount>{placeCounts.convenience}</MakerCount>
-                </MakerItem>
-                <MakerItem style={{ padding: "20px" }}>
-                  음식점
-                  <img src="../src/assets/images/restaurant.svg" alt="" style={{ padding: "10px" }} />
-                  <MakerCount>{placeCounts.restaurant}</MakerCount>
-                </MakerItem>
-              </MakerMenuWrap>
-            </SectionMenualign>
-          </SectionItemWrap>
-        </div>
+            <SectionWrap>
+              <div>
+                <SectionItemWrap>
+                  <SectionMapalign>
+                    <SectionTitle>취업 현황 지도</SectionTitle>
+                    <SectionSmallTtile>
+                      학생들이 재직 중인 회사 위치를 확인하세요
+                    </SectionSmallTtile>
+                    {/* 장소 위치 정보 placePositions 전달 */}
+                    <KakaoMap
+                      onSelectCompany={setSelectedCompanyId}
+                      placePositions={placePositions}
+                    />
+                  </SectionMapalign>
+                </SectionItemWrap>
 
-        <div>
-          <CompanyInfor companyId={selectedCompanyId} />
+                <SectionItemWrap>
+                  <SectionMenualign>
+                    <SectionTitle>선택된 회사 정보</SectionTitle>
+                    {selectedCompany ? (
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {selectedCompany.company_name}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        기업을 선택하세요
+                      </div>
+                    )}
+                    <SectionSmallTtile>
+                      {selectedCompany?.address || "-"}
+                    </SectionSmallTtile>
+                    <MakerMenuWrap>
+                      <MakerItem style={{ padding: "20px" }}>
+                        지하철
+                        <img
+                          src="../src/assets/images/subway.svg"
+                          alt=""
+                          style={{ padding: "10px" }}
+                        />
+                        <MakerCount>{placeCounts.subway}</MakerCount>
+                      </MakerItem>
+                      <MakerItem style={{ padding: "20px" }}>
+                        편의점
+                        <img
+                          src="../src/assets/images/convenience.svg"
+                          alt=""
+                          style={{ padding: "10px" }}
+                        />
+                        <MakerCount>{placeCounts.convenience}</MakerCount>
+                      </MakerItem>
+                      <MakerItem style={{ padding: "20px" }}>
+                        음식점
+                        <img
+                          src="../src/assets/images/restaurant.svg"
+                          alt=""
+                          style={{ padding: "10px" }}
+                        />
+                        <MakerCount>{placeCounts.restaurant}</MakerCount>
+                      </MakerItem>
+                    </MakerMenuWrap>
+                  </SectionMenualign>
+                </SectionItemWrap>
+              </div>
 
-          <SectionItemWrap>
-            <SectionTitle style={{ marginBottom: "5px" }}>재직자</SectionTitle>
-            <SectionSmallTtile style={{ marginBottom: "20px" }}>
-              {selectedCompany?.company_name || "기업명"}
-            </SectionSmallTtile>
-            <EmployeeWrap>
-              {employees.length === 0 ? (
-                <div style={{ color: 'black', fontSize: '16px' }}>재직자 정보가 없습니다.</div>
-              ) : (
-                employees.map((emp, idx) => (
-                  <EmployeeItem
-                    key={emp.user_id || idx}
-                    name={emp.name}
-                    work_start_date={emp.work_start_date}
-                    work_end_date={emp.work_end_date}
-                    skills={emp.skills}
-                  />
-                ))
-              )}
-            </EmployeeWrap>
-          </SectionItemWrap>
-        </div>
-      </SectionWrap>
-    </Wrap>
+              <div>
+                <CompanyInfor companyId={selectedCompanyId} />
+
+                <SectionItemWrap>
+                  <SectionTitle style={{ marginBottom: "5px" }}>
+                    재직자
+                  </SectionTitle>
+                  <SectionSmallTtile style={{ marginBottom: "20px" }}>
+                    {selectedCompany?.company_name || "기업명"}
+                  </SectionSmallTtile>
+                  <EmployeeWrap>
+                    {employees.length === 0 ? (
+                      <div style={{ color: "black", fontSize: "16px" }}>
+                        재직자 정보가 없습니다.
+                      </div>
+                    ) : (
+                      employees.map((emp, idx) => (
+                        <EmployeeItem
+                          key={emp.user_id || idx}
+                          name={emp.name}
+                          work_start_date={emp.work_start_date}
+                          work_end_date={emp.work_end_date}
+                          skills={emp.skills}
+                        />
+                      ))
+                    )}
+                  </EmployeeWrap>
+                </SectionItemWrap>
+              </div>
+            </SectionWrap>
+          </>
+        ) : (
+          <div
+            style={{
+              height: "100vh",
+              marginTop: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            로그인 후 이용해주세요.
+            <AcountButton
+              LinkPath={"http://localhost:4433/auth/google"}
+              Label={"구글 계정으로 로그인"}
+            />
+            <div>@sdh.hs.kr 계정만 사용 가능합니다</div>
+          </div>
+        )}
+      </Wrap>
     </>
   );
 };
@@ -230,7 +275,7 @@ const Wrap = styled.div`
   background: linear-gradient(
     to bottom,
     #0e0219 0%,
-rgb(52, 18, 80) 20%,
+    rgb(52, 18, 80) 20%,
     #3e1a5c 25%,
     #5c258c 60%,
     #aa49ff 100%
