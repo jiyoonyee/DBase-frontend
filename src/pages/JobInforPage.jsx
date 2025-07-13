@@ -117,7 +117,7 @@ const JobInforPage = ({ LoginState, TeacherState }) => {
                       BackColor={"#3449B4"}
                       TextColor={"white"}
                       TextSize={"20px"}
-                      Text={"지원의뢰서 등록"}
+                      Text={"채용의뢰서 등록"}
                       BorderState={false}
                     />
                   )}

@@ -1,11 +1,17 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
 import { useNavigate } from "react-router-dom";
 
-const JobUploadLayout = () => {
+const JobUploadLayout = ({ TeacherState }) => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!TeacherState) {
+      alert("접근권한이 존재하지 않는 페이지입니다.");
+      navigate("/");
+    }
+  }, [TeacherState]);
   const [nextPage, setNextPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [jobFileName, setJobFileName] = useState("");

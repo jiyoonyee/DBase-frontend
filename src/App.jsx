@@ -56,7 +56,10 @@ const App = () => {
             >
               <Route index element={<JobInforLayout />}></Route>
 
-              <Route element={<JobUploadLayout />} path="jobupload"></Route>
+              <Route
+                element={<JobUploadLayout TeacherState={TeacherState} />}
+                path="jobupload"
+              ></Route>
               <Route element={<JobInforDetail />} path="jobInforDetail"></Route>
               <Route
                 element={<CompanyApplyLayout />}
