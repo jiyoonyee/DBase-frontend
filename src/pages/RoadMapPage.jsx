@@ -15,12 +15,10 @@ const RoadMapPage = ({ LoginState }) => {
 
   const handleUpdateJob = (jobItem) => {
     setJob(jobItem);
-    console.log(job);
   };
 
   const handleUpdatePeriod = (periodItem) => {
     setPeriod(periodItem);
-    console.log(period);
   };
 
   const sendData = async () => {

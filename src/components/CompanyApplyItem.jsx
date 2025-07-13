@@ -15,7 +15,6 @@ const CompanyApplyItem = () => {
   const [loading, setLoading] = useState(true);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [pendingStatusChanges, setPendingStatusChanges] = useState({});
 
   useEffect(() => {
     fetchApplications();
@@ -23,8 +22,8 @@ const CompanyApplyItem = () => {
 
   const fetchApplications = async () => {
     try {
-      const response = await axios.get('http://localhost:4433/apply/status', {
-        withCredentials: true
+      const response = await axios.get("http://localhost:4433/apply/status", {
+        withCredentials: true,
       });
       setApplications(response.data);
     } catch (error) {
@@ -36,14 +35,18 @@ const CompanyApplyItem = () => {
 
   const handleStatusChange = async (applicationId, newStatus) => {
     // 반려가 아닌 경우에만 즉시 업데이트
-    if (newStatus !== '반려') {
+    if (newStatus !== "반려") {
       try {
-        await axios.put(`http://localhost:4433/apply/status/${applicationId}`, {
-          status: newStatus
-        }, {
-          withCredentials: true
-        });
-        
+        await axios.put(
+          `http://localhost:4433/apply/status/${applicationId}`,
+          {
+            status: newStatus,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
         // 상태 업데이트 후 목록 새로고침
         fetchApplications();
       } catch (error) {
@@ -52,7 +55,7 @@ const CompanyApplyItem = () => {
       }
     } else {
       // 반려인 경우 피드백 모달을 열기 위해 selectedApplication 설정
-      const application = applications.find(app => app.id === applicationId);
+      const application = applications.find((app) => app.id === applicationId);
       setSelectedApplication(application);
       setShowFeedbackModal(true);
     }
@@ -64,22 +67,22 @@ const CompanyApplyItem = () => {
         `http://localhost:4433/apply/download/${applicationId}`,
         {
           withCredentials: true,
-          responseType: 'blob'
+          responseType: "blob",
         }
       );
 
       // ZIP 파일 다운로드
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', '지원서류.zip');
+      link.setAttribute("download", "지원서류.zip");
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("파일 다운로드 실패:", error);
-      
+
       // 에러 응답에서 메시지 추출
       let errorMessage = "파일 다운로드에 실패했습니다.";
       if (error.response && error.response.data) {
@@ -90,7 +93,7 @@ const CompanyApplyItem = () => {
           // JSON 파싱 실패 시 기본 메시지 사용
         }
       }
-      
+
       alert(errorMessage);
     }
   };
@@ -99,12 +102,16 @@ const CompanyApplyItem = () => {
     if (!selectedApplication) return;
 
     try {
-      await axios.put(`http://localhost:4433/apply/status/${selectedApplication.id}`, {
-        status: '반려',
-        feedback: feedback
-      }, {
-        withCredentials: true
-      });
+      await axios.put(
+        `http://localhost:4433/apply/status/${selectedApplication.id}`,
+        {
+          status: "반려",
+          feedback: feedback,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       alert("피드백이 저장되었습니다.");
       setShowFeedbackModal(false);
@@ -139,12 +146,20 @@ const CompanyApplyItem = () => {
       {applications.map((application) => (
         <SectionItemWrap key={application.id}>
           <SectionTitle>{application.userName}</SectionTitle>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <div style={{ width: "30%" }}>
               <SectionSmallTtile>{application.companyName}</SectionSmallTtile>
               <SectionSmallTtile>{application.jobTitle}</SectionSmallTtile>
               {application.feedback && (
-                <SectionSmallTtile style={{ color: "#ff4444", fontSize: "14px" }}>
+                <SectionSmallTtile
+                  style={{ color: "#ff4444", fontSize: "14px" }}
+                >
                   피드백: {application.feedback}
                 </SectionSmallTtile>
               )}
@@ -158,7 +173,9 @@ const CompanyApplyItem = () => {
                 ]}
                 DropDownLabel={application.status}
                 DropDwonItemColor={"#078bff"}
-                UpdateSelectValue={(value) => handleStatusChange(application.id, value)}
+                UpdateSelectValue={(value) =>
+                  handleStatusChange(application.id, value)
+                }
                 onBanryeoSelected={() => {
                   // 반려 선택 시 피드백 모달이 열리도록 이미 handleStatusChange에서 처리됨
                 }}

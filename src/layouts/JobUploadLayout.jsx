@@ -95,7 +95,6 @@ const JobUploadLayout = ({ TeacherState }) => {
         setLoading(false);
       }
 
-      console.log("업로드 성공:", data);
       setNextPage((prevNextPage) => prevNextPage + 1);
 
       document.getElementById("companyName").value =
@@ -137,7 +136,6 @@ const JobUploadLayout = ({ TeacherState }) => {
   };
 
   const handleUploadCompany = async () => {
-    console.log("업로드할 데이터:", updatePayload);
     updatePayload.company_information.company_name =
       document.getElementById("companyName").value;
     updatePayload.company_information.year =
@@ -189,17 +187,13 @@ const JobUploadLayout = ({ TeacherState }) => {
       if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
 
       const data = await res.json();
-      console.log(data, "업로드 성공");
+
       navigate("/jobinfor"); // 업로드 성공 후 페이지 이동
     } catch (err) {
       console.error("업로드 에러:", err);
       alert("업로드 중 오류가 발생했습니다.");
     }
   };
-
-  // useEffect(() => {
-  //   console.log(document.companyName);
-  // }, []);
 
   return (
     <>
