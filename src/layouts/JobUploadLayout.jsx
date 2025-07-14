@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const JobUploadLayout = ({ TeacherState }) => {
   const navigate = useNavigate();
+
+  const [jobId, setJobId] = useState(null);
+
   useEffect(() => {
     if (!TeacherState) {
       alert("접근권한이 존재하지 않는 페이지입니다.");
@@ -91,13 +94,14 @@ const JobUploadLayout = ({ TeacherState }) => {
       if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
 
       const data = await res.json();
+      console.log("업로드 성공:", data);
 
       if (data) {
         setLoading(false);
       }
 
       setNextPage((prevNextPage) => prevNextPage + 1);
-
+      setJobId(data.company_information.id);
       document.getElementById("companyName").value =
         data.company_information.company_name;
       document.getElementById("companyYear").value =
