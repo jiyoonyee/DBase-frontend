@@ -47,6 +47,7 @@ const JobUploadLayout = ({ TeacherState }) => {
   let updatePayload = {
     company_information: {
       company_name: "",
+      deadline: "",
       year: "",
       business_type: "",
       employee_count: "",
@@ -150,7 +151,8 @@ const JobUploadLayout = ({ TeacherState }) => {
       document.getElementById("companyWebsite").value;
     updatePayload.company_information.address =
       document.getElementById("companyAddress").value;
-
+    updatePayload.company_information.deadline =
+      document.getElementById("UploadDeadLine").value;
     updatePayload.job_information.job_title =
       document.getElementById("jobTitleInput").value;
     updatePayload.job_information.recruitment_count = document.getElementById(
@@ -175,6 +177,7 @@ const JobUploadLayout = ({ TeacherState }) => {
     updatePayload.job_information.additional_requirements =
       document.getElementById("otherRequirementsInput").value;
 
+    console.log("업데이트할 데이터:", updatePayload);
     try {
       const res = await fetch(`http://localhost:4433/job/input/update`, {
         method: "PATCH",
