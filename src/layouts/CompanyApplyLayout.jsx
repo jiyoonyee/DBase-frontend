@@ -71,7 +71,7 @@ const CompanyApplyLayout = () => {
       formData.append("companyId", company.id);
 
       const response = await axios.post(
-        "http://localhost:4433/apply/input",
+        `http://localhost:4433/apply/input/${companyId}`,
         formData,
         {
           headers: {
