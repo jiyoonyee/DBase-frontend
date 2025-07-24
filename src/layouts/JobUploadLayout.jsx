@@ -106,7 +106,7 @@ const JobUploadLayout = ({ TeacherState }) => {
       document.getElementById("companyName").value =
         data.company_information.company_name;
       document.getElementById("companyYear").value =
-        data.company_information.year;
+        data.company_information.establishment_year;
       document.getElementById("companyWork").value =
         data.company_information.business_type;
       document.getElementById("companyMainWork").value =
