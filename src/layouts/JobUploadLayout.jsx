@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const JobUploadLayout = ({ TeacherState }) => {
   const navigate = useNavigate();
 
-  const [jobId, setJobId] = useState(null);
+  const [companyId, setCompanyId] = useState(null);
 
   useEffect(() => {
     if (!TeacherState) {
@@ -49,6 +49,7 @@ const JobUploadLayout = ({ TeacherState }) => {
 
   let updatePayload = {
     company_information: {
+      id: companyId,
       company_name: "",
       deadline: "",
       year: "",
@@ -101,7 +102,7 @@ const JobUploadLayout = ({ TeacherState }) => {
       }
 
       setNextPage((prevNextPage) => prevNextPage + 1);
-      setJobId(data.company_information.id);
+      setCompanyId(data.company_information.id);
       document.getElementById("companyName").value =
         data.company_information.company_name;
       document.getElementById("companyYear").value =

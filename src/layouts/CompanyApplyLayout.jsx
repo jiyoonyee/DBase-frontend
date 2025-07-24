@@ -16,7 +16,7 @@ const CompanyApplyLayout = () => {
   const [files, setFiles] = useState({
     resumeAndCoverLetter: null,
     portfolio: null,
-    etcFiles: []
+    etcFiles: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -38,12 +38,12 @@ const CompanyApplyLayout = () => {
   }, []);
 
   const handleFileChange = (file, fileType) => {
-    if (fileType === 'resumeAndCoverLetter') {
-      setFiles(prev => ({ ...prev, resumeAndCoverLetter: file }));
-    } else if (fileType === 'portfolio') {
-      setFiles(prev => ({ ...prev, portfolio: file }));
-    } else if (fileType === 'etc') {
-      setFiles(prev => ({ ...prev, etcFiles: [...prev.etcFiles, file] }));
+    if (fileType === "resumeAndCoverLetter") {
+      setFiles((prev) => ({ ...prev, resumeAndCoverLetter: file }));
+    } else if (fileType === "portfolio") {
+      setFiles((prev) => ({ ...prev, portfolio: file }));
+    } else if (fileType === "etc") {
+      setFiles((prev) => ({ ...prev, etcFiles: [...prev.etcFiles, file] }));
     }
   };
 
@@ -58,24 +58,24 @@ const CompanyApplyLayout = () => {
 
     try {
       const formData = new FormData();
-      formData.append('resumeAndCoverLetter', files.resumeAndCoverLetter);
-      
+      formData.append("resumeAndCoverLetter", files.resumeAndCoverLetter);
+
       if (files.portfolio) {
-        formData.append('portfolio', files.portfolio);
+        formData.append("portfolio", files.portfolio);
       }
-      
+
       files.etcFiles.forEach((file, index) => {
-        formData.append('etcFile', file);
+        formData.append("etcFile", file);
       });
 
-      formData.append('companyId', company.id);
+      formData.append("companyId", company.id);
 
       const response = await axios.post(
-        'http://localhost:4433/apply/input',
+        "http://localhost:4433/apply/input",
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
           withCredentials: true,
         }
@@ -138,19 +138,19 @@ const CompanyApplyLayout = () => {
           서류 제출
         </SectionSubTitle>
         <FileWrap>
-          <FileUploadInput 
-            LabelName={"이력서 + 자기소개서"} 
+          <FileUploadInput
+            LabelName={"이력서 + 자기소개서"}
             onFileChange={handleFileChange}
             fileType="resumeAndCoverLetter"
           />
-          <FileUploadInput 
-            LabelName={"포트폴리오"} 
+          <FileUploadInput
+            LabelName={"포트폴리오"}
             onFileChange={handleFileChange}
             fileType="portfolio"
           />
-          <FileUploadInput 
-            LabelName={"기타"} 
-            LabelState={false} 
+          <FileUploadInput
+            LabelName={"기타"}
+            LabelState={false}
             onFileChange={handleFileChange}
             fileType="etc"
           />
