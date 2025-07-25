@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Header from "./layouts/Header";
 import MainPage from "./pages/MainPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Footer from "./layouts/footer";
+import Footer from "./layouts/Footer";
 import { useState } from "react";
 import JobInforPage from "./pages/JobInforPage";
 import JobInforLayout from "./layouts/JobInforLayout";
