@@ -682,7 +682,7 @@ const ProfilePage = ({ LoginState }) => {
           >
             로그인 후 이용해주세요.
             <AcountButton
-              LinkPath={"http://dbase.o-r.kr/auth/google"}
+              LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
               Label={"구글 계정으로 로그인"}
             />
             <div>@sdh.hs.kr 계정만 사용 가능합니다</div>
