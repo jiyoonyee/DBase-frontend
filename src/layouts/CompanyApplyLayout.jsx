@@ -71,7 +71,7 @@ const CompanyApplyLayout = () => {
       formData.append("companyId", company.id);
 
       const response = await axios.post(
-        `http://dbase.o-r.kr:4433/apply/input/${companyId}`,
+        `http://dbase.o-r.kr:4433/apply/input/${company.id}`,
         formData,
         {
           headers: {
