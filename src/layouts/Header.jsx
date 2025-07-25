@@ -56,7 +56,7 @@ const Header = ({ updateLoginState, headerState }) => {
           </div>
         ) : (
           <AcountButton
-            LinkPath={"http://localhost:4433/auth/google"}
+            LinkPath={"http://dbase.o-r.kr/auth/google"}
             Label={"구글 로그인"}
           />
         )}
