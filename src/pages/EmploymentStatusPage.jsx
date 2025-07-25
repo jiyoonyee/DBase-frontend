@@ -36,7 +36,7 @@ const EmploymentStatusPage = ({ LoginState }) => {
     }
 
     axios
-      .get(`http://localhost:4433/job/company?id=${selectedCompanyId}`)
+      .get(`http://dbase.o-r.kr:4433/job/company?id=${selectedCompanyId}`)
       .then((res) => {
         setSelectedCompany(res.data);
       })
@@ -48,7 +48,9 @@ const EmploymentStatusPage = ({ LoginState }) => {
 
     // 회사별 재직자 목록 fetch
     axios
-      .get(`http://localhost:4433/employee/list?companyId=${selectedCompanyId}`)
+      .get(
+        `http://dbase.o-r.kr:4433/employee/list?companyId=${selectedCompanyId}`
+      )
       .then((res) => {
         setEmployees(res.data);
       })

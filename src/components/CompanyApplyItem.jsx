@@ -22,9 +22,12 @@ const CompanyApplyItem = () => {
 
   const fetchApplications = async () => {
     try {
-      const response = await axios.get("http://localhost:4433/apply/status", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "http://dbase.o-r.kr:4433/apply/status",
+        {
+          withCredentials: true,
+        }
+      );
       setApplications(response.data);
     } catch (error) {
       console.error("지원현황 조회 실패:", error);
@@ -38,7 +41,7 @@ const CompanyApplyItem = () => {
     if (newStatus !== "반려") {
       try {
         await axios.put(
-          `http://localhost:4433/apply/status/${applicationId}`,
+          `http://dbase.o-r.kr:4433/apply/status/${applicationId}`,
           {
             status: newStatus,
           },
@@ -64,7 +67,7 @@ const CompanyApplyItem = () => {
   const handleDownload = async (applicationId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4433/apply/download/${applicationId}`,
+        `http://dbase.o-r.kr:4433/apply/download/${applicationId}`,
         {
           withCredentials: true,
           responseType: "blob",
@@ -103,7 +106,7 @@ const CompanyApplyItem = () => {
 
     try {
       await axios.put(
-        `http://localhost:4433/apply/status/${selectedApplication.id}`,
+        `http://dbase.o-r.kr:4433/apply/status/${selectedApplication.id}`,
         {
           status: "반려",
           feedback: feedback,

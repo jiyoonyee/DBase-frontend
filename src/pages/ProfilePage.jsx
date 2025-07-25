@@ -66,7 +66,7 @@ const ProfilePage = ({ LoginState }) => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:4433/user/profile/personal", {
+    fetch("http://dbase.o-r.kr:4433/user/profile/personal", {
       method: "GET",
       credentials: "include",
     })
@@ -102,7 +102,7 @@ const ProfilePage = ({ LoginState }) => {
       address: profile.address,
     };
 
-    await fetch("http://localhost:4433/user/profile/update", {
+    await fetch("http://dbase.o-r.kr:4433/user/profile/update", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json", // ✅ 이게 필요함!
@@ -121,7 +121,7 @@ const ProfilePage = ({ LoginState }) => {
       employment_status: employmentStatus ? "취업 완료" : "구직중",
     };
 
-    await fetch("http://localhost:4433/user/profile/update-status", {
+    await fetch("http://dbase.o-r.kr:4433/user/profile/update-status", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json", // ✅ 이게 필요함!
@@ -134,7 +134,7 @@ const ProfilePage = ({ LoginState }) => {
   const handleAddSkill = async () => {
     if (!newSkills.trim()) return;
 
-    await fetch("http://localhost:4433/user/profile/update-skills", {
+    await fetch("http://dbase.o-r.kr:4433/user/profile/update-skills", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://localhost:4433/user/profile/update-exp",
+      "http://dbase.o-r.kr:4433/user/profile/update-exp",
       {
         method: "PATCH",
         headers: {
@@ -190,7 +190,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://localhost:4433/user/profile/update-exp",
+      "http://dbase.o-r.kr:4433/user/profile/update-exp",
       {
         method: "PATCH",
         headers: {
@@ -228,7 +228,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://localhost:4433/user/profile/update-exp",
+      "http://dbase.o-r.kr:4433/user/profile/update-exp",
       {
         method: "PATCH",
         headers: {

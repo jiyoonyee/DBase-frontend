@@ -12,7 +12,9 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
   return (
     <Overlay>
       <ModalBox>
-        <h3 style={{ marginBottom: "10px", color: "black", fontWeight: "500" }}>피드백을 작성해 주세요</h3>
+        <h3 style={{ marginBottom: "10px", color: "black", fontWeight: "500" }}>
+          피드백을 작성해 주세요
+        </h3>
         <StyledTextarea
           id="feedbackInput"
           rows="5"
@@ -29,7 +31,10 @@ const FeedbackModal = ({ isOpen, onClose, onSubmit }) => {
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
@@ -44,11 +49,10 @@ const ModalBox = styled.div`
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
 `;
 
 const StyledTextarea = styled.textarea`

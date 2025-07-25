@@ -45,7 +45,9 @@ const SelectDropDown = ({
           <DropDownItem
             onClick={() => UpdateValue(item)}
             key={i}
-            $HoverColor={item.ItemName === "반려" ? "#b0afaf" : DropDwonItemColor}
+            $HoverColor={
+              item.ItemName === "반려" ? "#b0afaf" : DropDwonItemColor
+            }
             style={{ color: item.ItemName === "반려" ? "red" : "black" }}
           >
             {item.ItemName}
@@ -128,4 +130,4 @@ const DropDownItem = styled.div`
   }
 `;
 
-export default SelectDropDown; 
+export default SelectDropDown;

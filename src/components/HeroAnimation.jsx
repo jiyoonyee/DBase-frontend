@@ -69,7 +69,9 @@ const HeroAnimation = () => {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < maxDistance) {
-            ctx.strokeStyle = `rgba(16,185,129,${(1 - dist / maxDistance) * 0.2})`;
+            ctx.strokeStyle = `rgba(16,185,129,${
+              (1 - dist / maxDistance) * 0.2
+            })`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);

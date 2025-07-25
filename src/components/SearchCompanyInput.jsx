@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import SelectDropDown from "./SelectDropDown";
 
-const SearchCompanyInput = ({ DropDownItems, DropDownLabel, Placeholder, onSearch }) => {
+const SearchCompanyInput = ({
+  DropDownItems,
+  DropDownLabel,
+  Placeholder,
+  onSearch,
+}) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     onSearch(value); // 입력할 때마다 검색 실행

@@ -83,7 +83,7 @@ const JobUploadLayout = ({ TeacherState }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:4433/job/input?fileName=${encodeURIComponent(
+        `http://dbase.o-r.kr:4433/job/input?fileName=${encodeURIComponent(
           jobFileName
         )}`,
         {
@@ -184,7 +184,7 @@ const JobUploadLayout = ({ TeacherState }) => {
 
     console.log("업데이트할 데이터:", updatePayload);
     try {
-      const res = await fetch(`http://localhost:4433/job/input/update`, {
+      const res = await fetch(`http://dbase.o-r.kr:4433/job/input/update`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json", // ✅ 중요!!

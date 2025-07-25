@@ -8,7 +8,7 @@ const KakaoMap = ({ onSelectCompany, placePositions }) => {
   const mapRef = useRef(null); // 지도 객체 저장용
 
   useEffect(() => {
-    fetch("http://localhost:4433/job/company/employed")
+    fetch("http://dbase.o-r.kr:4433/job/company/employed")
       .then((res) => res.json())
       .then((data) => setCompanyList(data))
       .catch((err) => {
@@ -30,7 +30,7 @@ const KakaoMap = ({ onSelectCompany, placePositions }) => {
     const map = mapRef.current;
     const geocoder = new kakao.maps.services.Geocoder();
 
-    // 기본 마커 
+    // 기본 마커
     const defaultMarker = new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(37.538917, 126.990532),

@@ -27,7 +27,7 @@ const JobInforDetail = () => {
     setLoading(true);
 
     axios
-      .get(`http://localhost:4433/job/company?id=${companyId}`)
+      .get(`http://dbase.o-r.kr:4433/job/company?id=${companyId}`)
       .then((res) => {
         setCompanyData(res.data);
         setLoading(false);

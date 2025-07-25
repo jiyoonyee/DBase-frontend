@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 
 const JobInforLayout = () => {
   const [companies, setCompanies] = useState(null);
-  const [filteredCompanies, setFilteredCompanies] = useState(null); 
+  const [filteredCompanies, setFilteredCompanies] = useState(null);
 
   const getCompanies = async () => {
     try {
-      const res = await fetch(`http://localhost:4433/job`);
+      const res = await fetch(`http://dbase.o-r.kr:4433/job`);
       const data = await res.json();
       if (data.success) {
         setCompanies(data.result.slice().reverse());

@@ -29,7 +29,7 @@ const RoadMapPage = ({ LoginState }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:4433/roadmap?job=${job}&period=${period}`
+        `http://dbase.o-r.kr:4433/roadmap?job=${job}&period=${period}`
       );
       const data = await res.json();
       const markdownText = data.content;

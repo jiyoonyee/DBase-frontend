@@ -45,7 +45,7 @@ const Wrap = styled.div`
   z-index: 1;
   cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
-  
+
   &:hover {
     cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   }

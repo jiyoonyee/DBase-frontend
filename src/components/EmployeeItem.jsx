@@ -3,7 +3,7 @@ import StackItem from "./StackItem";
 import SubmitButton from "./SubmitButton";
 
 const EmployeeItem = ({ name, work_start_date, work_end_date, skills }) => {
-  const StacksList = skills ? skills.split(',').map(s => s.trim()) : [];
+  const StacksList = skills ? skills.split(",").map((s) => s.trim()) : [];
   return (
     <>
       <Wrap>

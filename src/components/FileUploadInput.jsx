@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const FileUploadInput = ({ LabelName, LabelState = true, onFileChange, fileType }) => {
+const FileUploadInput = ({
+  LabelName,
+  LabelState = true,
+  onFileChange,
+  fileType,
+}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
 
@@ -22,7 +27,7 @@ const FileUploadInput = ({ LabelName, LabelState = true, onFileChange, fileType 
 
       setSelectedFile(file);
       setFileName(file.name);
-      
+
       // 부모 컴포넌트에 파일 정보 전달
       if (onFileChange) {
         onFileChange(file, fileType);
@@ -34,9 +39,9 @@ const FileUploadInput = ({ LabelName, LabelState = true, onFileChange, fileType 
     <Wrap>
       <div>
         <InputLabel $state={LabelState}>{LabelName}</InputLabel>
-        <input 
-          type="file" 
-          id={`jobFile-${fileType}`} 
+        <input
+          type="file"
+          id={`jobFile-${fileType}`}
           accept=".pdf"
           onChange={handleFileChange}
         />
@@ -97,12 +102,12 @@ const Wrap = styled.div`
       color: #a1a1a1;
       cursor: pointer;
       transition: all 0.3s ease;
-      
+
       &:hover {
-        border-color: #3449B4;
-        color: #3449B4;
+        border-color: #3449b4;
+        color: #3449b4;
       }
-      
+
       & > img {
         width: 25px;
       }
