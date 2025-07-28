@@ -1,15 +1,17 @@
 import styled from "styled-components";
+import { useState } from "react";
 import SearchCompanyInput from "../components/SearchCompanyInput";
-import {
-  SectionItemWrap,
-  SectionSmallTtile,
-  SectionTitle,
-} from "../style/SectionLayoutStyle";
-import SelectDropDown from "../components/SelectDropDown";
-import SubmitButton from "../components/SubmitButton";
 import CompanyApplyItem from "../components/CompanyApplyItem";
 
-const CompanyApplytCheck = () => {
+const CompanyApplyCheck = () => {
+  const [searchText, setSearchText] = useState("");
+  const [statusFilter, setStatusFilter] = useState("전체");
+
+  const handleSearch = (text, selectedStatus) => {
+    setSearchText(text);
+    setStatusFilter(selectedStatus);
+  };
+
   return (
     <>
       <SearchCompanyInput
@@ -21,9 +23,10 @@ const CompanyApplytCheck = () => {
         ]}
         DropDownLabel={"제출 상태"}
         Placeholder={"회사명으로 검색"}
+        onSearch={handleSearch}
       />
       <CompanyApplyItemWrap>
-        <CompanyApplyItem />
+        <CompanyApplyItem searchText={searchText} statusFilter={statusFilter} />
       </CompanyApplyItemWrap>
     </>
   );
@@ -37,4 +40,4 @@ const CompanyApplyItemWrap = styled.div`
   gap: 20px;
 `;
 
-export default CompanyApplytCheck;
+export default CompanyApplyCheck;

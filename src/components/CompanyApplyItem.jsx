@@ -10,8 +10,9 @@ import {
 import styled from "styled-components";
 import axios from "axios";
 
-const CompanyApplyItem = () => {
+const CompanyApplyItem = ({ searchText, statusFilter }) => {
   const [applications, setApplications] = useState([]);
+  const [filteredApplications, setFilteredApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState(null);
@@ -19,6 +20,20 @@ const CompanyApplyItem = () => {
   useEffect(() => {
     fetchApplications();
   }, []);
+
+  useEffect(() => {
+    let filtered = applications;
+
+    if (searchText) {
+      filtered = filtered.filter((app) => app.companyName.includes(searchText));
+    }
+
+    if (statusFilter && statusFilter !== "전체") {
+      filtered = filtered.filter((app) => app.status === statusFilter);
+    }
+
+    setFilteredApplications(filtered);
+  }, [searchText, statusFilter, applications]);
 
   const fetchApplications = async () => {
     try {
@@ -37,7 +52,6 @@ const CompanyApplyItem = () => {
   };
 
   const handleStatusChange = async (applicationId, newStatus) => {
-    // 반려가 아닌 경우에만 즉시 업데이트
     if (newStatus !== "반려") {
       try {
         await axios.put(
@@ -49,15 +63,12 @@ const CompanyApplyItem = () => {
             withCredentials: true,
           }
         );
-
-        // 상태 업데이트 후 목록 새로고침
         fetchApplications();
       } catch (error) {
         console.error("상태 업데이트 실패:", error);
         alert("상태 업데이트에 실패했습니다.");
       }
     } else {
-      // 반려인 경우 피드백 모달을 열기 위해 selectedApplication 설정
       const application = applications.find((app) => app.id === applicationId);
       setSelectedApplication(application);
       setShowFeedbackModal(true);
@@ -74,7 +85,6 @@ const CompanyApplyItem = () => {
         }
       );
 
-      // ZIP 파일 다운로드
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -86,15 +96,12 @@ const CompanyApplyItem = () => {
     } catch (error) {
       console.error("파일 다운로드 실패:", error);
 
-      // 에러 응답에서 메시지 추출
       let errorMessage = "파일 다운로드에 실패했습니다.";
       if (error.response && error.response.data) {
         try {
           const errorData = JSON.parse(await error.response.data.text());
           errorMessage = errorData.message || errorMessage;
-        } catch (e) {
-          // JSON 파싱 실패 시 기본 메시지 사용
-        }
+        } catch (e) {}
       }
 
       alert(errorMessage);
@@ -137,18 +144,18 @@ const CompanyApplyItem = () => {
     return <div>지원현황을 불러오는 중...</div>;
   }
 
-  if (applications.length === 0) {
+  if (filteredApplications.length === 0) {
     return (
       <SectionItemWrap>
         <SectionTitle>지원현황</SectionTitle>
-        <SectionSmallTtile>아직 제출한 지원서가 없습니다.</SectionSmallTtile>
+        <SectionSmallTtile>조건에 맞는 지원서가 없습니다.</SectionSmallTtile>
       </SectionItemWrap>
     );
   }
 
   return (
     <>
-      {applications.map((application) => (
+      {filteredApplications.map((application) => (
         <SectionItemWrap key={application.id}>
           <SectionTitle>{application.userName}</SectionTitle>
           <div
@@ -181,9 +188,6 @@ const CompanyApplyItem = () => {
                 UpdateSelectValue={(value) =>
                   handleStatusChange(application.id, value)
                 }
-                onBanryeoSelected={() => {
-                  // 반려 선택 시 피드백 모달이 열리도록 이미 handleStatusChange에서 처리됨
-                }}
               />
               <SubmitButton
                 Text={"지원서류 다운로드"}
