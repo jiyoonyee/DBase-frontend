@@ -503,6 +503,7 @@ const ProfilePage = ({ LoginState }) => {
                       return (
                         <ProfileProject
                           key={i}
+                          ProjectDate={item.date}
                           ProjectName={item.name}
                           ProjectExplain={item.description}
                           ProjectStacks={item.skills}
@@ -622,15 +623,17 @@ const ProfilePage = ({ LoginState }) => {
                   />
                   <SectionTitle>자격 / 어학 / 수상</SectionTitle>
 
-                  {userData.experiences.map((item) => {
-                    if (item.type === "award") {
-                      <ProfileAward
-                        AwardDate={item.date}
-                        AwardTitle={item.name}
-                        AwardInstitution={item.description}
-                      />;
-                    }
-                  })}
+                  {userData.experiences.map(
+                    (item, i) =>
+                      item.type === "award" && (
+                        <ProfileAward
+                          key={i}
+                          AwardDate={item.date}
+                          AwardTitle={item.name}
+                          AwardInstitution={item.description}
+                        />
+                      )
+                  )}
 
                   {isEditAward && (
                     <EditModal
