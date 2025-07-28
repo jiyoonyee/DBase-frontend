@@ -23,7 +23,7 @@ const CompanyApplyItem = () => {
   const fetchApplications = async () => {
     try {
       const response = await axios.get(
-        "http://dbase.o-r.kr:4433/apply/status",
+        `${import.meta.env.VITE_SERVER_PATH}/apply/status`,
         {
           withCredentials: true,
         }
@@ -41,7 +41,7 @@ const CompanyApplyItem = () => {
     if (newStatus !== "반려") {
       try {
         await axios.put(
-          `http://dbase.o-r.kr:4433/apply/status/${applicationId}`,
+          `${import.meta.env.VITE_SERVER_PATH}/apply/status/${applicationId}`,
           {
             status: newStatus,
           },
@@ -67,7 +67,7 @@ const CompanyApplyItem = () => {
   const handleDownload = async (applicationId) => {
     try {
       const response = await axios.get(
-        `http://dbase.o-r.kr:4433/apply/download/${applicationId}`,
+        `${import.meta.env.VITE_SERVER_PATH}/apply/download/${applicationId}`,
         {
           withCredentials: true,
           responseType: "blob",
@@ -106,7 +106,9 @@ const CompanyApplyItem = () => {
 
     try {
       await axios.put(
-        `http://dbase.o-r.kr:4433/apply/status/${selectedApplication.id}`,
+        `${import.meta.env.VITE_SERVER_PATH}/apply/status/${
+          selectedApplication.id
+        }`,
         {
           status: "반려",
           feedback: feedback,

@@ -9,7 +9,7 @@ const Header = ({ updateLoginState, headerState }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("http://dbase.o-r.kr:4433/user/profile", {
+    fetch(`${import.meta.env.VITE_SERVER_PATH}/user/profile`, {
       method: "GET",
       credentials: "include", // ✅ 이걸 반드시 설정해야 쿠키 전송됨
     })
@@ -56,7 +56,7 @@ const Header = ({ updateLoginState, headerState }) => {
           </div>
         ) : (
           <AcountButton
-            LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
+            LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
             Label={"구글 로그인"}
           />
         )}

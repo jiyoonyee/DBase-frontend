@@ -8,9 +8,11 @@ const KakaoMap = ({ onSelectCompany, placePositions }) => {
   const mapRef = useRef(null); // 지도 객체 저장용
 
   useEffect(() => {
-    fetch("http://dbase.o-r.kr:4433/job/company/employed")
+    fetch(`${import.meta.env.VITE_SERVER_PATH}/job/company/employed`)
       .then((res) => res.json())
-      .then((data) => setCompanyList(data))
+      .then((data) => {
+        setCompanyList(data);
+      })
       .catch((err) => {
         console.error("회사 정보 가져오기 실패:", err);
         setCompanyList([]);

@@ -29,7 +29,9 @@ const RoadMapPage = ({ LoginState }) => {
 
     try {
       const res = await fetch(
-        `http://dbase.o-r.kr:4433/roadmap?job=${job}&period=${period}`
+        `${
+          import.meta.env.VITE_SERVER_PATH
+        }/roadmap?job=${job}&period=${period}`
       );
       const data = await res.json();
       const markdownText = data.content;
@@ -141,7 +143,7 @@ const RoadMapPage = ({ LoginState }) => {
           >
             로그인 후 이용해주세요.
             <AcountButton
-              LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
+              LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
               Label={"구글 계정으로 로그인"}
             />
             <div>@sdh.hs.kr 계정만 사용 가능합니다</div>

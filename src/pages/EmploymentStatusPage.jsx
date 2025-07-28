@@ -36,7 +36,11 @@ const EmploymentStatusPage = ({ LoginState }) => {
     }
 
     axios
-      .get(`http://dbase.o-r.kr:4433/job/company?id=${selectedCompanyId}`)
+      .get(
+        `${
+          import.meta.env.VITE_SERVER_PATH
+        }/job/company?id=${selectedCompanyId}`
+      )
       .then((res) => {
         setSelectedCompany(res.data);
       })
@@ -49,7 +53,9 @@ const EmploymentStatusPage = ({ LoginState }) => {
     // 회사별 재직자 목록 fetch
     axios
       .get(
-        `http://dbase.o-r.kr:4433/employee/list?companyId=${selectedCompanyId}`
+        `${
+          import.meta.env.VITE_SERVER_PATH
+        }/employee/list?companyId=${selectedCompanyId}`
       )
       .then((res) => {
         setEmployees(res.data);

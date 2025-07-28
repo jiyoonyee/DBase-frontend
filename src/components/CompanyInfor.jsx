@@ -18,7 +18,7 @@ const CompanyInfor = ({ companyId }) => {
     setError(null);
 
     axios
-      .get(`http://dbase.o-r.kr:4433/job/company?id=${companyId}`)
+      .get(`${import.meta.env.VITE_SERVER_PATH}/job/company?id=${companyId}`)
       .then((res) => {
         setCompany(res.data);
       })

@@ -66,7 +66,7 @@ const ProfilePage = ({ LoginState }) => {
   });
 
   useEffect(() => {
-    fetch("http://dbase.o-r.kr:4433/user/profile/personal", {
+    fetch(`${import.meta.env.VITE_SERVER_PATH}/user/profile/personal`, {
       method: "GET",
       credentials: "include",
     })
@@ -102,7 +102,7 @@ const ProfilePage = ({ LoginState }) => {
       address: profile.address,
     };
 
-    await fetch("http://dbase.o-r.kr:4433/user/profile/update", {
+    await fetch(`${import.meta.env.VITE_SERVER_PATH}/user/profile/update`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json", // ✅ 이게 필요함!
@@ -121,27 +121,33 @@ const ProfilePage = ({ LoginState }) => {
       employment_status: employmentStatus ? "취업 완료" : "구직중",
     };
 
-    await fetch("http://dbase.o-r.kr:4433/user/profile/update-status", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json", // ✅ 이게 필요함!
-      },
-      credentials: "include",
-      body: JSON.stringify(updateData),
-    });
+    await fetch(
+      `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-status`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json", // ✅ 이게 필요함!
+        },
+        credentials: "include",
+        body: JSON.stringify(updateData),
+      }
+    );
   };
 
   const handleAddSkill = async () => {
     if (!newSkills.trim()) return;
 
-    await fetch("http://dbase.o-r.kr:4433/user/profile/update-skills", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ skills: newSkills }),
-    });
+    await fetch(
+      `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-skills`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ skills: newSkills }),
+      }
+    );
 
     setNewSkills("");
 
@@ -155,7 +161,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://dbase.o-r.kr:4433/user/profile/update-exp",
+      `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-exp`,
       {
         method: "PATCH",
         headers: {
@@ -190,7 +196,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://dbase.o-r.kr:4433/user/profile/update-exp",
+      `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-exp`,
       {
         method: "PATCH",
         headers: {
@@ -228,7 +234,7 @@ const ProfilePage = ({ LoginState }) => {
     }
 
     const response = await fetch(
-      "http://dbase.o-r.kr:4433/user/profile/update-exp",
+      `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-exp`,
       {
         method: "PATCH",
         headers: {
@@ -682,7 +688,7 @@ const ProfilePage = ({ LoginState }) => {
           >
             로그인 후 이용해주세요.
             <AcountButton
-              LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
+              LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
               Label={"구글 계정으로 로그인"}
             />
             <div>@sdh.hs.kr 계정만 사용 가능합니다</div>

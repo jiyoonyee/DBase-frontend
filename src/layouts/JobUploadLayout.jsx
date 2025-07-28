@@ -83,9 +83,9 @@ const JobUploadLayout = ({ TeacherState }) => {
 
     try {
       const res = await fetch(
-        `http://dbase.o-r.kr:4433/job/input?fileName=${encodeURIComponent(
-          jobFileName
-        )}`,
+        `${
+          import.meta.env.VITE_SERVER_PATH
+        }/job/input?fileName=${encodeURIComponent(jobFileName)}`,
         {
           method: "POST",
           body: formData,

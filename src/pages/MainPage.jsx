@@ -82,7 +82,7 @@ const MainPage = ({ updateHeaderState }) => {
           <div>지금 바로 시작하세요</div>
           <div>DBase와 함께 여러분의 꿈을 만들어 보세요</div>
           <AcountButton
-            LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
+            LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
             Label={"구글 계정으로 로그인 →"}
           />
           <div>@sdh.hs.kr 계정만 사용 가능합니다</div>

@@ -27,7 +27,7 @@ const CompanyApplyLayout = () => {
 
     if (companyId) {
       axios
-        .get(`http://dbase.o-r.kr:4433/job/company?id=${companyId}`)
+        .get(`${import.meta.env.VITE_SERVER_PATH}/job/company?id=${companyId}`)
         .then((res) => {
           setCompany(res.data);
         })
@@ -71,7 +71,7 @@ const CompanyApplyLayout = () => {
       formData.append("companyId", company.id);
 
       const response = await axios.post(
-        `http://dbase.o-r.kr:4433/apply/input/${company.id}`,
+        `${import.meta.env.VITE_SERVER_PATH}/apply/input/${company.id}`,
         formData,
         {
           headers: {

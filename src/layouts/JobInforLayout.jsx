@@ -9,7 +9,7 @@ const JobInforLayout = () => {
 
   const getCompanies = async () => {
     try {
-      const res = await fetch(`http://dbase.o-r.kr:4433/job`);
+      const res = await fetch(`${import.meta.env.VITE_SERVER_PATH}/job`);
       const data = await res.json();
       if (data.success) {
         setCompanies(data.result.slice().reverse());

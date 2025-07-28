@@ -34,7 +34,7 @@ const JobInforPage = ({ LoginState, TeacherState }) => {
     setLoading(true);
 
     axios
-      .get(`http://dbase.o-r.kr:4433/job/company?id=${companyId}`)
+      .get(`${import.meta.env.VITE_SERVER_PATH}/job/company?id=${companyId}`)
       .then((res) => {
         setCompanyData(res.data);
         setLoading(false);
@@ -141,7 +141,7 @@ const JobInforPage = ({ LoginState, TeacherState }) => {
           >
             로그인 후 이용해주세요.
             <AcountButton
-              LinkPath={"http://dbase.o-r.kr:4433/auth/google"}
+              LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
               Label={"구글 계정으로 로그인"}
             />
             <div>@sdh.hs.kr 계정만 사용 가능합니다</div>

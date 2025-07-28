@@ -14,7 +14,7 @@ const KakaoMapMini = ({ address }) => {
 
     // 2. 지도 생성 (임시 기본 좌표, 나중에 주소 좌표로 변경)
     const options = {
-      center: new window.kakao.maps.LatLng(37.5665, 126.9780), // 서울 중심 좌표 기본값
+      center: new window.kakao.maps.LatLng(37.5665, 126.978), // 서울 중심 좌표 기본값
       level: 3, // 지도 확대 레벨
     };
     const map = new window.kakao.maps.Map(container, options);
