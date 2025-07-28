@@ -184,13 +184,16 @@ const JobUploadLayout = ({ TeacherState }) => {
 
     console.log("업데이트할 데이터:", updatePayload);
     try {
-      const res = await fetch(`http://dbase.o-r.kr:4433/job/input/update`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json", // ✅ 중요!!
-        },
-        body: JSON.stringify(updatePayload),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_PATH}/job/input/update`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatePayload),
+        }
+      );
 
       if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
 
