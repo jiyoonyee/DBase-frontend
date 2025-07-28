@@ -563,11 +563,11 @@ const ProfilePage = ({ LoginState }) => {
                   {userData.experiences.map((item, i) => {
                     if (item.type === "experience") {
                       return (
-                        <ProfileProject
+                        <ProfileActivity
                           key={i}
-                          ProjectName={item.name}
-                          ProjectExplain={item.description}
-                          ProjectStacks={item.skills}
+                          ActivityDate={item.date}
+                          ActivityTitle={item.name}
+                          ActivityDescription={item.description}
                         />
                       );
                     }

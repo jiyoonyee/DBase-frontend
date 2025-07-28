@@ -9,7 +9,9 @@ const ProfileAward = ({ AwardDate, AwardTitle, AwardInstitution }) => {
   return (
     <>
       <ProfileRecordWrap>
-        <SectionSmallTtile>{AwardDate}</SectionSmallTtile>
+        <SectionSmallTtile style={{ fontSize: "14px" }}>
+          {AwardDate}
+        </SectionSmallTtile>
         <SectionSubTitle>{AwardTitle}</SectionSubTitle>
         <SectionSmallTtile>{AwardInstitution}</SectionSmallTtile>
       </ProfileRecordWrap>

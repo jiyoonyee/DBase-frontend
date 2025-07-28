@@ -14,7 +14,9 @@ const ProfileActivity = ({
   return (
     <>
       <ProfileRecordWrap>
-        <SectionSmallTtile>{ActivityDate}</SectionSmallTtile>
+        <SectionSmallTtile style={{ fontSize: "14px" }}>
+          {ActivityDate}
+        </SectionSmallTtile>
         <SectionSubTitle>{ActivityTitle}</SectionSubTitle>
         <SectionSmallTtile>{ActivityDescription}</SectionSmallTtile>
       </ProfileRecordWrap>
