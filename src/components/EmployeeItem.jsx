@@ -26,7 +26,6 @@ const EmployeeItem = ({ name, work_start_date, work_end_date, skills }) => {
             <StackItem Stack={text} key={index} />
           ))}
         </CompanyStackWrap>
-        <SubmitButton TextColor={"black"} Text={"재직 선배 프로필 보기"} />
       </Wrap>
     </>
   );
