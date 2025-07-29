@@ -95,7 +95,6 @@ const JobUploadLayout = ({ TeacherState }) => {
       if (!res.ok) throw new Error(`업로드 실패: ${res.status}`);
 
       const data = await res.json();
-      console.log("업로드 성공:", data);
 
       if (data) {
         setLoading(false);
@@ -182,7 +181,6 @@ const JobUploadLayout = ({ TeacherState }) => {
     updatePayload.job_information.additional_requirements =
       document.getElementById("otherRequirementsInput").value;
 
-    console.log("업데이트할 데이터:", updatePayload);
     try {
       const res = await fetch(
         `${import.meta.env.VITE_SERVER_PATH}/job/input/update`,
