@@ -279,6 +279,10 @@ const EmploymentStatusPage = ({ LoginState }) => {
 
 // 🔽 Styled Components
 const Wrap = styled.div`
+  & > * {
+    position: relative;
+    z-index: 10;
+  }
   width: 100%;
   background: linear-gradient(
     to bottom,

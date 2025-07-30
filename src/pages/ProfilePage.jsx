@@ -16,8 +16,10 @@ import AcountButton from "../components/AcountButton";
 import { useState } from "react";
 import EditModal from "../components/EditModal";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = ({ LoginState }) => {
+  const navigate = useNavigate();
   const [isEditStack, setIsEditStack] = useState(false);
   const [isEditProject, setIsEditProject] = useState(false);
   const [isEditActivity, setIsEditActivity] = useState(false);
@@ -113,14 +115,23 @@ const ProfilePage = ({ LoginState }) => {
   };
 
   const updateUserJobInfo = async () => {
-    const updateData = {
-      company_name: profile.company_name,
-      work_start_date: profile.work_start_date.toString(),
-      work_end_date: profile.work_end_date.toString(),
-      desired_position: profile.desired_position,
-      employment_status: employmentStatus ? "취업 완료" : "구직중",
-    };
+    const updateData = employmentStatus
+      ? {
+          company_name: profile.company_name,
+          work_start_date: profile.work_start_date.toString(),
+          work_end_date: profile.work_end_date.toString(),
+          desired_position: profile.desired_position,
+          employment_status: employmentStatus ? "취업 완료" : "구직중",
+        }
+      : {
+          company_name: "",
+          work_start_date: "",
+          work_end_date: "",
+          desired_position: "",
+          employment_status: employmentStatus ? "취업 완료" : "구직중",
+        };
 
+    location.reload();
     await fetch(
       `${import.meta.env.VITE_SERVER_PATH}/user/profile/update-status`,
       {
@@ -402,8 +413,9 @@ const ProfilePage = ({ LoginState }) => {
                             color: "#6c6c6c",
                             textAlign: "center",
                           }}
+                          type="date"
                           disabled={!isEditEmploymentInfo}
-                          placeholder="예)2023.03"
+                          placeholder="날짜 선택"
                           value={profile.work_start_date}
                           onChange={(e) =>
                             handleChange("work_start_date", e.target.value)
@@ -758,6 +770,10 @@ const AddButton = styled.button`
 `;
 
 const Wrap = styled.div`
+  & > * {
+    position: relative;
+    z-index: 10;
+  }
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(

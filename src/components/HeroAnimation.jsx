@@ -105,7 +105,7 @@ const CanvasStyled = styled.canvas`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 1;
   width: 100vw;
   height: 60vh; /* 화면 높이 60% */
   opacity: 0.5;
