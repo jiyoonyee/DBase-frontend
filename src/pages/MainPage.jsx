@@ -93,10 +93,6 @@ const MainPage = ({ updateHeaderState }) => {
 };
 
 const Wrap = styled.div`
-  & > * {
-    position: relative;
-    z-index: 10;
-  }
   background: linear-gradient(
     #020619,
     0%,

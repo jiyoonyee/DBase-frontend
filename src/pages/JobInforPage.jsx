@@ -155,10 +155,7 @@ const JobInforPage = ({ LoginState, TeacherState }) => {
 const Wrap = styled.div`
   width: 100%;
   min-height: 100vh;
-  & > * {
-    position: relative;
-    z-index: 10;
-  }
+
   background: linear-gradient(
     to bottom,
     #020619 0vh,

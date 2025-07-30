@@ -64,6 +64,7 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 100;
 `;
 
 const DropDownWrap = styled.div`
@@ -76,7 +77,8 @@ const DropDownWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
+  position: relative;
+  z-index: 130 !important;
   cursor: pointer;
 
   & > span {
@@ -93,6 +95,7 @@ const DropDownWrap = styled.div`
 
 const DropDownItemsWrap = styled.div`
   position: absolute;
+  z-index: 120 !important;
   top: 100%;
   left: 0;
   width: 100%;
@@ -101,7 +104,7 @@ const DropDownItemsWrap = styled.div`
   overflow: hidden;
   transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out,
     opacity 0.7s ease-in-out;
-  z-index: 20;
+
   background-color: #ffffff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px; // 부드러운 padding 추가

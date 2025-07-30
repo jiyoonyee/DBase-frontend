@@ -154,10 +154,6 @@ const RoadMapPage = ({ LoginState }) => {
   );
 };
 const Wrap = styled.div`
-  & > * {
-    position: relative;
-    z-index: 10;
-  }
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(
