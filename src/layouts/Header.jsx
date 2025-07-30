@@ -57,7 +57,7 @@ const Header = ({ updateLoginState, headerState }) => {
         ) : (
           <AcountButton
             LinkPath={`${import.meta.env.VITE_SERVER_PATH}/auth/google`}
-            Label={"구글 로그인"}
+            Label={"학교 계정 로그인"}
           />
         )}
       </HeaderWrap>
